@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-Fase actual: Fase 6 completada — Componentes UI.
+Fase actual: Fase 7 completada — Componentes de home.
 
 ## Fases completadas
 
@@ -12,7 +12,7 @@ Fase actual: Fase 6 completada — Componentes UI.
 - [x] Fase 4 — Layouts
 - [x] Fase 5 — Componentes shared
 - [x] Fase 6 — Componentes UI
-- [ ] Fase 7 — Componentes de home
+- [x] Fase 7 — Componentes de home
 - [ ] Fase 8 — Secciones del home
 - [ ] Fase 9 — Componentes de detalle de proyecto
 - [ ] Fase 10 — Páginas
@@ -150,6 +150,26 @@ Fase actual: Fase 6 completada — Componentes UI.
 - `siteConfig.contactApi` tiene TODO pendiente.
 - `animations.ts` no conectado.
 
+### Fase 7
+
+**Creados:**
+- `src/components/home/JobCard.astro` — recibe `job: Job`, renderiza logo, título, empresa, periodo
+- `src/components/home/ProjectCard.astro` — recibe props `title/slug/year/summary/thumbnail{full,md,sm}`, enlaza a `/projects/{slug}`
+- `src/components/home/ContactForm.astro` — form con nombre/email/mensaje, loader + toast éxito/error, submit a `siteConfig.contactApi`
+
+## Decisiones técnicas tomadas (Fase 7)
+
+- `ProjectCard` usa props `thumbnail{full,md,sm}` según el task. El content collection usa `cover` (único). Fase 8 adapta el mapeo (`cover` → `thumbnail.full` para los tres tamaños).
+- `ContactForm` usa `siteConfig.contactApi` (el campo real en `SiteConfig`). El task decía `contactApiUrl` — discrepancia ignorada a favor del tipo existente.
+- Script del form usa `is:inline define:vars` para pasar `contactApi` desde servidor al cliente sin bundleable import.
+
+## Pendientes conocidos
+
+- SVGs tecnológicos deben existir en `public/icons/{slug}.svg`.
+- `siteConfig.contactApi` es cadena vacía — se completa cuando exista el endpoint.
+- `ProjectCard.thumbnail` → `cover` mapping pendiente en Fase 8.
+- `animations.ts` no conectado.
+
 ## Próximo paso
 
-Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 7 — Componentes de home).
+Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 8 — Secciones del home).

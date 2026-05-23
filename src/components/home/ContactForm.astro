@@ -1,0 +1,93 @@
+---
+import { siteConfig } from '@data/site'
+---
+
+<form class="contact-form" id="contact-form" novalidate>
+  <div class="contact-form__field">
+    <label for="contact-name" class="contact-form__label">Nombre</label>
+    <input
+      id="contact-name"
+      name="name"
+      type="text"
+      class="contact-form__input"
+      placeholder="Tu nombre"
+      required
+    />
+  </div>
+
+  <div class="contact-form__field">
+    <label for="contact-email" class="contact-form__label">Email</label>
+    <input
+      id="contact-email"
+      name="email"
+      type="email"
+      class="contact-form__input"
+      placeholder="tu@email.com"
+      required
+    />
+  </div>
+
+  <div class="contact-form__field">
+    <label for="contact-message" class="contact-form__label">Mensaje</label>
+    <textarea
+      id="contact-message"
+      name="message"
+      class="contact-form__textarea"
+      rows={5}
+      placeholder="Tu mensaje"
+      required
+    ></textarea>
+  </div>
+
+  <div class="contact-form__loader" id="contact-loader" aria-hidden="true"></div>
+
+  <p class="contact-form__toast contact-form__toast--success" id="contact-toast-success" aria-live="polite" hidden>
+    Mensaje enviado correctamente.
+  </p>
+  <p class="contact-form__toast contact-form__toast--error" id="contact-toast-error" aria-live="polite" hidden>
+    Error al enviar el mensaje. Inténtalo de nuevo.
+  </p>
+
+  <button type="submit" class="contact-form__submit">Enviar mensaje</button>
+</form>
+
+<script is:inline define:vars={{ contactApi: siteConfig.contactApi }}>
+  const form = document.getElementById('contact-form')
+  const loader = document.getElementById('contact-loader')
+  const toastSuccess = document.getElementById('contact-toast-success')
+  const toastError = document.getElementById('contact-toast-error')
+
+  if (!form || !loader || !toastSuccess || !toastError) return
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    const data = new FormData(form)
+    const name = data.get('name')
+    const email = data.get('email')
+    const message = data.get('message')
+
+    if (!name || !email || !message) return
+
+    loader.removeAttribute('aria-hidden')
+    toastSuccess.hidden = true
+    toastError.hidden = true
+
+    try {
+      const res = await fetch(contactApi, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message }),
+      })
+
+      if (!res.ok) throw new Error('Response not ok')
+
+      toastSuccess.hidden = false
+      form.reset()
+    } catch {
+      toastError.hidden = false
+    } finally {
+      loader.setAttribute('aria-hidden', 'true')
+    }
+  })
+</script>

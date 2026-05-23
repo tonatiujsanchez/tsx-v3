@@ -1,0 +1,29 @@
+---
+import type { Job } from '@ptypes/index'
+
+interface Props {
+  job: Job
+}
+
+const { job } = Astro.props
+---
+
+<article class="job-card">
+  <div class="job-card__header">
+    {job.logo && (
+      <img
+        class="job-card__logo"
+        src={job.logo}
+        alt={`Logo de ${job.company}`}
+        width="48"
+        height="48"
+        loading="lazy"
+      />
+    )}
+    <div class="job-card__meta">
+      <h3 class="job-card__title">{job.title}</h3>
+      <p class="job-card__company">{job.company}</p>
+      <time class="job-card__period">{job.period}</time>
+    </div>
+  </div>
+</article>

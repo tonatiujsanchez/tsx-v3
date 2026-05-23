@@ -1,0 +1,33 @@
+---
+interface Props {
+  title: string
+  slug: string
+  year: number
+  summary: string
+  thumbnail: {
+    full: string
+    md: string
+    sm: string
+  }
+}
+
+const { title, slug, year, summary, thumbnail } = Astro.props
+---
+
+<article class="project-card">
+  <a href={`/projects/${slug}`} class="project-card__link">
+    <figure class="project-card__figure">
+      <img
+        class="project-card__img"
+        src={thumbnail.full}
+        alt={title}
+        loading="lazy"
+      />
+    </figure>
+    <div class="project-card__body">
+      <span class="project-card__year">{year}</span>
+      <h3 class="project-card__title">{title}</h3>
+      <p class="project-card__summary">{summary}</p>
+    </div>
+  </a>
+</article>

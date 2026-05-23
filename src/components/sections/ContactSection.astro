@@ -1,0 +1,30 @@
+---
+import { socialLinks } from '@data/site'
+import ContactForm from '@components/home/ContactForm.astro'
+import SocialLink from '@components/ui/SocialLink.astro'
+---
+
+<section class="contact" id="contacto">
+  <div class="contact__container">
+    <h2 class="contact__title">Contacto</h2>
+
+    <div class="contact__content">
+      <div class="contact__form-wrapper">
+        <ContactForm />
+      </div>
+
+      <div class="contact__social">
+        <p class="contact__social-label">También puedes encontrarme en:</p>
+        <div class="contact__social-list">
+          {socialLinks.map((link) => (
+            <SocialLink
+              href={link.href}
+              label={link.label}
+              icon={link.icon}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-Fase actual: Fase 7 completada — Componentes de home.
+Fase actual: Fase 8 completada — Secciones del home.
 
 ## Fases completadas
 
@@ -13,7 +13,7 @@ Fase actual: Fase 7 completada — Componentes de home.
 - [x] Fase 5 — Componentes shared
 - [x] Fase 6 — Componentes UI
 - [x] Fase 7 — Componentes de home
-- [ ] Fase 8 — Secciones del home
+- [x] Fase 8 — Secciones del home
 - [ ] Fase 9 — Componentes de detalle de proyecto
 - [ ] Fase 10 — Páginas
 - [ ] Fase 11 — Validación final
@@ -167,9 +167,33 @@ Fase actual: Fase 7 completada — Componentes de home.
 
 - SVGs tecnológicos deben existir en `public/icons/{slug}.svg`.
 - `siteConfig.contactApi` es cadena vacía — se completa cuando exista el endpoint.
-- `ProjectCard.thumbnail` → `cover` mapping pendiente en Fase 8.
+- ~~`ProjectCard.thumbnail` → `cover` mapping.~~ Resuelto en Fase 8: `cover` → `thumbnail.full/md/sm`.
+- `animations.ts` no conectado.
+
+### Fase 8
+
+**Creados:**
+- `src/components/sections/HeroSection.astro` — `#hola`, usa `siteConfig` + `socialLinks`, TODO perfil y campo `role`
+- `src/components/sections/ExperienceSection.astro` — `#experiencia`, itera `jobs[]` con `JobCard`
+- `src/components/sections/ProjectsSection.astro` — `#proyectos`, `getCollection('projects')` ordenado por `order`, mapea `cover` → `thumbnail`
+- `src/components/sections/SkillsSection.astro` — `#habilidades`, itera `skills[]` con `TechBadge`
+- `src/components/sections/ContactSection.astro` — `#contacto`, usa `ContactForm` + `socialLinks`
+
+## Decisiones técnicas tomadas (Fase 8)
+
+- `ProjectsSection` pasa `year={0}` — campo `year` no existe en el schema. Requiere agregar `year: z.number()` al schema y actualizar cada `.md`.
+- `HeroSection` usa `/img/profile.webp` con TODO — imagen de perfil no existe en `public/img/` aún.
+- `HeroSection` hardcodea rol "Desarrollador FullStack" con TODO — campo `role` no existe en `SiteConfig`.
+
+## Pendientes conocidos
+
+- Agregar campo `year` al schema de content collection y a cada proyecto `.md`.
+- Agregar `/img/profile.webp` a `public/img/`.
+- Agregar campo `role` a `SiteConfig` en `src/types/index.ts` y `src/data/site.ts`.
+- SVGs tecnológicos en `public/icons/{slug}.svg`.
+- `siteConfig.contactApi` vacío.
 - `animations.ts` no conectado.
 
 ## Próximo paso
 
-Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 8 — Secciones del home).
+Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 9 — Componentes de detalle de proyecto).

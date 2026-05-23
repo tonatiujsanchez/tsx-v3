@@ -1,0 +1,49 @@
+---
+import { siteConfig, socialLinks } from '@data/site'
+import SocialLink from '@components/ui/SocialLink.astro'
+---
+
+<section class="hero" id="hola">
+  <div class="hero__container">
+    <div class="hero__data">
+      <span class="hero__greeting">Hola, soy</span>
+      <h1 class="hero__name">{siteConfig.author}</h1>
+      <!-- TODO: agregar campo `role` a siteConfig -->
+      <h2 class="hero__role">Desarrollador FullStack</h2>
+      <p class="hero__description">{siteConfig.description}</p>
+
+      <div class="hero__actions">
+        <a
+          href={siteConfig.cvPath}
+          class="hero__cv-btn"
+          download
+          aria-label="Descargar CV"
+        >
+          Descargar CV <i class="bx bx-download" aria-hidden="true"></i>
+        </a>
+      </div>
+
+      <div class="hero__social">
+        {socialLinks.map((link) => (
+          <SocialLink
+            href={link.href}
+            label={link.label}
+            icon={link.icon}
+          />
+        ))}
+      </div>
+    </div>
+
+    <div class="hero__figure">
+      <!-- TODO: agregar /img/profile.webp a public/img/ -->
+      <img
+        class="hero__img"
+        src="/img/profile.webp"
+        alt={`Foto de perfil de ${siteConfig.author}`}
+        width="280"
+        height="280"
+        loading="eager"
+      />
+    </div>
+  </div>
+</section>

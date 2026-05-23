@@ -1,0 +1,15 @@
+---
+import { jobs } from '@data/jobs'
+import JobCard from '@components/home/JobCard.astro'
+---
+
+<section class="experience" id="experiencia">
+  <div class="experience__container">
+    <h2 class="experience__title">Experiencia</h2>
+    <div class="experience__list">
+      {jobs.map((job) => (
+        <JobCard job={job} />
+      ))}
+    </div>
+  </div>
+</section>

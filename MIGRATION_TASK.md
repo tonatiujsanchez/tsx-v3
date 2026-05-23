@@ -6,19 +6,18 @@ Fase 9 — Componentes de detalle de proyecto.
 
 ## Contexto
 
-Fase 8 completada. Secciones del home listas. Pendientes críticos:
+Fase 8 y 8.1 completadas. Secciones del home listas y corregidas.
 
-- `year` no existe en el schema de content collection → `ProjectsSection` pasa `year={0}`.
-- `/img/profile.webp` no existe en `public/img/`.
-- Campo `role` no existe en `SiteConfig`.
-
-Estos pendientes se abordan en esta fase o en Fase 10 según alcance.
+Pendientes conocidos:
+- SVGs tecnológicos en `public/icons/{slug}.svg` — `TechIcon` los referencia pero no existen.
+- `siteConfig.contactApi` vacío.
+- Años de proyectos en markdown usando `year` opcional del schema.
 
 ## Objetivo
 
 Crear los componentes específicos de la página de detalle de proyecto en `src/components/project/`:
 
-- `ProjectHeader.astro` — título, año, descripción, links (demo, github)
+- `ProjectHeader.astro` — título, año, descripción, links (demo, github/githubFrontend/githubBackend)
 - `ProjectGallery.astro` — galería de imágenes usando `ProjectFigure`
 - `ProjectTechList.astro` — lista de tecnologías usando `TechBadge`
 
@@ -44,7 +43,7 @@ No implementar páginas ni secciones del home.
 
 ```bash
 find src/components/project -type f 2>/dev/null | sort
-rg "interface|TechName|cover|gallery|demo|github" src/types src/content.config.ts -n
+rg "cover|gallery|demo|github|year|tech" src/content.config.ts -n
 ```
 
 ## Archivos permitidos para edición

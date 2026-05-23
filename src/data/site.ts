@@ -4,6 +4,7 @@ export const siteConfig: SiteConfig = {
     title: 'Tonatiuj Sánchez | FullStack, Next.js, Node.js, Typescript, MongoDB, PostgreSQL',
     description: 'Soy Desarrollador web completo con un fuerte compromiso con la colaboración y solución de problemas de software.',
     author: 'Tonatiuj Sánchez',
+    role: 'Desarrollador FullStack',
     email: 'tonatiujsanchez@gmail.com',
     cvPath: '/docs/Tonatiuj_Sánchez_Jiménez_CV.pdf',
     contactApi: '', // TODO: Add contact API endpoint

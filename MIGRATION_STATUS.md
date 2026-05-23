@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-Fase actual: Fase 8 completada — Secciones del home.
+Fase actual: Fase 8.1 completada — Corrección de pendientes del home.
 
 ## Fases completadas
 
@@ -187,12 +187,22 @@ Fase actual: Fase 8 completada — Secciones del home.
 
 ## Pendientes conocidos
 
-- Agregar campo `year` al schema de content collection y a cada proyecto `.md`.
-- Agregar `/img/profile.webp` a `public/img/`.
-- Agregar campo `role` a `SiteConfig` en `src/types/index.ts` y `src/data/site.ts`.
-- SVGs tecnológicos en `public/icons/{slug}.svg`.
-- `siteConfig.contactApi` vacío.
-- `animations.ts` no conectado.
+- ~~`year` falta en schema.~~ Agregado como `z.number().optional()`. Fallback: año actual (`new Date().getFullYear()`). Cada `.md` puede recibir `year` cuando se confirme el dato real.
+- ~~`/img/profile.webp` no existía.~~ HeroSection usa `/img/profile/ton.webp` (archivo real existente).
+- ~~Campo `role` faltaba en `SiteConfig`.~~ Agregado a tipo + dato (`'Desarrollador FullStack'`). HeroSection usa `siteConfig.role`.
+- ~~`ProjectsSection` usaba `cover` para `thumbnail.md/sm`.~~ Ahora deriva `-543.webp` y `-380.webp` con `.replace()`.
+- SVGs tecnológicos en `public/icons/{slug}.svg` — pendiente.
+- `siteConfig.contactApi` vacío — pendiente.
+- `animations.ts` no conectado — pendiente.
+
+### Fase 8.1
+
+**Modificados:**
+- `src/content.config.ts` — añadido `year: z.number().optional()`
+- `src/types/index.ts` — añadido `role: string` a `SiteConfig`
+- `src/data/site.ts` — añadido `role: 'Desarrollador FullStack'` a `siteConfig`
+- `src/components/sections/HeroSection.astro` — usa `siteConfig.role`, imagen real `/img/profile/ton.webp`
+- `src/components/sections/ProjectsSection.astro` — `year={project.data.year ?? new Date().getFullYear()}`, thumbnail md/sm derivados con `.replace()`
 
 ## Próximo paso
 

@@ -37,6 +37,7 @@ export interface SiteConfig {
     title: string;
     description: string;
     author: string;
+    role: string;
     email: string;
     cvPath: string;
     contactApi: string;

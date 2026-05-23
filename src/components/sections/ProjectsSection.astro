@@ -15,12 +15,12 @@ const projects = (await getCollection('projects')).sort(
         <ProjectCard
           title={project.data.title}
           slug={project.id}
-          year={0}
+          year={project.data.year ?? new Date().getFullYear()}
           summary={project.data.description}
           thumbnail={{
             full: project.data.cover,
-            md: project.data.cover,
-            sm: project.data.cover,
+            md: project.data.cover.replace('.webp', '-543.webp'),
+            sm: project.data.cover.replace('.webp', '-380.webp'),
           }}
         />
       ))}
@@ -28,4 +28,4 @@ const projects = (await getCollection('projects')).sort(
   </div>
 </section>
 
-<!-- TODO: agregar campo `year` al schema de content collection y a cada .md -->
+<!-- TODO: agregar `year` a cada .md cuando se confirme el dato real -->

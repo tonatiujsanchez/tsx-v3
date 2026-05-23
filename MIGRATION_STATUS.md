@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-Fase actual: Fase 9 completada — Componentes de detalle de proyecto.
+Fase actual: Fase 10 completada — Páginas.
 
 ## Fases completadas
 
@@ -15,7 +15,7 @@ Fase actual: Fase 9 completada — Componentes de detalle de proyecto.
 - [x] Fase 7 — Componentes de home
 - [x] Fase 8 — Secciones del home
 - [x] Fase 9 — Componentes de detalle de proyecto
-- [ ] Fase 10 — Páginas
+- [x] Fase 10 — Páginas
 - [ ] Fase 11 — Validación final
 
 ## Archivos creados o modificados
@@ -224,6 +224,37 @@ Fase actual: Fase 9 completada — Componentes de detalle de proyecto.
 - `animations.ts` no conectado — pendiente.
 - `ProjectLinks` solo soporta `github`/`live`. DevManager tiene `githubFrontend`+`githubBackend` — Fase 10 maneja el fork en la página.
 
+### Fase 10
+
+**Creados:**
+- `src/pages/index.astro` — home compuesto con `MainLayout` + 5 secciones. SEO básico desde `siteConfig`.
+- `src/pages/projects/[slug].astro` — página dinámica. `getStaticPaths` desde `getCollection('projects')`. Renderiza: header, `ProjectFigure` (cover), `TechBadge[]`, `ProjectLinks`, gallery, `Content`, `ProjectContact`.
+
+**Modificados:**
+- `src/pages/index.astro` — reemplazado boilerplate de Astro por composición real.
+
+## Decisiones técnicas tomadas (Fase 10)
+
+- `render(project)` en lugar de `project.render()` — API correcta de Content Layer en Astro 5/6.
+- DevManager no tiene `github` sino `githubFrontend` + `githubBackend`. La página pasa `github={project.data.github ?? project.data.githubFrontend}`. `githubBackend` no se muestra — pendiente Fase 11.
+- `project.id` como slug — glob loader usa filename sin extensión como ID.
+
+## Pendientes conocidos
+
+- SVGs tecnológicos en `public/icons/{slug}.svg` — pendiente.
+- `siteConfig.contactApi` vacío — pendiente.
+- `animations.ts` no conectado — pendiente.
+- DevManager `githubBackend` no enlazado — pendiente Fase 11.
+
+## Rutas generadas
+
+- `/` (home)
+- `/projects/admin-sites`
+- `/projects/contextos-guerrero`
+- `/projects/devmanager`
+- `/projects/legado-de-tlapa`
+- `/projects/share-groups`
+
 ## Próximo paso
 
-Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 10 — Páginas).
+Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 11 — Validación final).

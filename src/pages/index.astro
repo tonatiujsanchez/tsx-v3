@@ -1,17 +1,19 @@
 ---
-
+import MainLayout from '@layouts/MainLayout.astro'
+import HeroSection from '@components/sections/HeroSection.astro'
+import ExperienceSection from '@components/sections/ExperienceSection.astro'
+import ProjectsSection from '@components/sections/ProjectsSection.astro'
+import SkillsSection from '@components/sections/SkillsSection.astro'
+import ContactSection from '@components/sections/ContactSection.astro'
+import { siteConfig } from '@data/site'
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout title={siteConfig.title} description={siteConfig.description}>
+  <main>
+    <HeroSection />
+    <ExperienceSection />
+    <ProjectsSection />
+    <SkillsSection />
+    <ContactSection />
+  </main>
+</MainLayout>

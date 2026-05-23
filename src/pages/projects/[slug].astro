@@ -1,0 +1,141 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import { getCollection, render } from 'astro:content'
+import ProjectLayout from '@layouts/ProjectLayout.astro'
+import TechBadge from '@components/ui/TechBadge.astro'
+import ProjectFigure from '@components/ui/ProjectFigure.astro'
+import ProjectLinks from '@components/project/ProjectLinks.astro'
+import ProjectContact from '@components/project/ProjectContact.astro'
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects')
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }))
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>
+}
+
+const { project } = Astro.props
+const { title, description, cover, tech, demo, github, githubFrontend, gallery } = project.data
+const { Content } = await render(project)
+---
+
+<ProjectLayout
+  title={`${title} | Tonatiuj Sánchez`}
+  description={description}
+  ogImage={cover}
+>
+  <article class="project-detail">
+
+    <header class="project-detail__header">
+      <h1 class="project-detail__title">{title}</h1>
+      <p class="project-detail__description">{description}</p>
+    </header>
+
+    <ProjectFigure
+      src={cover}
+      alt={`Portada del proyecto ${title}`}
+      caption={title}
+    />
+
+    <section class="project-detail__tech">
+      <h2 class="project-detail__section-title">Tecnologías</h2>
+      <ul class="project-detail__tech-list">
+        {tech.map((t) => (
+          <li>
+            <TechBadge name={t} techKey={t} />
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <ProjectLinks
+      github={github ?? githubFrontend}
+      live={demo}
+    />
+
+    {gallery && gallery.length > 0 && (
+      <section class="project-detail__gallery">
+        <h2 class="project-detail__section-title">Capturas de pantalla</h2>
+        <div class="project-detail__gallery-grid">
+          {gallery.map((src, i) => (
+            <ProjectFigure
+              src={src}
+              alt={`Captura ${i + 1} de ${title}`}
+              caption={`${title} — Vista ${i + 1}`}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <div class="project-detail__content">
+      <Content />
+    </div>
+
+    <ProjectContact />
+
+  </article>
+</ProjectLayout>
+
+<style>
+  .project-detail {
+    max-width: 900px;
+    margin-inline: auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .project-detail__header {
+    margin-bottom: 2rem;
+  }
+
+  .project-detail__title {
+    color: var(--title-color);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    margin-bottom: 1rem;
+  }
+
+  .project-detail__description {
+    color: var(--text-color);
+    line-height: 1.7;
+    max-width: 70ch;
+  }
+
+  .project-detail__section-title {
+    color: var(--title-color);
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .project-detail__tech {
+    margin-block: 2rem;
+  }
+
+  .project-detail__tech-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .project-detail__gallery {
+    margin-block: 2rem;
+  }
+
+  .project-detail__gallery-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .project-detail__content {
+    margin-block: 2rem;
+    color: var(--text-color);
+    line-height: 1.7;
+  }
+</style>

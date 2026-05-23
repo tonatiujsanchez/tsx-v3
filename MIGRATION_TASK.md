@@ -2,11 +2,11 @@
 
 ## Tarea actual
 
-Fase 10 — Páginas.
+Fase 11 — Validación final.
 
 ## Contexto
 
-Las fases anteriores dejaron lista toda la base:
+Todas las fases de implementación están completas:
 
 - Fase 1: setup, estructura y assets.
 - Fase 2: tipos, datos, íconos y Content Collections.
@@ -15,125 +15,63 @@ Las fases anteriores dejaron lista toda la base:
 - Fase 5: componentes shared integrados en layouts.
 - Fase 6: componentes UI reutilizables.
 - Fase 7: componentes específicos del home.
-- Fase 8/8.1: secciones del home y correcciones mínimas de datos.
+- Fase 8/8.1: secciones completas del home y correcciones mínimas.
 - Fase 9: componentes de detalle de proyecto.
+- Fase 10: páginas (`index.astro` y `[slug].astro`).
 
-Ahora se deben implementar las páginas del sitio:
-
-- `src/pages/index.astro` — home con todas las secciones.
-- `src/pages/projects/[slug].astro` — detalle de proyecto (ruta dinámica).
+Fase 11 es la validación final y cierre de pendientes conocidos.
 
 ## Objetivo
 
-Conectar todos los componentes y layouts ya creados en páginas funcionales.
-Las páginas solo deben orquestar componentes existentes — no implementar lógica ni UI nueva.
+Resolver pendientes conocidos, validar el sitio completo y asegurar que el build esté limpio y listo para deploy.
+
+## Pendientes conocidos a resolver
+
+1. **SVGs de íconos tecnológicos** — los archivos `public/icons/{slug}.svg` no existen. `TechBadge` renderiza `<img>` que resultará en broken image. Agregar SVGs para todas las techs usadas, o adaptar el componente para degradación aceptable.
+
+2. **DevManager `githubBackend`** — `ProjectLinks` solo muestra `githubFrontend` (vía fallback `github ?? githubFrontend`). `githubBackend` no se enlaza. Evaluar si se agrega un segundo link al componente o se documenta como fuera de scope.
+
+3. **`siteConfig.contactApi`** — cadena vacía. El form de contacto no puede enviar. Requiere endpoint real o documentar como pendiente de deploy.
+
+4. **`animations.ts`** — script de animaciones de entrada no conectado a ningún componente. Conectar si aplica, o documentar como postergado.
+
+5. **`/img/profile/ton.webp`** — verificar que exista en `public/`.
+
+6. **SVGs en `src/icons/svgs/`** — solo existe `zustand.svg`. Confirmar que todos los slugs en `iconMap` tienen su SVG en `public/icons/`.
 
 ## Archivos permitidos para lectura
 
 - `CLAUDE.md`
 - `MIGRATION_STATUS.md`
 - `MIGRATION_TASK.md`
-- `src/types/index.ts`
-- `src/data/site.ts`
-- `src/data/navigation.ts`
-- `src/content.config.ts`
-- `src/content/projects/*.md`
-- `src/layouts/MainLayout.astro`
-- `src/layouts/ProjectLayout.astro`
-- `src/components/sections/*.astro`
-- `src/components/project/ProjectLinks.astro`
-- `src/components/project/ProjectContact.astro`
-- `src/components/ui/TechBadge.astro`
-- `src/components/ui/ProjectFigure.astro`
-- `src/pages/index.astro` (si ya existe)
-- `src/pages/projects/[slug].astro` (si ya existe)
-
-Archivos legacy solo si hace falta confirmar estructura visual:
-
-- HTML legacy de home.
-- HTML legacy de detalle de proyecto.
-
-Leer solo fragmentos necesarios con `rg`.
+- Todo `src/` para diagnóstico
+- `public/icons/` para verificar SVGs
+- `dist/` para verificar build
 
 ## Comandos baratos permitidos
 
-    git status --short
+    pnpm astro check
+    pnpm build
+    pnpm preview
+    find public/icons -type f | sort
+    find public/img -type f | sort
     git diff --stat
-    find src/pages -maxdepth 3 -type f 2>/dev/null | sort
-    find src/components/sections -maxdepth 1 -type f | sort
-    find src/components/project -maxdepth 1 -type f | sort
-    rg "getCollection|getEntry|slug" src -n
+    git status --short
 
 ## Archivos permitidos para edición
 
-- `src/pages/index.astro`
-- `src/pages/projects/[slug].astro`
-- `MIGRATION_STATUS.md`
-- `MIGRATION_TASK.md`
-
-## Archivos prohibidos
-
-No modificar:
-
-- `src/components/**`
-- `src/layouts/**`
-- `src/scripts/**`
-- `src/content/**`
-- `src/data/**`
-- `src/icons/**`
-- `src/styles/**`
-- `public/**`
-- `package.json`
-- `tsconfig.json`
-- `astro.config.mjs`
-
-Si necesitas modificar un archivo prohibido, primero explica por qué y espera confirmación.
-
-## Alcance exacto
-
-### 1. Crear `src/pages/index.astro`
-
-Debe usar `MainLayout` e incluir todas las secciones en orden:
-
-1. `HeroSection`
-2. `ExperienceSection`
-3. `ProjectsSection`
-4. `SkillsSection`
-5. `ContactSection`
-
-Props mínimas: pasar `title` y `description` desde `siteConfig`.
-
-### 2. Crear `src/pages/projects/[slug].astro`
-
-Ruta dinámica. Debe:
-
-- Exportar `getStaticPaths()` usando `getCollection('projects')`.
-- Recibir el proyecto en `Astro.props`.
-- Usar `ProjectLayout`.
-- Renderizar: título, descripción, año, tech stack con `TechBadge`, galería con `ProjectFigure`, `ProjectLinks`, contenido markdown (`<Content />`), `ProjectContact`.
-- Manejar el caso `githubFrontend` + `githubBackend` de DevManager (renderizar ambos links o combinar en `ProjectLinks`).
-- No renderizar secciones vacías si no hay datos.
-
-## Fuera de alcance
-
-- No crear rutas adicionales.
-- No modificar layouts.
-- No modificar componentes.
-- No modificar Content Collections ni datos.
-- No avanzar a Fase 11.
+Solo los necesarios para resolver los pendientes listados arriba. Justificar antes de editar cualquier archivo no listado explícitamente.
 
 ## Criterios de aceptación
 
-- Existe `src/pages/index.astro`.
-- Existe `src/pages/projects/[slug].astro`.
 - `pnpm astro check` pasa sin errores.
-- `pnpm build` completa sin errores.
-- `MIGRATION_STATUS.md` queda actualizado.
-- `MIGRATION_TASK.md` queda preparado para Fase 11, pero Fase 11 no se ejecuta.
+- `pnpm build` pasa sin errores.
+- Íconos tecnológicos visibles o degradación documentada.
+- DevManager muestra al menos un link de GitHub válido.
+- No se avanzó a ninguna fase fuera de la lista.
+- `MIGRATION_STATUS.md` queda actualizado con estado final.
 
 ## Validaciones
-
-Ejecutar:
 
     pnpm astro check
     pnpm build
@@ -141,10 +79,7 @@ Ejecutar:
 
 ## Respuesta esperada
 
-Responder solo con:
-
-1. Archivos modificados.
-2. Qué se implementó.
+1. Pendientes resueltos (lista).
+2. Pendientes no resueltos y razón.
 3. Validaciones ejecutadas.
-4. Pendientes.
-5. Confirmación de que no se avanzó a Fase 11.
+4. Estado final del proyecto.

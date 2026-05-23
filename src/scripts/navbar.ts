@@ -1,24 +1,23 @@
-const SCROLL_OFFSET = 130
-
-function updateActiveSection(): void {
-  const scrollY = window.scrollY
+export function initNavObserver(): void {
   const sections = document.querySelectorAll<HTMLElement>('section[id]')
+  if (!sections.length) return
 
-  sections.forEach((section) => {
-    const sectionTop = section.offsetTop - SCROLL_OFFSET
-    const id = section.getAttribute('id')
-    if (!id) return
+  const navLinks = document.querySelectorAll<HTMLAnchorElement>('.nav__item a[href^="#"]')
+  if (!navLinks.length) return
 
-    const navLink = document.querySelector<HTMLAnchorElement>(`.nav__item a[href*="${id}"]`)
-    const navItem = navLink?.closest<HTMLElement>('.nav__item')
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const id = entry.target.getAttribute('id')
+        const navLink = document.querySelector<HTMLAnchorElement>(`.nav__item a[href="#${id}"]`)
+        const navItem = navLink?.closest<HTMLElement>('.nav__item')
 
-    const isActive = scrollY >= sectionTop && scrollY < sectionTop + section.offsetHeight
-    navLink?.classList.toggle('nav__link--active', isActive)
-    navItem?.classList.toggle('nav__item--active', isActive)
-  })
-}
+        navLink?.classList.toggle('nav__link--active', entry.isIntersecting)
+        navItem?.classList.toggle('nav__item--active', entry.isIntersecting)
+      })
+    },
+    { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+  )
 
-export function initNavbar(): void {
-  window.addEventListener('scroll', updateActiveSection, { passive: true })
-  updateActiveSection()
+  sections.forEach((section) => observer.observe(section))
 }

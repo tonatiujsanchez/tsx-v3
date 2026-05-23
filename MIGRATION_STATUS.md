@@ -2,14 +2,14 @@
 
 ## Estado actual
 
-Fase actual: Fase 3 completada — Scripts del cliente.
+Fase actual: Fase 4 completada — Layouts.
 
 ## Fases completadas
 
 - [x] Fase 1 — Setup del proyecto
 - [x] Fase 2 — Tipos y datos
 - [x] Fase 3 — Scripts del cliente
-- [ ] Fase 4 — Layouts
+- [x] Fase 4 — Layouts
 - [ ] Fase 5 — Componentes shared
 - [ ] Fase 6 — Componentes UI
 - [ ] Fase 7 — Componentes de home
@@ -63,23 +63,38 @@ Fase actual: Fase 3 completada — Scripts del cliente.
 
 **Creados:**
 - `src/scripts/theme.ts` — toggle dark/light, persistencia en localStorage, clase `dark-theme` sobre `<html>`
-- `src/scripts/navbar.ts` — scroll spy con `section[id]`, activa clases BEM `nav__link--active` / `nav__item--active`
-- `src/scripts/animations.ts` — IntersectionObserver para elementos `[data-animate]`, añade `is-visible`
+- `src/scripts/navbar.ts` — IntersectionObserver sobre `section[id]`, activa BEM `nav__link--active` / `nav__item--active`
+- `src/scripts/scroll.ts` — muestra/oculta `#scroll-top` con clase `scroll-top__show` cuando `scrollY >= 350`
+- `src/scripts/animations.ts` — IntersectionObserver para `[data-animate]`, añade `is-visible` (pendiente Fase 5/6)
 
 ## Decisiones técnicas tomadas (Fase 3)
 
 - Tema aplica clase `dark-theme` sobre `document.documentElement` (html), confirmando decisión de Fase 2.
-- Toggle button usa selector `[data-theme-toggle]` (data attribute, compatible con cualquier elemento HTML).
-- Navbar usa BEM classes heredadas del legacy para compatibilidad con futuros componentes.
-- `animations.ts` usa `[data-animate]` attribute en lugar de clases, desacopla animación de presentación.
-- Scroll listener en navbar usa `{ passive: true }` para performance.
-- Scripts exportan funciones `init*` — se invocan desde layouts/componentes Astro en Fases 4+.
+- Toggle button usa selector `[data-theme-toggle]` (data attribute).
+- `navbar.ts` usa `IntersectionObserver` con `rootMargin: '-40% 0px -55% 0px'` — activa la sección visible en zona central del viewport. Sin offset hardcodeado ni scroll listener manual. Exporta `initNavObserver()`.
+- `scroll.ts` usa scroll listener pasivo en `window`. Exporta `initScrollTop()`.
+- `animations.ts` mantenido (útil para animaciones de entrada), pero no conectado aún. Se integrará en Fase 5/6.
+
+### Fase 4
+
+**Creados:**
+- `src/layouts/BaseLayout.astro` — HTML base, head completo (meta, OG, favicons, fonts, Boxicons CDN, anti-FOUC), slot
+- `src/layouts/MainLayout.astro` — wraps BaseLayout, slot, TODO Fase 5 para shared components
+- `src/layouts/ProjectLayout.astro` — wraps BaseLayout, slot, TODO Fase 5 para navbar variant, scroll-top, footer
+
+## Decisiones técnicas tomadas (Fase 4)
+
+- `BaseLayout` carga `/fonts/poppins/poppins.css` y `/fonts/paralucent/paralucent.css` desde `public/`.
+- Anti-FOUC usa key `selected-theme-tsx` con clases `dark-theme` / `light-theme`. **Discrepancia pendiente**: `theme.ts` usa key `theme-tsx`. Reconciliar al conectar scripts en Fase 5.
+- Scripts `initTheme`, `initNavObserver`, `initScrollTop` NO conectados aún. Se integran en Fase 5 desde componentes shared.
+- `MainLayout` y `ProjectLayout` son thin wrappers — solo propagan props a `BaseLayout`.
 
 ## Pendientes conocidos
 
-- `src/icons/svgs/` solo tiene `zustand.svg`. Faltan SVG files para el resto de tecnologías. Se agregan en Fase 5/6 al implementar el componente de íconos.
+- `src/icons/svgs/` solo tiene `zustand.svg`. Faltan SVG files para el resto de tecnologías. Se agregan en Fase 5/6.
 - `siteConfig.contactApi` en `src/data/site.ts` tiene TODO pendiente (API de contacto).
-- Los `init*` scripts no están conectados a ningún layout/componente aún — se conectan en Fase 4 (layouts).
+- Key de localStorage del anti-FOUC (`selected-theme-tsx`) difiere de `theme.ts` (`theme-tsx`). Reconciliar en Fase 5.
+- Scripts cliente no conectados a layouts — se conectan en Fase 5.
 
 ## Riesgos
 
@@ -89,4 +104,4 @@ Fase actual: Fase 3 completada — Scripts del cliente.
 
 ## Próximo paso
 
-Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 4 — Layouts).
+Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 5 — Componentes shared).

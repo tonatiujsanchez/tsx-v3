@@ -1,0 +1,16 @@
+---
+// TODO Fase 5: integrar Navbar, Footer, ThemeToggle, ScrollTop
+import BaseLayout from './BaseLayout.astro'
+
+interface Props {
+  title?: string
+  description?: string
+  ogImage?: string
+}
+
+const { title, description, ogImage } = Astro.props
+---
+
+<BaseLayout title={title} description={description} ogImage={ogImage}>
+  <slot />
+</BaseLayout>

@@ -2,19 +2,24 @@
 
 ## Tarea actual
 
-Fase 4 — Layouts.
+Fase 5 — Componentes shared.
 
 ## Contexto
 
-Fase 3 completada. Scripts de cliente listos en `src/scripts/` (`theme.ts`, `navbar.ts`, `animations.ts`). Exportan funciones `initTheme`, `initNavbar`, `initAnimations`.
+Fase 4 completada. Layouts base listos en `src/layouts/`. Scripts cliente en `src/scripts/` sin conectar aún.
+
+Pendiente antes de conectar scripts: reconciliar key de localStorage entre `theme.ts` (`theme-tsx`) y anti-FOUC de `BaseLayout` (`selected-theme-tsx`).
 
 ## Objetivo
 
-Implementar los layouts base en `src/layouts/`. Como mínimo:
+Crear los componentes globales reutilizables en `src/components/shared/`:
 
-- `BaseLayout.astro` — layout raíz con `<html>`, `<head>` (meta, SEO, fonts), `<body>`, slot principal. Debe conectar `initTheme()` e `initAnimations()` vía `<script>`.
+- `Navbar.astro`
+- `Footer.astro`
+- `ThemeToggle.astro`
+- `ScrollTop.astro`
 
-No implementar componentes, secciones ni páginas.
+Conectar scripts cliente desde estos componentes. Integrarlos en `MainLayout.astro` y `ProjectLayout.astro`.
 
 ## Archivos permitidos para lectura
 
@@ -26,42 +31,52 @@ No implementar componentes, secciones ni páginas.
 
 ### Proyecto destino
 
-- `src/layouts/` (directorio completo)
-- `src/data/site.ts`
+- `src/components/shared/` (directorio completo)
+- `src/layouts/BaseLayout.astro`
+- `src/layouts/MainLayout.astro`
+- `src/layouts/ProjectLayout.astro`
 - `src/scripts/theme.ts`
-- `src/scripts/animations.ts`
+- `src/scripts/navbar.ts`
+- `src/scripts/scroll.ts`
+- `src/data/navigation.ts`
+- `src/data/site.ts`
 - `tsconfig.json`
-- `package.json`
 
 ### Proyecto legacy
 
-Solo si hace falta para extraer estructura HTML del `<head>`:
+Solo si hace falta extraer estructura HTML:
 
-- `../tsx-v2-vanilla/index.html` — leer parcial con offset/limit, solo el `<head>`
+- `../tsx-v2-vanilla/assets/css/` — rg para clases BEM de navbar/footer
+- `../tsx-v2-vanilla/index.html` — rg para estructura de navbar/footer
 
 No leer archivos legacy completos si basta con `rg`.
 
 ## Comandos baratos permitidos
 
 ```bash
-find src/layouts -type f 2>/dev/null | sort
-rg "charset|viewport|og:|font|favicon|lang" ../tsx-v2-vanilla/index.html -n
+find src/components/shared -type f 2>/dev/null | sort
+rg "nav__|footer__|scroll-top|theme-toggle" ../tsx-v2-vanilla/assets/css/ -n -l
+rg "class=\"nav|class=\"footer|scroll-top|theme" ../tsx-v2-vanilla/index.html -n
 ```
 
-## Layouts esperados en `src/layouts/`
+## Archivos permitidos para edición
 
-- `BaseLayout.astro` — HTML base, head con SEO, fonts, favicon. Conecta `initTheme` + `initAnimations`. Slot `<slot />`.
+- `src/components/shared/**`
+- `src/layouts/MainLayout.astro`
+- `src/layouts/ProjectLayout.astro`
+- `MIGRATION_STATUS.md`
+- `MIGRATION_TASK.md`
 
 ## Reglas
 
+- Reconciliar key localStorage entre `theme.ts` y anti-FOUC de `BaseLayout` antes de conectar.
 - Cero `any`.
 - No importar frameworks.
-- No implementar componentes, secciones ni páginas.
-- No tocar archivos fuera de `src/layouts/`.
-- No avanzar a Fase 5.
+- No tocar `src/pages/`, `src/data/`, `src/scripts/`, `src/styles/`.
+- No avanzar a Fase 6.
 
 ## Al terminar
 
 - Actualizar `MIGRATION_STATUS.md`.
-- Actualizar `MIGRATION_TASK.md` con Fase 5 preparada.
+- Actualizar `MIGRATION_TASK.md` con Fase 6 preparada.
 - Resumen breve de cambios.

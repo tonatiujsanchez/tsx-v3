@@ -1,0 +1,343 @@
+@import './animations.css';
+
+/* ===================================================
+   DESIGN TOKENS
+   =================================================== */
+:root {
+    --font-primary: "Poppins", sans-serif;
+
+    /* Colores base */
+    --title-color: #171717;
+    --text-color: #71717A;
+    --text-color-light: #A6A6A6;
+    --body-color: #F8FAFC;
+    --container-color: #F8FAFC;
+    --content-color: #E5E5E5;
+    --gray-primary-color: #DBDCDF;
+    --black-primary-color: #2B2B2B;
+    --white-primary-color: #F8FAFC;
+
+    /* Feedback */
+    --success-color: #07AC4F;
+    --error-color: #d30000;
+
+    /* Colores de tecnologías */
+    --javascript-color: #F7DF1E;
+    --typescript-color: #2F74C0;
+    --reactjs-color: #0FD2F4;
+    --nextjs-color: #000000;
+    --nodejs-color: #026E00;
+    --sql-color: #015E88;
+    --mongo-color: #07AC4F;
+    --github-color: #1C1F24;
+    --git-color: #F05030;
+    --sass-color: #CD669A;
+    --tailwind-color: #38BDF8;
+    --figma-color: #F34E1C;
+    --emotion-color: #D26AC2;
+    --redux-color: #764ABC;
+
+    /* Bordes y sombras */
+    --border-primary: 0.1rem solid var(--gray-primary-color);
+    --shadow-primary: 0 0.5rem 1rem var(--gray-primary-color);
+    --shadow-primary-top: 0 -0.1rem 0.6rem var(--gray-primary-color);
+}
+
+/* Tema oscuro — clase en <html> para evitar FOUC */
+html.dark-theme {
+    --title-color: #F1F5F9;
+    --text-color: #c9c9c9;
+    --body-color: #18181B;
+    --container-color: #242424;
+    --content-color: #222222;
+    --border-primary: 0.1rem solid var(--black-primary-color);
+    --shadow-primary: 0 0.5rem 1.4rem var(--black-primary-color);
+    --shadow-primary-top: 0 -0.1rem 0.6rem var(--black-primary-color);
+}
+
+
+/* ===================================================
+   RESET Y BASE
+   =================================================== */
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: var(--font-primary);
+    font-size: 1.6rem;
+    margin: 0;
+    background-color: var(--body-color);
+    color: var(--text-color);
+    transition: background-color 0.3s;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    margin: 0;
+    color: var(--title-color);
+}
+
+ul, figure {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style: none;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+p {
+    line-height: 1.7;
+}
+
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+input {
+    border: none;
+    outline: none;
+}
+
+textarea {
+    font-family: var(--font-primary);
+    border: none;
+    outline: none;
+    resize: none;
+}
+
+
+/* ===================================================
+   UTILIDADES GLOBALES
+   =================================================== */
+.container {
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: 2rem;
+}
+
+.section {
+    padding-block: 4rem;
+}
+
+.section__title {
+    margin-block-end: 1rem;
+}
+
+.section__description {
+    color: var(--text-color);
+    text-wrap: pretty;
+}
+
+.link-external-icon {
+    transform: rotate(-45deg);
+    font-size: 2rem;
+}
+
+.button-change-theme {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    font-size: 2rem;
+}
+
+.button-change-theme:hover {
+    color: var(--title-color);
+}
+
+/* Helpers para SVG que deben adaptarse al tema */
+.icon__black svg {
+    fill: var(--title-color);
+}
+
+.svg__fill-contrast {
+    fill: var(--title-color);
+}
+
+.svg__fill-contrast--dark {
+    fill: var(--body-color);
+}
+
+.icon__styled-components {
+    color: var(--text-color);
+    font-size: 2rem;
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+}
+
+.icon__styled-components img {
+    max-width: 1.4rem;
+}
+
+
+/* ===================================================
+   TOAST
+   =================================================== */
+.toast {
+    position: fixed;
+    inset-inline-end: 50%;
+    transform: translateX(50%);
+    inset-block-start: -10rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+    background: var(--white-primary-color);
+    color: var(--black-primary-color);
+    padding-inline: 2rem;
+    min-width: 22rem;
+    width: 85%;
+    padding-block: 1.2rem;
+    border-radius: 0.5rem;
+    z-index: 99;
+    box-shadow: var(--shadow-primary);
+    border: var(--border-primary);
+    transition: all 0.3s ease-out;
+    visibility: hidden;
+}
+
+.toast__show {
+    visibility: visible;
+    inset-block-start: 5rem;
+}
+
+.toast__icon {
+    font-size: 2.4rem;
+}
+
+.toast__icon--success {
+    color: var(--success-color);
+}
+
+.toast__icon--error {
+    color: var(--error-color);
+}
+
+
+/* ===================================================
+   LOADER
+   =================================================== */
+.loader {
+    width: 2.6rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 0.3rem solid var(--text-color);
+    border-right-color: var(--body-color);
+    animation: rotation 0.5s infinite linear;
+}
+
+
+/* ===================================================
+   SCROLL TOP
+   =================================================== */
+.scroll-top {
+    position: fixed;
+    inset-inline-end: 2rem;
+    inset-block-end: 80rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.3rem;
+    border-radius: 0.4rem;
+    z-index: 10;
+    border: var(--border-primary);
+    background-color: var(--title-color);
+    color: var(--body-color);
+    transition: all 0.5s ease-out;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.scroll-top:hover {
+    border: 0.1rem solid var(--text-color);
+}
+
+.scroll-top:hover .scroll-top__icon {
+    animation: float-up 2s ease-in-out infinite;
+}
+
+.scroll-top__icon {
+    font-size: 3rem;
+    color: var(--body-color);
+}
+
+
+/* ===================================================
+   FOOTER
+   =================================================== */
+.footer {
+    padding-block: 1rem;
+    margin-block-end: 6.5rem;
+    border: none;
+}
+
+.footer__copy {
+    font-size: 1.4rem;
+    color: var(--text-color);
+    text-align: center;
+}
+
+
+/* ===================================================
+   MEDIA QUERIES
+   =================================================== */
+@media (min-width: 480px) {
+    .toast {
+        max-width: 32rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .toast {
+        inset-block-start: unset;
+        inset-block-end: -10rem;
+    }
+
+    .toast__show {
+        inset-block-end: 7rem;
+    }
+
+    .scroll-top {
+        inset-inline-end: 3rem;
+        padding: 0.4rem;
+    }
+
+    .scroll-top__show {
+        visibility: visible;
+        opacity: 1;
+        inset-block-end: 2.5rem;
+    }
+
+    .section {
+        padding-block: 7rem;
+    }
+
+    .footer {
+        padding-block: 1rem;
+        margin-block-start: 1rem;
+        margin-block-end: 0;
+        border-block-start: var(--border-primary);
+    }
+}

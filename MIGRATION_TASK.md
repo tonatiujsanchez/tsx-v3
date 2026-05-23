@@ -2,24 +2,22 @@
 
 ## Tarea actual
 
-Fase 5 — Componentes shared.
+Fase 6 — Componentes UI.
 
 ## Contexto
 
-Fase 4 completada. Layouts base listos en `src/layouts/`. Scripts cliente en `src/scripts/` sin conectar aún.
-
-Pendiente antes de conectar scripts: reconciliar key de localStorage entre `theme.ts` (`theme-tsx`) y anti-FOUC de `BaseLayout` (`selected-theme-tsx`).
+Fase 5 completada. Componentes shared listos. Layouts conectados con Navbar, Footer, ScrollTop, ThemeToggle. Scripts cliente activos.
 
 ## Objetivo
 
-Crear los componentes globales reutilizables en `src/components/shared/`:
+Crear los componentes base reutilizables en `src/components/ui/`:
 
-- `Navbar.astro`
-- `Footer.astro`
-- `ThemeToggle.astro`
-- `ScrollTop.astro`
+- `Button.astro` — botón primario/secundario/outline con variantes y tamaños
+- `Tag.astro` — etiqueta de tecnología (usada en ProjectCard y detalle)
+- `TechIcon.astro` — ícono de tecnología usando `iconMap` de `src/icons/`
+- `SectionTitle.astro` — título de sección con estructura semántica consistente
 
-Conectar scripts cliente desde estos componentes. Integrarlos en `MainLayout.astro` y `ProjectLayout.astro`.
+No implementar secciones del home ni páginas.
 
 ## Archivos permitidos para lectura
 
@@ -31,52 +29,45 @@ Conectar scripts cliente desde estos componentes. Integrarlos en `MainLayout.ast
 
 ### Proyecto destino
 
-- `src/components/shared/` (directorio completo)
-- `src/layouts/BaseLayout.astro`
-- `src/layouts/MainLayout.astro`
-- `src/layouts/ProjectLayout.astro`
-- `src/scripts/theme.ts`
-- `src/scripts/navbar.ts`
-- `src/scripts/scroll.ts`
-- `src/data/navigation.ts`
-- `src/data/site.ts`
+- `src/components/ui/` (directorio completo)
+- `src/icons/IconMap.ts`
+- `src/icons/index.ts`
+- `src/types/index.ts`
 - `tsconfig.json`
 
 ### Proyecto legacy
 
-Solo si hace falta extraer estructura HTML:
+Solo si hace falta confirmar variantes o nombres de clases BEM:
 
-- `../tsx-v2-vanilla/assets/css/` — rg para clases BEM de navbar/footer
-- `../tsx-v2-vanilla/index.html` — rg para estructura de navbar/footer
-
-No leer archivos legacy completos si basta con `rg`.
+- `rg` sobre `../tsx-v2-vanilla/assets/css/` para clases `.button`, `.tag`, `.section__title`
 
 ## Comandos baratos permitidos
 
 ```bash
-find src/components/shared -type f 2>/dev/null | sort
-rg "nav__|footer__|scroll-top|theme-toggle" ../tsx-v2-vanilla/assets/css/ -n -l
-rg "class=\"nav|class=\"footer|scroll-top|theme" ../tsx-v2-vanilla/index.html -n
+find src/components/ui -type f 2>/dev/null | sort
+find src/icons -type f | sort
+rg "\.button|\.tag|section__title|tech-icon" ../tsx-v2-vanilla/assets/css/ -n -l
 ```
 
 ## Archivos permitidos para edición
 
-- `src/components/shared/**`
-- `src/layouts/MainLayout.astro`
-- `src/layouts/ProjectLayout.astro`
+- `src/components/ui/**`
 - `MIGRATION_STATUS.md`
 - `MIGRATION_TASK.md`
 
+## Archivos prohibidos
+
+No modificar ningún archivo fuera de `src/components/ui/`, `MIGRATION_STATUS.md` y `MIGRATION_TASK.md`.
+
 ## Reglas
 
-- Reconciliar key localStorage entre `theme.ts` y anti-FOUC de `BaseLayout` antes de conectar.
 - Cero `any`.
 - No importar frameworks.
-- No tocar `src/pages/`, `src/data/`, `src/scripts/`, `src/styles/`.
-- No avanzar a Fase 6.
+- No implementar secciones del home ni páginas.
+- No avanzar a Fase 7.
 
 ## Al terminar
 
 - Actualizar `MIGRATION_STATUS.md`.
-- Actualizar `MIGRATION_TASK.md` con Fase 6 preparada.
+- Actualizar `MIGRATION_TASK.md` con Fase 7 preparada.
 - Resumen breve de cambios.

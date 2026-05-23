@@ -1,0 +1,13 @@
+---
+import { siteConfig } from '@data/site'
+
+const year = new Date().getFullYear()
+---
+
+<footer class="footer">
+  <div class="footer__container">
+    <p class="footer__copy">
+      &copy; {year} {siteConfig.author}. Todos los derechos reservados.
+    </p>
+  </div>
+</footer>

@@ -1,0 +1,42 @@
+---
+import { navItems } from '@data/navigation'
+import ThemeToggle from './ThemeToggle.astro'
+
+interface Props {
+  variant?: 'home' | 'project'
+  backHref?: string
+}
+
+const { variant = 'home', backHref = '/' } = Astro.props
+---
+
+<nav class="nav" data-variant={variant}>
+  <div class="nav__container">
+    {variant === 'home' ? (
+      <ul class="nav__list" role="list">
+        {navItems.map((item) => (
+          <li class="nav__item">
+            <a href={item.href} aria-label={item.ariaLabel} class="nav__link">
+              <i class={`bx ${item.icon} nav__icon`} aria-hidden="true"></i>
+              <span class="nav__label">{item.label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <a href={backHref} class="nav__back" aria-label="Volver a proyectos">
+        <i class="bx bx-arrow-back nav__back-icon" aria-hidden="true"></i>
+        <span>Proyectos</span>
+      </a>
+    )}
+    <ThemeToggle />
+  </div>
+</nav>
+
+<script>
+  import { initNavObserver } from '@scripts/navbar'
+  const nav = document.querySelector<HTMLElement>('.nav')
+  if (nav?.dataset.variant === 'home') {
+    initNavObserver()
+  }
+</script>

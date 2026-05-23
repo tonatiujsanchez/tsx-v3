@@ -1,6 +1,8 @@
 ---
-// TODO Fase 5: integrar Navbar variant project, ScrollTop, Footer
 import BaseLayout from './BaseLayout.astro'
+import Navbar from '@components/shared/Navbar.astro'
+import ScrollTop from '@components/shared/ScrollTop.astro'
+import Footer from '@components/shared/Footer.astro'
 
 interface Props {
   title?: string
@@ -12,5 +14,8 @@ const { title, description, ogImage } = Astro.props
 ---
 
 <BaseLayout title={title} description={description} ogImage={ogImage}>
+  <Navbar variant="project" backHref="/#proyectos" />
   <slot />
+  <ScrollTop />
+  <Footer />
 </BaseLayout>

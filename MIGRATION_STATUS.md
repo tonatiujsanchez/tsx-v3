@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-Fase actual: Fase 4 completada — Layouts.
+Fase actual: Fase 5 completada — Componentes shared.
 
 ## Fases completadas
 
@@ -10,7 +10,7 @@ Fase actual: Fase 4 completada — Layouts.
 - [x] Fase 2 — Tipos y datos
 - [x] Fase 3 — Scripts del cliente
 - [x] Fase 4 — Layouts
-- [ ] Fase 5 — Componentes shared
+- [x] Fase 5 — Componentes shared
 - [ ] Fase 6 — Componentes UI
 - [ ] Fase 7 — Componentes de home
 - [ ] Fase 8 — Secciones del home
@@ -93,8 +93,8 @@ Fase actual: Fase 4 completada — Layouts.
 
 - `src/icons/svgs/` solo tiene `zustand.svg`. Faltan SVG files para el resto de tecnologías. Se agregan en Fase 5/6.
 - `siteConfig.contactApi` en `src/data/site.ts` tiene TODO pendiente (API de contacto).
-- Key de localStorage del anti-FOUC (`selected-theme-tsx`) difiere de `theme.ts` (`theme-tsx`). Reconciliar en Fase 5.
-- Scripts cliente no conectados a layouts — se conectan en Fase 5.
+- ~~Key de localStorage del anti-FOUC (`selected-theme-tsx`) difiere de `theme.ts` (`theme-tsx`).~~ Reconciliado en Fase 5.
+- ~~Scripts cliente no conectados a layouts.~~ Conectados en Fase 5 via componentes shared.
 
 ## Riesgos
 
@@ -102,6 +102,31 @@ Fase actual: Fase 4 completada — Layouts.
 - Duplicación de CSS si se copia demasiado del proyecto legacy.
 - Hardcodeo accidental de datos en componentes.
 
+### Fase 5
+
+**Creados:**
+- `src/components/shared/ThemeToggle.astro` — botón `[data-theme-toggle]`, llama `initTheme()` vía `<script>`
+- `src/components/shared/ScrollTop.astro` — botón `#scroll-top`, llama `initScrollTop()` vía `<script>`
+- `src/components/shared/Navbar.astro` — props `variant` + `backHref`, nav home con `navItems`, nav project con link de regreso, incluye `ThemeToggle`, llama `initNavObserver()` condicionalmente por `data-variant`
+- `src/components/shared/Footer.astro` — copyright dinámico con `siteConfig.author`
+
+**Modificados:**
+- `src/scripts/theme.ts` — key reconciliada a `selected-theme-tsx`, almacena `dark-theme` / `light-theme` (consistente con anti-FOUC de BaseLayout)
+- `src/layouts/MainLayout.astro` — integra Navbar (home), ScrollTop, Footer
+- `src/layouts/ProjectLayout.astro` — integra Navbar (project, backHref `/#proyectos`), ScrollTop, Footer
+
+## Decisiones técnicas tomadas (Fase 5)
+
+- `theme.ts` ahora almacena `'dark-theme'` / `'light-theme'` (en lugar de `'dark'`/`'light'`), alineado con anti-FOUC de `BaseLayout`.
+- `Navbar` usa `data-variant` attribute para que el script cliente decida si llama `initNavObserver()` — evita import condicional de módulos en Astro.
+- Scripts conectados desde componentes con `<script>` bundleable (no `is:inline`) — Astro deduplicará automáticamente si hay múltiples instancias.
+
+## Pendientes conocidos
+
+- `src/icons/svgs/` solo tiene `zustand.svg`. Faltan SVG files para el resto de tecnologías. Se agregan en Fase 6.
+- `siteConfig.contactApi` en `src/data/site.ts` tiene TODO pendiente (API de contacto).
+- `animations.ts` no conectado — se evalúa en Fase 6 con componentes UI.
+
 ## Próximo paso
 
-Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 5 — Componentes shared).
+Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 6 — Componentes UI).

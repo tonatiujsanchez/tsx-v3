@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-Fase actual: Fase 5 completada — Componentes shared.
+Fase actual: Fase 6 completada — Componentes UI.
 
 ## Fases completadas
 
@@ -11,7 +11,7 @@ Fase actual: Fase 5 completada — Componentes shared.
 - [x] Fase 3 — Scripts del cliente
 - [x] Fase 4 — Layouts
 - [x] Fase 5 — Componentes shared
-- [ ] Fase 6 — Componentes UI
+- [x] Fase 6 — Componentes UI
 - [ ] Fase 7 — Componentes de home
 - [ ] Fase 8 — Secciones del home
 - [ ] Fase 9 — Componentes de detalle de proyecto
@@ -125,8 +125,31 @@ Fase actual: Fase 5 completada — Componentes shared.
 
 - `src/icons/svgs/` solo tiene `zustand.svg`. Faltan SVG files para el resto de tecnologías. Se agregan en Fase 6.
 - `siteConfig.contactApi` en `src/data/site.ts` tiene TODO pendiente (API de contacto).
-- `animations.ts` no conectado — se evalúa en Fase 6 con componentes UI.
+- `animations.ts` no conectado — pendiente Fase 7/8.
+
+### Fase 6
+
+**Creados:**
+- `src/components/ui/TechIcon.astro` — renderiza `<img src="/icons/{slug}.svg">` usando `getIcon(techKey)`. SVGs deben existir en `public/icons/` (pendiente).
+- `src/components/ui/TechBadge.astro` — props `name`, `techKey`, `colorVar?`. Usa `TechIcon` internamente.
+- `src/components/ui/SocialLink.astro` — props `href`, `label`, `icon`, `ariaLabel?`. `target="_blank" rel="noopener noreferrer"`.
+- `src/components/ui/ProjectFigure.astro` — props `src`, `alt`, `caption`. HTML semántico `<figure>/<figcaption>`, `loading="lazy"`.
+
+**Modificados:**
+- `src/icons/index.ts` — añadida función `getIcon(techKey: TechName): string`
+
+## Decisiones técnicas tomadas (Fase 6)
+
+- `TechIcon` usa `<img src="/icons/{slug}.svg">` apuntando a `public/icons/`. Los SVGs actuales en `src/icons/svgs/` deben moverse/copiarse a `public/icons/` en fases de secciones.
+- `TechIcon` creado por separación de responsabilidades: permite usar solo el ícono sin el badge completo.
+- `SocialLink` expone `label` como texto visible — el componente es accesible por defecto sin depender de `ariaLabel`.
+
+## Pendientes conocidos
+
+- SVGs de íconos tecnológicos deben existir en `public/icons/{slug}.svg` — actualmente solo existe `zustand.svg` en `src/icons/svgs/`. Se completan al implementar secciones.
+- `siteConfig.contactApi` tiene TODO pendiente.
+- `animations.ts` no conectado.
 
 ## Próximo paso
 
-Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 6 — Componentes UI).
+Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 7 — Componentes de home).

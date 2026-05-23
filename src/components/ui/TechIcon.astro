@@ -1,0 +1,22 @@
+---
+import type { TechName } from '@ptypes/index'
+import { getIcon } from '@icons/index'
+
+interface Props {
+  techKey: TechName
+  size?: number
+}
+
+const { techKey, size = 20 } = Astro.props
+const slug = getIcon(techKey)
+---
+
+<!-- TODO: SVGs deben existir en public/icons/{slug}.svg — se agregan en fases de secciones -->
+<img
+  class="tech-icon"
+  src={`/icons/${slug}.svg`}
+  alt={techKey}
+  width={size}
+  height={size}
+  loading="lazy"
+/>

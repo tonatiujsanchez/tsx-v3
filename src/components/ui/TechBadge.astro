@@ -1,0 +1,17 @@
+---
+import type { TechName } from '@ptypes/index'
+import TechIcon from './TechIcon.astro'
+
+interface Props {
+  name: string
+  techKey: TechName
+  colorVar?: string
+}
+
+const { name, techKey, colorVar } = Astro.props
+---
+
+<span class="tech-badge" style={colorVar ? `--tech-color: ${colorVar}` : undefined}>
+  <TechIcon techKey={techKey} size={18} />
+  <span class="tech-badge__name">{name}</span>
+</span>

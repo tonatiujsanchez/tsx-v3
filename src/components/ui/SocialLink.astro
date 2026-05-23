@@ -1,0 +1,21 @@
+---
+interface Props {
+  href: string
+  label: string
+  icon: string
+  ariaLabel?: string
+}
+
+const { href, label, icon, ariaLabel } = Astro.props
+---
+
+<a
+  class="social-link"
+  href={href}
+  aria-label={ariaLabel ?? label}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <i class={`bx ${icon} social-link__icon`} aria-hidden="true"></i>
+  <span class="social-link__label">{label}</span>
+</a>

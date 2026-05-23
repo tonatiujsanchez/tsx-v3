@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-Fase actual: Fase 8.1 completada — Corrección de pendientes del home.
+Fase actual: Fase 9 completada — Componentes de detalle de proyecto.
 
 ## Fases completadas
 
@@ -14,7 +14,7 @@ Fase actual: Fase 8.1 completada — Corrección de pendientes del home.
 - [x] Fase 6 — Componentes UI
 - [x] Fase 7 — Componentes de home
 - [x] Fase 8 — Secciones del home
-- [ ] Fase 9 — Componentes de detalle de proyecto
+- [x] Fase 9 — Componentes de detalle de proyecto
 - [ ] Fase 10 — Páginas
 - [ ] Fase 11 — Validación final
 
@@ -204,6 +204,26 @@ Fase actual: Fase 8.1 completada — Corrección de pendientes del home.
 - `src/components/sections/HeroSection.astro` — usa `siteConfig.role`, imagen real `/img/profile/ton.webp`
 - `src/components/sections/ProjectsSection.astro` — `year={project.data.year ?? new Date().getFullYear()}`, thumbnail md/sm derivados con `.replace()`
 
+### Fase 9
+
+**Creados:**
+- `src/components/project/ProjectLinks.astro` — props `github?`, `live?`. Renderiza solo links existentes. `target="_blank"` + `rel="noopener noreferrer"`. Sin contenedor si no hay links. Usa `--github-color` / `--black-primary-color`.
+- `src/components/project/ProjectContact.astro` — CTA de contacto. Props `title?`, `description?`, `href?`, `label?` con defaults. Enlaza a `/#contacto` por defecto. HTML semántico `<section>`.
+
+## Decisiones técnicas tomadas (Fase 9)
+
+- `ProjectLinks` no renderiza wrapper vacío — usa expresión `{(github || live) && ...}`.
+- CSS vars alineados con globals: `--github-color`, `--black-primary-color`, `--border-primary`, `--title-color`, `--text-color`.
+- `ProjectContact` no importa `siteConfig` — datos por props con defaults razonables.
+- `pnpm astro check`: 0 errores, 0 warnings (19 hints preexistentes).
+
+## Pendientes conocidos
+
+- SVGs tecnológicos en `public/icons/{slug}.svg` — pendiente.
+- `siteConfig.contactApi` vacío — pendiente.
+- `animations.ts` no conectado — pendiente.
+- `ProjectLinks` solo soporta `github`/`live`. DevManager tiene `githubFrontend`+`githubBackend` — Fase 10 maneja el fork en la página.
+
 ## Próximo paso
 
-Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 9 — Componentes de detalle de proyecto).
+Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 10 — Páginas).

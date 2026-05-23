@@ -1,0 +1,60 @@
+---
+interface Props {
+  title?: string
+  description?: string
+  href?: string
+  label?: string
+}
+
+const {
+  title = '¿Tienes un proyecto en mente?',
+  description = 'Estoy disponible para colaboraciones y proyectos freelance. Escríbeme y hablamos.',
+  href = '/#contacto',
+  label = 'Contáctame',
+} = Astro.props
+---
+
+<section class="project-contact">
+  <h2 class="project-contact__title">{title}</h2>
+  <p class="project-contact__description">{description}</p>
+  <a class="project-contact__cta" href={href}>
+    {label}
+  </a>
+</section>
+
+<style>
+  .project-contact {
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+
+  .project-contact__title {
+    color: var(--title-color);
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .project-contact__description {
+    color: var(--text-color);
+    max-width: 42ch;
+    margin-inline: auto;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .project-contact__cta {
+    display: inline-block;
+    padding: 0.75rem 1.75rem;
+    background-color: var(--black-primary-color);
+    color: #fff;
+    border-radius: 0.375rem;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: opacity 0.2s ease;
+  }
+
+  .project-contact__cta:hover {
+    opacity: 0.85;
+  }
+</style>

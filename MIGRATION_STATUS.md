@@ -2,13 +2,13 @@
 
 ## Estado actual
 
-Fase actual: Fase 2 completada — Tipos y datos.
+Fase actual: Fase 3 completada — Scripts del cliente.
 
 ## Fases completadas
 
 - [x] Fase 1 — Setup del proyecto
 - [x] Fase 2 — Tipos y datos
-- [ ] Fase 3 — Scripts del cliente
+- [x] Fase 3 — Scripts del cliente
 - [ ] Fase 4 — Layouts
 - [ ] Fase 5 — Componentes shared
 - [ ] Fase 6 — Componentes UI
@@ -59,10 +59,27 @@ Fase actual: Fase 2 completada — Tipos y datos.
 - Proyectos con repo privado (Legado de Tlapa, Contextos Guerrero) no tienen campo `github` en frontmatter.
 - DevManager tiene `githubFrontend` + `githubBackend` separados.
 
+### Fase 3
+
+**Creados:**
+- `src/scripts/theme.ts` — toggle dark/light, persistencia en localStorage, clase `dark-theme` sobre `<html>`
+- `src/scripts/navbar.ts` — scroll spy con `section[id]`, activa clases BEM `nav__link--active` / `nav__item--active`
+- `src/scripts/animations.ts` — IntersectionObserver para elementos `[data-animate]`, añade `is-visible`
+
+## Decisiones técnicas tomadas (Fase 3)
+
+- Tema aplica clase `dark-theme` sobre `document.documentElement` (html), confirmando decisión de Fase 2.
+- Toggle button usa selector `[data-theme-toggle]` (data attribute, compatible con cualquier elemento HTML).
+- Navbar usa BEM classes heredadas del legacy para compatibilidad con futuros componentes.
+- `animations.ts` usa `[data-animate]` attribute en lugar de clases, desacopla animación de presentación.
+- Scroll listener en navbar usa `{ passive: true }` para performance.
+- Scripts exportan funciones `init*` — se invocan desde layouts/componentes Astro en Fases 4+.
+
 ## Pendientes conocidos
 
 - `src/icons/svgs/` solo tiene `zustand.svg`. Faltan SVG files para el resto de tecnologías. Se agregan en Fase 5/6 al implementar el componente de íconos.
 - `siteConfig.contactApi` en `src/data/site.ts` tiene TODO pendiente (API de contacto).
+- Los `init*` scripts no están conectados a ningún layout/componente aún — se conectan en Fase 4 (layouts).
 
 ## Riesgos
 
@@ -72,4 +89,4 @@ Fase actual: Fase 2 completada — Tipos y datos.
 
 ## Próximo paso
 
-Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 3 — Scripts del cliente).
+Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 4 — Layouts).

@@ -2,17 +2,19 @@
 
 ## Tarea actual
 
-Fase 3 — Scripts del cliente.
+Fase 4 — Layouts.
 
 ## Contexto
 
-Fase 2 completada. La capa de tipos, datos, íconos y Content Collections está lista y sin errores de TypeScript.
+Fase 3 completada. Scripts de cliente listos en `src/scripts/` (`theme.ts`, `navbar.ts`, `animations.ts`). Exportan funciones `initTheme`, `initNavbar`, `initAnimations`.
 
 ## Objetivo
 
-Implementar los scripts de cliente en `src/scripts/` como módulos TypeScript puros. Estos scripts manejan interactividad del lado del cliente: tema (dark/light), navbar activo por scroll, animaciones de entrada.
+Implementar los layouts base en `src/layouts/`. Como mínimo:
 
-No implementar componentes, layouts ni páginas en esta fase.
+- `BaseLayout.astro` — layout raíz con `<html>`, `<head>` (meta, SEO, fonts), `<body>`, slot principal. Debe conectar `initTheme()` e `initAnimations()` vía `<script>`.
+
+No implementar componentes, secciones ni páginas.
 
 ## Archivos permitidos para lectura
 
@@ -24,43 +26,42 @@ No implementar componentes, layouts ni páginas en esta fase.
 
 ### Proyecto destino
 
-- `src/scripts/` (directorio completo)
+- `src/layouts/` (directorio completo)
+- `src/data/site.ts`
+- `src/scripts/theme.ts`
+- `src/scripts/animations.ts`
 - `tsconfig.json`
 - `package.json`
 
 ### Proyecto legacy
 
-Solo si hace falta para extraer lógica existente:
+Solo si hace falta para extraer estructura HTML del `<head>`:
 
-- `../tsx-v2-vanilla/assets/js/theme.js`
-- `../tsx-v2-vanilla/assets/js/navbar.js`
-- `../tsx-v2-vanilla/assets/js/home.js`
-- `../tsx-v2-vanilla/assets/js/main.js`
+- `../tsx-v2-vanilla/index.html` — leer parcial con offset/limit, solo el `<head>`
 
 No leer archivos legacy completos si basta con `rg`.
 
 ## Comandos baratos permitidos
 
 ```bash
-find src/scripts -type f 2>/dev/null | sort
-rg "theme|dark|light|scroll|navbar|active|animation|intersection" ../tsx-v2-vanilla/assets/js/ -n
+find src/layouts -type f 2>/dev/null | sort
+rg "charset|viewport|og:|font|favicon|lang" ../tsx-v2-vanilla/index.html -n
 ```
 
-## Scripts esperados en `src/scripts/`
+## Layouts esperados en `src/layouts/`
 
-- `theme.ts` — toggle dark/light, persistencia en localStorage
-- `navbar.ts` — scroll spy (sección activa), comportamiento al hacer scroll
-- `animations.ts` — Intersection Observer para animaciones de entrada (si aplica)
+- `BaseLayout.astro` — HTML base, head con SEO, fonts, favicon. Conecta `initTheme` + `initAnimations`. Slot `<slot />`.
 
 ## Reglas
 
 - Cero `any`.
 - No importar frameworks.
-- No tocar archivos fuera de `src/scripts/`.
-- No avanzar a Fase 4.
+- No implementar componentes, secciones ni páginas.
+- No tocar archivos fuera de `src/layouts/`.
+- No avanzar a Fase 5.
 
 ## Al terminar
 
 - Actualizar `MIGRATION_STATUS.md`.
-- Actualizar `MIGRATION_TASK.md` con Fase 4 preparada.
+- Actualizar `MIGRATION_TASK.md` con Fase 5 preparada.
 - Resumen breve de cambios.

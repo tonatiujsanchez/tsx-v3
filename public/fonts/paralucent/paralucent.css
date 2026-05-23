@@ -1,0 +1,6 @@
+@font-face {
+    font-family: "ParalucentStencil";
+    font-style: bolder;
+    font-weight: 900;
+    src: url('./ParalucentStencilHeavy.otf') format('truetype');
+}

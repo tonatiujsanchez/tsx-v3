@@ -6,14 +6,32 @@ import '@styles/animations.css'
 interface Props {
   title?: string
   description?: string
+  canonical?: string
   ogImage?: string
+  ogType?: 'website' | 'article' | 'profile'
+  noindex?: boolean
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[]
 }
 
 const {
   title = siteConfig.title,
   description = siteConfig.description,
-  ogImage = '/og-image.png',
+  canonical,
+  ogImage = siteConfig.defaultOgImage,
+  ogType = 'website',
+  noindex = false,
+  jsonLd,
 } = Astro.props
+
+const canonicalURL = canonical ?? (Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).toString()
+  : null)
+
+const ogImageURL = ogImage?.startsWith('http')
+  ? ogImage
+  : Astro.site
+    ? new URL(ogImage, Astro.site).toString()
+    : ogImage
 ---
 
 <!doctype html>
@@ -23,12 +41,23 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="author" content={siteConfig.author} />
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+    {canonicalURL && <link rel="canonical" href={canonicalURL} />}
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:type" content={ogType} />
+    {canonicalURL && <meta property="og:url" content={canonicalURL} />}
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:site_name" content={siteConfig.siteName} />
+    <meta property="og:locale" content={siteConfig.locale} />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
 
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico" />
@@ -46,6 +75,10 @@ const {
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
     />
+
+    {jsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
 
     <title>{title}</title>
 

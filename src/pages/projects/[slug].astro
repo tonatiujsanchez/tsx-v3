@@ -5,6 +5,7 @@ import ProjectLayout from '@layouts/ProjectLayout.astro'
 import TechIcon from '@components/ui/TechIcon.astro'
 import ProjectFigure from '@components/ui/ProjectFigure.astro'
 import ProjectContact from '@components/project/ProjectContact.astro'
+import { siteConfig } from '@data/site'
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects')
@@ -22,12 +23,31 @@ const { project } = Astro.props
 const { title, description, cover, coverCaption, tech, demo, github, githubFrontend, githubBackend, gallery } =
   project.data
 const { Content } = await render(project)
+
+const canonical = `${siteConfig.url}/projects/${project.id}`
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: title,
+  description,
+  url: canonical,
+  image: `${siteConfig.url}${cover}`,
+  author: {
+    '@type': 'Person',
+    name: siteConfig.author,
+    url: siteConfig.url,
+  },
+}
 ---
 
 <ProjectLayout
   title={`${title} | Tonatiuj Sánchez`}
   description={description}
+  canonical={canonical}
   ogImage={cover}
+  ogType="article"
+  jsonLd={jsonLd}
 >
   <main class="container">
 

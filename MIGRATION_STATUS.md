@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-Fase actual: Fase 10.1 completada — Reparación de paridad visual del home.
+Fase actual: Fase 11.1 completada — Optimización SEO para Lighthouse 100.
 
 ## Fases completadas
 
@@ -17,7 +17,8 @@ Fase actual: Fase 10.1 completada — Reparación de paridad visual del home.
 - [x] Fase 9 — Componentes de detalle de proyecto
 - [x] Fase 10 — Páginas
 - [x] Fase 10.1 — Reparación de paridad visual del home
-- [ ] Fase 11 — Validación final
+- [x] Fase 11.1 — Optimización SEO para Lighthouse 100
+- [ ] Fase 12 — Lighthouse audit completo (performance, accesibilidad)
 
 ## Archivos creados o modificados
 
@@ -288,6 +289,43 @@ Fase actual: Fase 10.1 completada — Reparación de paridad visual del home.
 - `animations.ts` no conectado — no causa contenido invisible (no hay CSS que oculte `[data-animate]`).
 - DevManager `githubBackend` no enlazado — pendiente Fase 11.
 
+### Fase 11.1
+
+**Creados:**
+- `src/pages/robots.txt.ts` — endpoint `/robots.txt` con `User-agent: *`, `Allow: /`, `Sitemap: https://tonatiujsanchez.dev/sitemap.xml`
+- `src/pages/sitemap.xml.ts` — endpoint `/sitemap.xml` con home + todas las rutas de proyectos dinámicas desde Content Collections
+
+**Modificados:**
+- `astro.config.mjs` — añadido `site: 'https://tonatiujsanchez.dev'`
+- `src/data/site.ts` — añadidos: `url`, `siteName`, `locale`, `defaultOgImage`, `twitterHandle`, `keywords`
+- `src/types/index.ts` — añadidos a `SiteConfig`: `url`, `siteName`, `locale`, `defaultOgImage`, `twitterHandle`, `keywords`
+- `src/layouts/BaseLayout.astro` — reescrito con props SEO completas (`canonical`, `ogType`, `noindex`, `jsonLd`), OG completo (`og:url`, `og:site_name`, `og:locale`), Twitter Cards completo, `<meta name="robots">`, `<link rel="canonical">`, JSON-LD support
+- `src/layouts/MainLayout.astro` — props SEO propagadas a BaseLayout
+- `src/layouts/ProjectLayout.astro` — props SEO propagadas a BaseLayout
+- `src/pages/index.astro` — añadido JSON-LD con `Person` + `WebSite`
+- `src/pages/projects/[slug].astro` — añadido canonical único, `ogType="article"`, JSON-LD `SoftwareApplication` por proyecto, import `siteConfig`
+
+## Decisiones técnicas tomadas (Fase 11.1)
+
+- `defaultOgImage` apunta a `/img/profile/tsj.webp` — imagen real existente. TODO: crear og-image dedicada.
+- `canonicalURL` se computa de `Astro.site + Astro.url.pathname` si no se pasa canonical explícito. Requiere `site` en `astro.config.mjs`.
+- `ogImageURL` se convierte a URL absoluta usando `Astro.site` para OG/Twitter.
+- JSON-LD del home: array `[Person, WebSite]`. JSON-LD de proyectos: `SoftwareApplication` individual.
+- Sin dependencias adicionales — robots/sitemap son endpoints Astro nativos.
+- `pnpm astro check`: 0 errores. `pnpm build`: 6 páginas + robots.txt + sitemap.xml generados.
+
+## Pendientes conocidos
+
+- Lighthouse SEO: no ejecutado en este entorno — requiere `pnpm preview` + Chrome headless.
+- `og-image.png` no existe — `defaultOgImage` usa `/img/profile/tsj.webp` como fallback.
+- `siteConfig.contactApi` vacío — form no puede enviar.
+- `animations.ts` no conectado.
+
 ## Próximo paso
 
-Ejecutar la tarea definida en `MIGRATION_TASK.md` (Fase 11 — Validación final).
+Ejecutar Lighthouse SEO manualmente:
+```
+pnpm preview
+npx lighthouse http://localhost:4321 --only-categories=seo --chrome-flags="--headless"
+npx lighthouse http://localhost:4321/projects/admin-sites --only-categories=seo --chrome-flags="--headless"
+```

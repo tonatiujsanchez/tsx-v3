@@ -41,4 +41,10 @@ export interface SiteConfig {
     email: string;
     cvPath: string;
     contactApi: string;
+    url: string;
+    siteName: string;
+    locale: string;
+    defaultOgImage: string;
+    twitterHandle: string;
+    keywords: string;
 }

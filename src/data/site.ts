@@ -8,6 +8,12 @@ export const siteConfig: SiteConfig = {
     email: 'tonatiujsanchez@gmail.com',
     cvPath: '/docs/Tonatiuj_Sánchez_Jiménez_CV.pdf',
     contactApi: '', // TODO: Add contact API endpoint
+    url: 'https://tonatiujsanchez.dev',
+    siteName: 'Tonatiuj Sánchez Portfolio',
+    locale: 'es_MX',
+    defaultOgImage: '/img/profile/tsj.webp',
+    twitterHandle: '@tonatiujsanchez',
+    keywords: 'desarrollador fullstack, Next.js, Node.js, TypeScript, React, MongoDB, PostgreSQL, JavaScript',
 };
 
 export const socialLinks: SocialLink[] = [

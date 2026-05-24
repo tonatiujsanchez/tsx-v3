@@ -7,10 +7,10 @@ const projects = (await getCollection('projects')).sort(
 )
 ---
 
-<section class="projects" id="proyectos">
-  <div class="projects__container">
-    <h2 class="projects__title">Proyectos</h2>
-    <div class="projects__list">
+<section class="projects-section section" id="proyectos">
+  <div class="container">
+    <h2 class="section__title">Proyectos</h2>
+    <div class="projects">
       {projects.map((project) => (
         <ProjectCard
           title={project.data.title}
@@ -28,4 +28,17 @@ const projects = (await getCollection('projects')).sort(
   </div>
 </section>
 
-<!-- TODO: agregar `year` a cada .md cuando se confirme el dato real -->
+<style>
+  .projects {
+    display: flex;
+    flex-direction: column;
+    gap: 8rem;
+    margin-block-start: 4.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .projects {
+      gap: 5rem;
+    }
+  }
+</style>

@@ -3,13 +3,29 @@ import { skills } from '@data/skills'
 import TechBadge from '@components/ui/TechBadge.astro'
 ---
 
-<section class="skills" id="habilidades">
-  <div class="skills__container">
-    <h2 class="skills__title">Habilidades</h2>
-    <div class="skills__list">
+<section class="skills-section section" id="habilidades">
+  <div class="container">
+    <h2 class="section__title">Habilidades</h2>
+    <div class="skills">
       {skills.map((skill) => (
         <TechBadge name={skill.name} techKey={skill.name} />
       ))}
     </div>
   </div>
 </section>
+
+<style>
+  .skills {
+    padding-block-start: 3rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .skills {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+  }
+</style>

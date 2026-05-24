@@ -1,47 +1,169 @@
 ---
 import { siteConfig, socialLinks } from '@data/site'
-import SocialLink from '@components/ui/SocialLink.astro'
 ---
 
 <section class="hero" id="hola">
-  <div class="hero__container">
-    <div class="hero__data">
-      <span class="hero__greeting">Hola, soy</span>
-      <h1 class="hero__name">{siteConfig.author}</h1>
-      <h2 class="hero__role">{siteConfig.role}</h2>
-      <p class="hero__description">{siteConfig.description}</p>
-
-      <div class="hero__actions">
-        <a
-          href={siteConfig.cvPath}
-          class="hero__cv-btn"
-          download
-          aria-label="Descargar CV"
-        >
-          Descargar CV <i class="bx bx-download" aria-hidden="true"></i>
-        </a>
-      </div>
-
-      <div class="hero__social">
-        {socialLinks.map((link) => (
-          <SocialLink
-            href={link.href}
-            label={link.label}
-            icon={link.icon}
-          />
-        ))}
+  <div class="hero__container container">
+    <div class="hero__content">
+      <figure class="hero__figure">
+        <img
+          class="hero__img"
+          src="/img/profile/ton.webp"
+          alt={`Tonatiuj Sánchez`}
+          width="90"
+          height="90"
+        />
+      </figure>
+      <div class="hero__body">
+        <p class="hero__name">{siteConfig.author}</p>
+        <h1 class="hero__title">{siteConfig.role}</h1>
+        <ul class="hero__social-list">
+          {socialLinks.map((link) => (
+            <li class="hero__social-item">
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={link.label}
+              >
+                <i class={`bx ${link.icon}`} aria-hidden="true"></i>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
 
-    <div class="hero__figure">
-      <img
-        class="hero__img"
-        src="/img/profile/ton.webp"
-        alt={`Foto de perfil de ${siteConfig.author}`}
-        width="280"
-        height="280"
-        loading="eager"
-      />
+    <p class="hero__about">{siteConfig.description}</p>
+
+    <div class="hero__actions">
+      <a
+        class="hero__actions-link"
+        href={siteConfig.cvPath}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Descargar CV"
+      >
+        <i class="bx bx-download hero__download-cv" aria-hidden="true"></i>
+        Descargar CV
+      </a>
+      <a class="hero__actions-link" href="#contacto" aria-label="Ir a contacto">
+        <i class="bx bx-mail-send" aria-hidden="true"></i>
+        Contacto
+        <i class="bx bx-right-arrow-alt link-external-icon" aria-hidden="true"></i>
+      </a>
     </div>
   </div>
 </section>
+
+<style>
+  .hero {
+    padding-block: 4rem;
+  }
+
+  .hero__container {
+    /* container class handles max-width and padding */
+  }
+
+  .hero__content {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+    column-gap: 2rem;
+    padding-block-end: 2rem;
+  }
+
+  .hero__figure {
+    width: 10rem;
+    height: 10rem;
+    background: var(--content-color);
+    border-radius: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .hero__img {
+    height: 10rem;
+    object-fit: cover;
+    object-position: center;
+    transform: rotate(8deg);
+  }
+
+  .hero__name {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--title-color);
+  }
+
+  .hero__title {
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--text-color);
+    line-height: 1;
+  }
+
+  .hero__social-list {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin-inline: 0;
+  }
+
+  .hero__social-item {
+    font-size: 2rem;
+    transition: transform 0.3s;
+  }
+
+  .hero__social-item:hover {
+    transform: scale(1.2);
+  }
+
+  .hero__about {
+    text-wrap: pretty;
+    color: var(--text-color);
+  }
+
+  .hero__actions {
+    margin-block: 3rem;
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .hero__actions-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-color);
+  }
+
+  .hero__actions-link:hover {
+    color: var(--title-color);
+  }
+
+  .hero__actions-link:hover .link-external-icon {
+    animation: float-up 2s ease-in-out infinite;
+  }
+
+  .hero__download-cv {
+    font-size: 1.8rem;
+  }
+
+  .hero__actions-link:hover .hero__download-cv {
+    animation: float-down 2s ease-in-out infinite;
+  }
+
+  @media (min-width: 768px) {
+    .hero {
+      padding-block-start: 8rem;
+      padding-block-end: 4rem;
+    }
+
+    .hero__content {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+</style>

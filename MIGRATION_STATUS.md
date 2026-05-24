@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-Fase actual: Fase 10 completada — Páginas.
+Fase actual: Fase 10.1 completada — Reparación de paridad visual del home.
 
 ## Fases completadas
 
@@ -16,6 +16,7 @@ Fase actual: Fase 10 completada — Páginas.
 - [x] Fase 8 — Secciones del home
 - [x] Fase 9 — Componentes de detalle de proyecto
 - [x] Fase 10 — Páginas
+- [x] Fase 10.1 — Reparación de paridad visual del home
 - [ ] Fase 11 — Validación final
 
 ## Archivos creados o modificados
@@ -254,6 +255,38 @@ Fase actual: Fase 10 completada — Páginas.
 - `/projects/devmanager`
 - `/projects/legado-de-tlapa`
 - `/projects/share-groups`
+
+### Fase 10.1
+
+**Modificados (CSS + estructura):**
+- `src/components/shared/Navbar.astro` — añadido `<header>` wrapper con logo `{TSX}`, sticky desktop, fixed-bottom mobile, CSS completo.
+- `src/components/sections/HeroSection.astro` — estructura alineada con legacy (figure + body flex row), CSS completo. Social links usan `<a>` directos (icono only).
+- `src/components/sections/ExperienceSection.astro` — usa clases `.section` + `.container` de globals, CSS para `.jobs`.
+- `src/components/home/JobCard.astro` — estructura corregida (period como columna derecha separada), CSS completo alineado con legacy.
+- `src/components/sections/ProjectsSection.astro` — usa `.section` + `.container`, CSS para `.projects` grid.
+- `src/components/home/ProjectCard.astro` — estructura alineada con legacy (figure + description, flex row desktop), CSS completo.
+- `src/components/sections/SkillsSection.astro` — usa `.section` + `.container`, CSS para grid de skills (2col mobile, 3col desktop).
+- `src/components/ui/TechBadge.astro` — usa clases `.skill` / `.skill__icon` alineadas con legacy, CSS completo.
+- `src/components/ui/TechIcon.astro` — añadido `onerror="this.style.display='none'"` para evitar broken images.
+- `src/components/sections/ContactSection.astro` — usa `.section` + `.container`, CSS para `.contact` y social cards via `:global()`.
+- `src/components/home/ContactForm.astro` — estructura y CSS alineados con legacy (floating label, submit button, toast).
+- `src/components/ui/SocialLink.astro` — reescrito con `.social-link__name` + `.social-link__arrow` para uso en contact cards.
+- `src/components/shared/Footer.astro` — usa `.container` para centrado.
+
+## Decisiones técnicas tomadas (Fase 10.1)
+
+- `Navbar` usa `:global(.nav__link--active)` para que el JS de `navbar.ts` pueda aplicar la clase activa con scoping correcto.
+- `ExperienceSection/ProjectsSection/SkillsSection/ContactSection` usan `.section` y `.container` de globals.css en lugar de `__container` propios — más limpio y consistente.
+- `ContactForm` alineado con estructura legacy (floating labels, toast global).
+- `TechIcon` no muestra broken images gracias a `onerror` — la tech badge muestra solo nombre si falta el SVG.
+- `SocialLink` en hero usa `<a>` directo sin el componente (icono solo). En contacto usa `SocialLink` con `:global()` overrides.
+
+## Pendientes conocidos
+
+- SVGs de íconos tecnológicos en `public/icons/{slug}.svg` — solo existen 3 webps (emotion, mongoose, styled-components). TechIcon oculta la imagen rota pero no muestra nada. La tech badge muestra nombre solo.
+- `siteConfig.contactApi` vacío — form no puede enviar.
+- `animations.ts` no conectado — no causa contenido invisible (no hay CSS que oculte `[data-animate]`).
+- DevManager `githubBackend` no enlazado — pendiente Fase 11.
 
 ## Próximo paso
 

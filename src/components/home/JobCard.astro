@@ -8,22 +8,74 @@ interface Props {
 const { job } = Astro.props
 ---
 
-<article class="job-card">
-  <div class="job-card__header">
-    {job.logo && (
-      <img
-        class="job-card__logo"
-        src={job.logo}
-        alt={`Logo de ${job.company}`}
-        width="48"
-        height="48"
-        loading="lazy"
-      />
-    )}
-    <div class="job-card__meta">
-      <h3 class="job-card__title">{job.title}</h3>
-      <p class="job-card__company">{job.company}</p>
-      <time class="job-card__period">{job.period}</time>
+<article class="job">
+  <header class="job__header">
+    <div class="job__header-company">
+      {job.logo && (
+        <figure class="job__header-figure">
+          <img
+            src={job.logo}
+            alt={`Logo de ${job.company}`}
+            width="60"
+            height="60"
+            loading="lazy"
+          />
+        </figure>
+      )}
+      <div>
+        <h3 class="job__header-title">{job.title}</h3>
+        <p class="job__header-subtitle">{job.company}</p>
+      </div>
     </div>
-  </div>
+    <p class="job__header-period">{job.period}</p>
+  </header>
 </article>
+
+<style>
+  .job__header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .job__header-company {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .job__header-figure {
+    width: 6rem;
+    height: 6rem;
+    min-width: 6rem;
+    min-height: 6rem;
+    border-radius: 100%;
+    overflow: hidden;
+    border: var(--border-primary);
+    flex-shrink: 0;
+  }
+
+  .job__header-figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .job__header-title {
+    font-weight: 500;
+    font-size: 1.6rem;
+    color: var(--title-color);
+  }
+
+  .job__header-subtitle {
+    font-size: 1.6rem;
+    color: var(--text-color);
+    text-wrap: pretty;
+  }
+
+  .job__header-period {
+    min-width: 9rem;
+    color: var(--text-color);
+    text-align: right;
+    flex-shrink: 0;
+  }
+</style>

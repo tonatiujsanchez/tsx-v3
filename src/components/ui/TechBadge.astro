@@ -11,7 +11,39 @@ interface Props {
 const { name, techKey, colorVar } = Astro.props
 ---
 
-<span class="tech-badge" style={colorVar ? `--tech-color: ${colorVar}` : undefined}>
-  <TechIcon techKey={techKey} size={18} />
-  <span class="tech-badge__name">{name}</span>
-</span>
+<div class="skill" style={colorVar ? `--tech-color: ${colorVar}` : undefined}>
+  <span class="skill__icon">
+    <TechIcon techKey={techKey} size={30} />
+  </span>
+  <span class="skill__name">{name}</span>
+</div>
+
+<style>
+  .skill {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 1.2rem;
+    padding-inline: 1rem;
+    border: var(--border-primary);
+    border-radius: 0.5rem;
+  }
+
+  .skill__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .skill__name {
+    font-size: 1.4rem;
+    color: var(--title-color);
+  }
+
+  @media (min-width: 768px) {
+    .skill {
+      padding-inline: 1.4rem;
+    }
+  }
+</style>

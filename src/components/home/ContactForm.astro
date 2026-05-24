@@ -2,92 +2,225 @@
 import { siteConfig } from '@data/site'
 ---
 
-<form class="contact-form" id="contact-form" novalidate>
-  <div class="contact-form__field">
-    <label for="contact-name" class="contact-form__label">Nombre</label>
-    <input
-      id="contact-name"
-      name="name"
-      type="text"
-      class="contact-form__input"
-      placeholder="Tu nombre"
-      required
-    />
-  </div>
+<div class="contact__form-wrapper">
+  <p class="contact__form-title">Envíame un mensaje</p>
+  <form class="contact__form" id="contact-form" novalidate>
+    <div class="contact__form-field">
+      <input
+        id="contact-name"
+        name="name"
+        type="text"
+        class="contact__form-input"
+        placeholder="Nombre"
+        required
+      />
+      <label for="contact-name" class="contact__form-label">Nombre</label>
+    </div>
 
-  <div class="contact-form__field">
-    <label for="contact-email" class="contact-form__label">Email</label>
-    <input
-      id="contact-email"
-      name="email"
-      type="email"
-      class="contact-form__input"
-      placeholder="tu@email.com"
-      required
-    />
-  </div>
+    <div class="contact__form-field">
+      <input
+        id="contact-email"
+        name="email"
+        type="email"
+        class="contact__form-input"
+        placeholder="Email"
+        required
+      />
+      <label for="contact-email" class="contact__form-label">Email</label>
+    </div>
 
-  <div class="contact-form__field">
-    <label for="contact-message" class="contact-form__label">Mensaje</label>
-    <textarea
-      id="contact-message"
-      name="message"
-      class="contact-form__textarea"
-      rows={5}
-      placeholder="Tu mensaje"
-      required
-    ></textarea>
-  </div>
+    <div class="contact__form-field">
+      <textarea
+        id="contact-message"
+        name="message"
+        class="contact__form-input contact__form-input--message"
+        placeholder="Mensaje"
+        rows={5}
+        required
+      ></textarea>
+      <label for="contact-message" class="contact__form-label">Mensaje</label>
+    </div>
 
-  <div class="contact-form__loader" id="contact-loader" aria-hidden="true"></div>
+    <div class="contact__form-submit-content">
+      <button type="submit" class="contact__form-submit" id="contact-submit">
+        <span id="contact-submit-text">Enviar</span>
+        <div class="loader" id="contact-loader" aria-hidden="true"></div>
+      </button>
+    </div>
+  </form>
+</div>
 
-  <p class="contact-form__toast contact-form__toast--success" id="contact-toast-success" aria-live="polite" hidden>
-    Mensaje enviado correctamente.
-  </p>
-  <p class="contact-form__toast contact-form__toast--error" id="contact-toast-error" aria-live="polite" hidden>
-    Error al enviar el mensaje. Inténtalo de nuevo.
-  </p>
-
-  <button type="submit" class="contact-form__submit">Enviar mensaje</button>
-</form>
+<div class="toast" id="contact-toast">
+  <i class="toast__icon bx" id="contact-toast-icon"></i>
+  <span class="toast__msg" id="contact-toast-msg"></span>
+</div>
 
 <script is:inline define:vars={{ contactApi: siteConfig.contactApi }}>
   const form = document.getElementById('contact-form')
+  const submitBtn = document.getElementById('contact-submit')
+  const submitText = document.getElementById('contact-submit-text')
   const loader = document.getElementById('contact-loader')
-  const toastSuccess = document.getElementById('contact-toast-success')
-  const toastError = document.getElementById('contact-toast-error')
+  const toast = document.getElementById('contact-toast')
+  const toastIcon = document.getElementById('contact-toast-icon')
+  const toastMsg = document.getElementById('contact-toast-msg')
 
-  if (!form || !loader || !toastSuccess || !toastError) return
+  if (!form || !submitBtn || !loader || !toast || !toastIcon || !toastMsg) return
+
+  function showToast(success) {
+    toastIcon.className = success
+      ? 'toast__icon bx bxs-check-circle toast__icon--success'
+      : 'toast__icon bx bxs-x-circle toast__icon--error'
+    toastMsg.textContent = success
+      ? 'Mensaje enviado correctamente.'
+      : 'Error al enviar el mensaje. Inténtalo de nuevo.'
+    toast.classList.add('toast__show')
+    setTimeout(() => toast.classList.remove('toast__show'), 4000)
+  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault()
-
     const data = new FormData(form)
     const name = data.get('name')
     const email = data.get('email')
     const message = data.get('message')
-
     if (!name || !email || !message) return
 
+    submitBtn.disabled = true
+    submitText.textContent = ''
     loader.removeAttribute('aria-hidden')
-    toastSuccess.hidden = true
-    toastError.hidden = true
 
     try {
+      if (!contactApi) throw new Error('No API configured')
       const res = await fetch(contactApi, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, message }),
       })
-
       if (!res.ok) throw new Error('Response not ok')
-
-      toastSuccess.hidden = false
+      showToast(true)
       form.reset()
     } catch {
-      toastError.hidden = false
+      showToast(false)
     } finally {
+      submitBtn.disabled = false
+      submitText.textContent = 'Enviar'
       loader.setAttribute('aria-hidden', 'true')
     }
   })
 </script>
+
+<style>
+  .contact__form-title {
+    margin-block-end: 1.5rem;
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: 1.6rem;
+  }
+
+  .contact__form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .contact__form-field {
+    position: relative;
+  }
+
+  .contact__form-input {
+    width: 100%;
+    padding-block: 1.6rem;
+    padding-inline: 2rem;
+    border: var(--border-primary);
+    border-radius: 0.5rem;
+    background: none;
+    color: var(--title-color);
+    font-size: 1.6rem;
+    font-family: var(--font-primary);
+    transition: border 0.3s;
+    resize: none;
+  }
+
+  .contact__form-input:hover {
+    border: 0.1rem solid var(--text-color);
+  }
+
+  .contact__form-input:focus {
+    border: 0.1rem solid var(--text-color);
+    outline: none;
+  }
+
+  .contact__form-input::placeholder {
+    opacity: 0;
+  }
+
+  .contact__form-label {
+    position: absolute;
+    inset-block-start: 1.3rem;
+    inset-inline-start: 1.5rem;
+    transition: all 0.4s;
+    padding-inline: 1rem;
+    font-size: 1.6rem;
+    pointer-events: none;
+    z-index: -1;
+    color: var(--text-color);
+  }
+
+  .contact__form-input:focus + .contact__form-label,
+  .contact__form-input:not(:placeholder-shown) + .contact__form-label {
+    inset-block-start: -0.9rem;
+    font-size: 1.2rem;
+    color: var(--title-color);
+    background-color: var(--body-color);
+    z-index: 1;
+  }
+
+  .contact__form-input--message {
+    height: 20rem;
+  }
+
+  .contact__form-submit-content {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .contact__form-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 14rem;
+    min-height: 4.6rem;
+    gap: 1rem;
+    padding-block: 0.4rem;
+    padding-inline: 2rem;
+    background-color: var(--title-color);
+    border-radius: 0.5rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--content-color);
+    border: 0.1rem solid transparent;
+    cursor: pointer;
+    transition: color 0.3s, background-color 0.3s, border 0.3s;
+  }
+
+  .contact__form-submit:hover {
+    border: var(--border-primary);
+  }
+
+  .contact__form-submit:disabled {
+    opacity: 0.7;
+    cursor: default;
+  }
+
+  .contact__form-submit:disabled:hover {
+    border: 0.1rem solid transparent;
+  }
+
+  .loader {
+    display: none;
+  }
+
+  .loader:not([aria-hidden="true"]) {
+    display: block;
+  }
+</style>

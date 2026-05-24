@@ -14,20 +14,99 @@ interface Props {
 const { title, slug, year, summary, thumbnail } = Astro.props
 ---
 
-<article class="project-card">
-  <a href={`/projects/${slug}`} class="project-card__link">
-    <figure class="project-card__figure">
-      <img
-        class="project-card__img"
-        src={thumbnail.full}
-        alt={title}
-        loading="lazy"
-      />
-    </figure>
-    <div class="project-card__body">
-      <span class="project-card__year">{year}</span>
-      <h3 class="project-card__title">{title}</h3>
-      <p class="project-card__summary">{summary}</p>
+<article class="project">
+  <figure class="project__figure">
+    <img
+      class="project__img"
+      src={thumbnail.md}
+      alt={title}
+      loading="lazy"
+    />
+  </figure>
+  <div class="project__description">
+    <div class="project__title-container">
+      <h3 class="project__title">
+        <a class="project__title-link" href={`/projects/${slug}`} aria-label={`Ver detalles de ${title}`}>
+          {title}
+          <i class="bx bx-right-arrow-alt link-external-icon" aria-hidden="true"></i>
+        </a>
+      </h3>
+      <span class="project__year">{year}</span>
     </div>
-  </a>
+    <p class="project__summary">{summary}</p>
+  </div>
 </article>
+
+<style>
+  .project {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .project__figure {
+    min-width: 25rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: var(--content-color);
+    padding-inline: 0.4rem;
+    border: var(--border-primary);
+  }
+
+  .project__img {
+    transition: transform 0.3s;
+    width: 100%;
+  }
+
+  .project__img:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+
+  .project__title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .project__title {
+    font-weight: 500;
+    font-size: 1.8rem;
+  }
+
+  .project__title-link {
+    color: var(--title-color);
+  }
+
+  .project__title-link:hover {
+    text-decoration: underline;
+  }
+
+  .project:hover .link-external-icon {
+    animation: float-up 2s ease-in-out infinite;
+    color: var(--title-color);
+  }
+
+  .project__year {
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--text-color);
+  }
+
+  .project__description {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .project__summary {
+    color: var(--text-color);
+    text-wrap: pretty;
+  }
+
+  @media (min-width: 768px) {
+    .project {
+      flex-direction: row;
+    }
+  }
+</style>

@@ -10,33 +10,180 @@ interface Props {
 const { variant = 'home', backHref = '/' } = Astro.props
 ---
 
-<nav class="nav" data-variant={variant}>
-  <div class="nav__container">
+<header class="header" data-variant={variant}>
+  <div class="navbar container">
+    <a class="navbar__logo" href={variant === 'home' ? '#hola' : '/'} aria-label="Inicio">{'{TSX}'}</a>
+
     {variant === 'home' ? (
-      <ul class="nav__list" role="list">
-        {navItems.map((item) => (
-          <li class="nav__item">
-            <a href={item.href} aria-label={item.ariaLabel} class="nav__link">
-              <i class={`bx ${item.icon} nav__icon`} aria-hidden="true"></i>
-              <span class="nav__label">{item.label}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
+      <nav class="nav">
+        <ul class="nav__list" role="list">
+          {navItems.map((item) => (
+            <li class="nav__item">
+              <a href={item.href} aria-label={item.ariaLabel} class="nav__link">
+                <i class={`bx ${item.icon} nav__link-icon`} aria-hidden="true"></i>
+                <span class="nav__link-text">{item.label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
     ) : (
       <a href={backHref} class="nav__back" aria-label="Volver a proyectos">
-        <i class="bx bx-arrow-back nav__back-icon" aria-hidden="true"></i>
+        <i class="bx bx-arrow-back" aria-hidden="true"></i>
         <span>Proyectos</span>
       </a>
     )}
+
     <ThemeToggle />
   </div>
-</nav>
+</header>
 
 <script>
   import { initNavObserver } from '@scripts/navbar'
-  const nav = document.querySelector<HTMLElement>('.nav')
-  if (nav?.dataset.variant === 'home') {
+  const header = document.querySelector<HTMLElement>('.header')
+  if (header?.dataset.variant === 'home') {
     initNavObserver()
   }
 </script>
+
+<style>
+  .header {
+    position: relative;
+    z-index: 1;
+  }
+
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 1.5rem;
+  }
+
+  .navbar__logo {
+    font-weight: 900;
+    color: var(--title-color);
+    font-family: "ParalucentStencil", sans-serif;
+    font-size: 2.2rem;
+  }
+
+  /* Mobile: fixed bottom nav */
+  .nav {
+    position: fixed;
+    inset-block-end: 0;
+    inset-inline-end: 50%;
+    transform: translateX(50%);
+    background: var(--container-color);
+    width: 100%;
+    z-index: 10;
+    border-block-start: var(--border-primary);
+    box-shadow: var(--shadow-primary-top);
+  }
+
+  .nav__list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3.4rem;
+    padding-block: 2rem;
+    max-width: 32rem;
+    min-width: 32rem;
+    margin-inline: auto;
+    list-style: none;
+    padding-inline: 0;
+  }
+
+  .nav__item {
+    z-index: 10;
+  }
+
+  .nav__link {
+    font-weight: 300;
+    font-size: 2.2rem;
+    display: flex;
+    align-items: center;
+    color: var(--text-color-light);
+  }
+
+  .nav__link:hover {
+    color: var(--title-color);
+    text-decoration: underline;
+  }
+
+  :global(.nav__link--active) {
+    color: var(--body-color);
+    text-decoration: underline;
+  }
+
+  :global(.nav__link--active):hover {
+    color: var(--body-color);
+  }
+
+  .nav__link-text {
+    display: none;
+  }
+
+  .nav__back {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-color);
+    font-size: 1.6rem;
+  }
+
+  .nav__back:hover {
+    color: var(--title-color);
+  }
+
+  @media (min-width: 768px) {
+    .header {
+      position: sticky;
+      inset-block-start: 0;
+      border-block-end: 0.1rem solid var(--content-color);
+      background-color: var(--body-color);
+      transition: background-color 0.3s;
+      z-index: 10;
+    }
+
+    .navbar {
+      padding-block: 2rem;
+    }
+
+    .nav {
+      position: initial;
+      background: none;
+      width: auto;
+      border: none;
+      transform: translate(0);
+      box-shadow: none;
+    }
+
+    .nav__list {
+      padding-block: 0;
+      max-width: none;
+      min-width: auto;
+      margin-inline: 0;
+    }
+
+    .nav__link {
+      font-weight: 300;
+      font-size: 1.6rem;
+      color: var(--text-color);
+    }
+
+    :global(.nav__link--active) {
+      color: var(--title-color);
+    }
+
+    :global(.nav__link--active):hover {
+      color: var(--title-color);
+    }
+
+    .nav__link-text {
+      display: inline-flex;
+    }
+
+    .nav__link-icon {
+      display: none;
+    }
+  }
+</style>

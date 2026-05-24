@@ -3,13 +3,26 @@ import { jobs } from '@data/jobs'
 import JobCard from '@components/home/JobCard.astro'
 ---
 
-<section class="experience" id="experiencia">
-  <div class="experience__container">
-    <h2 class="experience__title">Experiencia</h2>
-    <div class="experience__list">
+<section class="experience section" id="experiencia">
+  <div class="container">
+    <h2 class="section__title">Experiencia</h2>
+    <p class="section__description">
+      He tenido la oportunidad de agregar valor a diferentes tipos empresas
+      utilizando una gran variedad de herramientas.
+    </p>
+    <div class="jobs">
       {jobs.map((job) => (
         <JobCard job={job} />
       ))}
     </div>
   </div>
 </section>
+
+<style>
+  .jobs {
+    margin-block-start: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+</style>

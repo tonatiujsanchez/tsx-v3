@@ -17,14 +17,16 @@ const slug = getIcon(techKey)
   alt={techKey}
   width={size}
   height={size}
+  style={`width: ${size / 10}rem; height: ${size / 10}rem;`}
   loading="lazy"
-  onerror="this.style.display='none'"
+  onerror="if(this.src.endsWith('.svg')){this.src=this.src.replace('.svg','.webp')}else{this.style.display='none'}"
 />
 
 <style>
   .tech-icon {
     display: block;
+    flex-shrink: 0;
+    object-fit: contain;
     border-radius: 0.2rem;
-    overflow: hidden;
   }
 </style>

@@ -3,9 +3,10 @@ interface Props {
   src: string
   alt: string
   caption?: string
+  transitionName?: string
 }
 
-const { src, alt, caption } = Astro.props
+const { src, alt, caption, transitionName } = Astro.props
 ---
 
 <figure class="project-figure">
@@ -15,6 +16,7 @@ const { src, alt, caption } = Astro.props
       src={src}
       alt={alt}
       loading="lazy"
+      transition:name={transitionName}
     />
   </div>
   {caption && <figcaption class="project-figure__caption">{caption}</figcaption>}

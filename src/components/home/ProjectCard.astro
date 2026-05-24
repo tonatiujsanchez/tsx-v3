@@ -21,6 +21,7 @@ const { title, slug, year, summary, thumbnail } = Astro.props
       src={thumbnail.md}
       alt={title}
       loading="lazy"
+      transition:name={`project-cover-${slug}`}
     />
   </figure>
   <div class="project__description">

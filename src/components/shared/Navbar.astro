@@ -14,7 +14,15 @@ const { variant = 'home', backHref = '/' } = Astro.props
   <div class="navbar container">
     {variant === 'home' ? (
       <>
-        <a class="navbar__logo" href="#hola" aria-label="Inicio">{'{TSX}'}</a>
+        <a class="navbar__logo" href="#hola" aria-label="Inicio">
+          <img
+            class="navbar__logo-img"
+            src="/favicon/logo-ts.svg"
+            alt="TSX"
+            width="30"
+            height="30"
+          />
+        </a>
         <nav class="nav">
           <ul class="nav__list" role="list">
             {navItems.map((item) => (
@@ -61,10 +69,13 @@ const { variant = 'home', backHref = '/' } = Astro.props
   }
 
   .navbar__logo {
-    font-weight: 900;
-    color: var(--title-color);
-    font-family: "ParalucentStencil", sans-serif;
-    font-size: 2.2rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar__logo-img {
+    height: 2.8rem;
+    width: auto;
   }
 
   /* Mobile: fixed bottom nav */

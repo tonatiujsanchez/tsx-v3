@@ -2,6 +2,12 @@ import type { Job } from '../types/index';
 
 export const jobs: Job[] = [
     {
+        title: 'AI Software Engineer / Team Lead',
+        company: 'IAMEX - Inteligencia Artificial México',
+        period: '2025 - Actualmente',
+        logo: '/img/jobs/iamex-logo.webp',
+    },
+    {
         title: 'Desarrollador Full Stack',
         company: 'Towers Cem - Empresa Cementera',
         period: '2024',

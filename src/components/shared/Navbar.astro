@@ -12,25 +12,26 @@ const { variant = 'home', backHref = '/' } = Astro.props
 
 <header class="header" data-variant={variant}>
   <div class="navbar container">
-    <a class="navbar__logo" href={variant === 'home' ? '#hola' : '/'} aria-label="Inicio">{'{TSX}'}</a>
-
     {variant === 'home' ? (
-      <nav class="nav">
-        <ul class="nav__list" role="list">
-          {navItems.map((item) => (
-            <li class="nav__item">
-              <a href={item.href} aria-label={item.ariaLabel} class="nav__link">
-                <i class={`bx ${item.icon} nav__link-icon`} aria-hidden="true"></i>
-                <span class="nav__link-text">{item.label}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <>
+        <a class="navbar__logo" href="#hola" aria-label="Inicio">{'{TSX}'}</a>
+        <nav class="nav">
+          <ul class="nav__list" role="list">
+            {navItems.map((item) => (
+              <li class="nav__item">
+                <a href={item.href} aria-label={item.ariaLabel} class="nav__link">
+                  <i class={`bx ${item.icon} nav__link-icon`} aria-hidden="true"></i>
+                  <span class="nav__link-text">{item.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </>
     ) : (
-      <a href={backHref} class="nav__back" aria-label="Volver a proyectos">
+      <a href={backHref} class="nav__back" aria-label="Regresar al listado de proyectos">
         <i class="bx bx-arrow-back" aria-hidden="true"></i>
-        <span>Proyectos</span>
+        <span>Regresar</span>
       </a>
     )}
 

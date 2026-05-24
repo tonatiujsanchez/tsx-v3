@@ -1,60 +1,50 @@
 ---
 interface Props {
-  title?: string
-  description?: string
+  text?: string
   href?: string
-  label?: string
 }
 
 const {
-  title = '¿Tienes un proyecto en mente?',
-  description = 'Estoy disponible para colaboraciones y proyectos freelance. Escríbeme y hablamos.',
+  text = '¿Estás interesado en colaborar juntos? No dudes en ponerte en contacto conmigo. ¡Estaré encantado de escuchar sobre tu proyecto!',
   href = '/#contacto',
-  label = 'Contáctame',
 } = Astro.props
 ---
 
 <section class="project-contact">
-  <h2 class="project-contact__title">{title}</h2>
-  <p class="project-contact__description">{description}</p>
-  <a class="project-contact__cta" href={href}>
-    {label}
+  <p class="project-contact__text">{text}</p>
+  <a href={href} aria-label="Ir a contacto" class="project-contact__link">
+    <i class="bx bx-mail-send" aria-hidden="true"></i>Contacto
+    <i class="bx bx-right-arrow-alt link-external-icon" aria-hidden="true"></i>
   </a>
 </section>
 
 <style>
   .project-contact {
-    text-align: center;
-    padding: 3rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.6rem;
+    margin-block-end: 8rem;
   }
 
-  .project-contact__title {
-    color: var(--title-color);
-    font-size: 1.75rem;
-    margin-bottom: 1rem;
-  }
-
-  .project-contact__description {
+  .project-contact__text {
     color: var(--text-color);
-    max-width: 42ch;
-    margin-inline: auto;
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
+    text-align: center;
+    text-wrap: pretty;
   }
 
-  .project-contact__cta {
-    display: inline-block;
-    padding: 0.75rem 1.75rem;
-    background-color: var(--black-primary-color);
-    color: #fff;
-    border-radius: 0.375rem;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.95rem;
-    transition: opacity 0.2s ease;
+  .project-contact__link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-color);
   }
 
-  .project-contact__cta:hover {
-    opacity: 0.85;
+  .project-contact__link:hover {
+    color: var(--title-color);
+  }
+
+  .project-contact__link:hover .link-external-icon {
+    animation: float-up 2s ease-in-out infinite;
   }
 </style>

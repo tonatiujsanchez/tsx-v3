@@ -2,9 +2,8 @@
 import type { CollectionEntry } from 'astro:content'
 import { getCollection, render } from 'astro:content'
 import ProjectLayout from '@layouts/ProjectLayout.astro'
-import TechBadge from '@components/ui/TechBadge.astro'
+import TechIcon from '@components/ui/TechIcon.astro'
 import ProjectFigure from '@components/ui/ProjectFigure.astro'
-import ProjectLinks from '@components/project/ProjectLinks.astro'
 import ProjectContact from '@components/project/ProjectContact.astro'
 
 export async function getStaticPaths() {
@@ -20,7 +19,8 @@ interface Props {
 }
 
 const { project } = Astro.props
-const { title, description, cover, tech, demo, github, githubFrontend, gallery } = project.data
+const { title, description, cover, coverCaption, tech, demo, github, githubFrontend, githubBackend, gallery } =
+  project.data
 const { Content } = await render(project)
 ---
 
@@ -29,113 +29,261 @@ const { Content } = await render(project)
   description={description}
   ogImage={cover}
 >
-  <article class="project-detail">
+  <main class="container">
 
-    <header class="project-detail__header">
-      <h1 class="project-detail__title">{title}</h1>
-      <p class="project-detail__description">{description}</p>
-    </header>
-
-    <ProjectFigure
-      src={cover}
-      alt={`Portada del proyecto ${title}`}
-      caption={title}
-    />
-
-    <section class="project-detail__tech">
-      <h2 class="project-detail__section-title">Tecnologías</h2>
-      <ul class="project-detail__tech-list">
-        {tech.map((t) => (
-          <li>
-            <TechBadge name={t} techKey={t} />
-          </li>
-        ))}
-      </ul>
+    <section class="hero">
+      <h1 class="project-title">{title}</h1>
+      <p class="project-summary">{description}</p>
+      <ProjectFigure
+        src={cover}
+        alt={`Portada de ${title}`}
+        caption={coverCaption}
+      />
     </section>
 
-    <ProjectLinks
-      github={github ?? githubFrontend}
-      live={demo}
-    />
-
     {gallery && gallery.length > 0 && (
-      <section class="project-detail__gallery">
-        <h2 class="project-detail__section-title">Capturas de pantalla</h2>
-        <div class="project-detail__gallery-grid">
-          {gallery.map((src, i) => (
-            <ProjectFigure
-              src={src}
-              alt={`Captura ${i + 1} de ${title}`}
-              caption={`${title} — Vista ${i + 1}`}
-            />
-          ))}
-        </div>
+      <section class="projects-views">
+        {gallery.map((item) => (
+          <ProjectFigure
+            src={item.src}
+            alt={`Vista de ${title}`}
+            caption={item.caption}
+          />
+        ))}
       </section>
     )}
 
-    <div class="project-detail__content">
+    <section>
+      <h2 class="subtitle">Tecnologías utilizadas</h2>
+      <div class="technologies">
+        {tech.map((t) => (
+          <div class="technology">
+            <span class="technology__icon">
+              <TechIcon techKey={t} size={20} />
+            </span>
+            <span class="technology__name">{t}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="project-info">
+      <div>
+        <h2 class="subtitle">Versiones</h2>
+        <div class="versions">
+          <div class="versions__item">Desktop</div>
+          <div class="versions__item">Mobile</div>
+        </div>
+      </div>
+
+      {(github || githubFrontend || githubBackend || demo) && (
+        <div>
+          <h2 class="subtitle">Enlaces</h2>
+          <div class="links">
+            {githubFrontend && (
+              <a
+                class="links__item"
+                href={githubFrontend}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Ver repositorio frontend del proyecto"
+              >
+                <span class="links__item-name">
+                  <i class="bx bxl-github" aria-hidden="true"></i> Frontend
+                </span>
+                <i class="bx bx-right-arrow-alt link-external-icon" aria-hidden="true"></i>
+              </a>
+            )}
+            {githubBackend && (
+              <a
+                class="links__item"
+                href={githubBackend}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Ver repositorio backend del proyecto"
+              >
+                <span class="links__item-name">
+                  <i class="bx bxl-github" aria-hidden="true"></i> Backend
+                </span>
+                <i class="bx bx-right-arrow-alt link-external-icon" aria-hidden="true"></i>
+              </a>
+            )}
+            {github && (
+              <a
+                class="links__item"
+                href={github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Ver repositorio del proyecto"
+              >
+                <span class="links__item-name">
+                  <i class="bx bxl-github" aria-hidden="true"></i> Repositorio
+                </span>
+                <i class="bx bx-right-arrow-alt link-external-icon" aria-hidden="true"></i>
+              </a>
+            )}
+            {demo && (
+              <a
+                class="links__item"
+                href={demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Ir al proyecto"
+              >
+                <span class="links__item-name">
+                  <i class="bx bx-world" aria-hidden="true"></i> Proyecto
+                </span>
+                <i class="bx bx-right-arrow-alt link-external-icon" aria-hidden="true"></i>
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+    </section>
+
+    <div class="project-content">
       <Content />
     </div>
 
     <ProjectContact />
 
-  </article>
+  </main>
 </ProjectLayout>
 
 <style>
-  .project-detail {
-    max-width: 900px;
-    margin-inline: auto;
-    padding: 2rem 1rem 4rem;
+  .hero {
+    padding-block-start: 3rem;
   }
 
-  .project-detail__header {
-    margin-bottom: 2rem;
-  }
-
-  .project-detail__title {
+  .project-title {
     color: var(--title-color);
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    margin-block-end: 1.5rem;
   }
 
-  .project-detail__description {
+  .project-summary {
     color: var(--text-color);
-    line-height: 1.7;
-    max-width: 70ch;
+    margin-block-end: 4rem;
   }
 
-  .project-detail__section-title {
+  .projects-views {
+    margin-block-end: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1.6rem;
     color: var(--title-color);
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
+    margin-block-end: 2rem;
+    font-weight: 500;
   }
 
-  .project-detail__tech {
-    margin-block: 2rem;
+  /* ===== Technologies ===== */
+
+  .technologies {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    margin-block-end: 4rem;
   }
 
-  .project-detail__tech-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .technology {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    border: var(--border-primary);
+    border-radius: 2rem;
+    padding-block: 0.3rem;
+    padding-inline: 1.5rem;
+  }
+
+  .technology__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.2rem;
+    height: 2.4rem;
+    border-radius: 0.4rem;
+    overflow: hidden;
+  }
+
+  .technology__name {
+    font-size: 1.4rem;
+  }
+
+  /* ===== Project info (versions + links) ===== */
+
+  .project-info {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 4rem;
+    margin-block-end: 8rem;
   }
 
-  .project-detail__gallery {
-    margin-block: 2rem;
+  .versions {
+    display: flex;
+    gap: 1rem;
   }
 
-  .project-detail__gallery-grid {
+  .versions__item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    border: var(--border-primary);
+    border-radius: 2rem;
+    padding-block: 0.3rem;
+    padding-inline: 1.5rem;
+  }
+
+  .links {
     display: grid;
-    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 
-  .project-detail__content {
-    margin-block: 2rem;
+  .links__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.5rem;
+    padding-inline: 1.5rem;
+    border: var(--border-primary);
+    border-radius: 0.5rem;
+    transition: all 0.3s;
+  }
+
+  .links__item:hover {
+    color: var(--title-color);
+    border: 0.1rem solid var(--text-color);
+  }
+
+  .links__item:hover .link-external-icon {
+    animation: float-up 2s ease-in-out infinite;
+  }
+
+  .links__item-name {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .links__item-name i {
+    font-size: 1.8rem;
+  }
+
+  .project-content {
     color: var(--text-color);
     line-height: 1.7;
+    margin-block-end: 4rem;
+  }
+
+  @media (min-width: 768px) {
+    .hero {
+      padding-block-start: 9rem;
+    }
+
+    .project-info {
+      gap: 8rem;
+    }
   }
 </style>

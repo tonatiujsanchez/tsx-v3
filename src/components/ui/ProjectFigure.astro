@@ -2,18 +2,46 @@
 interface Props {
   src: string
   alt: string
-  caption: string
+  caption?: string
 }
 
 const { src, alt, caption } = Astro.props
 ---
 
 <figure class="project-figure">
-  <img
-    class="project-figure__img"
-    src={src}
-    alt={alt}
-    loading="lazy"
-  />
-  <figcaption class="project-figure__caption">{caption}</figcaption>
+  <div class="project-figure__content">
+    <img
+      class="project-figure__img"
+      src={src}
+      alt={alt}
+      loading="lazy"
+    />
+  </div>
+  {caption && <figcaption class="project-figure__caption">{caption}</figcaption>}
 </figure>
+
+<style>
+  .project-figure {
+    margin-block-end: 5rem;
+  }
+
+  .project-figure__content {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background-color: var(--content-color);
+    border: var(--border-primary);
+    margin-block-end: 1rem;
+  }
+
+  .project-figure__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .project-figure__caption {
+    font-size: 1.5rem;
+    padding-inline: 1rem;
+  }
+</style>

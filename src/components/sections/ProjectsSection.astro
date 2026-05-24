@@ -16,7 +16,7 @@ const projects = (await getCollection('projects')).sort(
           title={project.data.title}
           slug={project.id}
           year={project.data.year ?? new Date().getFullYear()}
-          summary={project.data.description}
+          summary={project.data.summary}
           thumbnail={{
             full: project.data.cover,
             md: project.data.cover.replace('.webp', '-543.webp'),

@@ -101,5 +101,9 @@ const ogImageURL = ogImage?.startsWith('http')
   </head>
   <body>
     <slot />
+    <script>
+      import { initAnimations } from '@scripts/animations'
+      document.addEventListener('astro:page-load', initAnimations)
+    </script>
   </body>
 </html>

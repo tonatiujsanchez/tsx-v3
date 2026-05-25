@@ -9,8 +9,8 @@ const projects = (await getCollection('projects')).sort(
 
 <section class="projects-section section" id="proyectos">
   <div class="container">
-    <h2 class="section__title">Proyectos</h2>
-    <div class="projects">
+    <h2 class="section__title" data-reveal>Proyectos</h2>
+    <div class="projects" data-reveal-stagger>
       {projects.map((project) => (
         <ProjectCard
           title={project.data.title}

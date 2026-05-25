@@ -356,7 +356,31 @@ Fase actual: Fase 11.1 completada — Optimización SEO para Lighthouse 100.
 - `input` — añadido `font-family: inherit`
 - `@media (prefers-reduced-motion: reduce)` — desactiva animaciones/transiciones globalmente
 
+### Fase UI-2
+
+**Modificados:**
+- `src/scripts/animations.ts` — reescrito: sistema `data-reveal` + stagger + scroll progress
+- `src/styles/animations.css` — añadido reveal system CSS (motion-ready pattern)
+- `src/layouts/BaseLayout.astro` — conectado `initAnimations` via `astro:page-load`
+- `src/components/shared/Navbar.astro` — añadido `.header__progress` (scroll progress bar, desktop only)
+- `src/components/sections/HeroSection.astro` — `data-reveal` en content/about/actions
+- `src/components/sections/ExperienceSection.astro` — `data-reveal` en título/descripción, `data-reveal-stagger` en `.jobs`
+- `src/components/sections/ProjectsSection.astro` — `data-reveal` en título, `data-reveal-stagger` en `.projects`
+- `src/components/sections/SkillsSection.astro` — `data-reveal` en título, `data-reveal-stagger` en `.skills`
+- `src/components/sections/ContactSection.astro` — `data-reveal` en título/descripción/contact
+- `src/components/home/JobCard.astro` — `data-reveal` en `<article>`
+- `src/components/home/ProjectCard.astro` — `data-reveal` en `<article>`
+- `src/components/ui/TechBadge.astro` — `data-reveal` en `<div class="skill">`
+
+**Arquitectura del motion system:**
+- Sin JS: todo el contenido visible (no hay CSS que oculte por defecto).
+- Con JS: `html.motion-ready` activa CSS de reveal. Elementos en viewport pre-marcados como `is-visible` antes de agregar `motion-ready` — sin flash de invisibilidad.
+- `data-reveal-stagger` en contenedor → JS asigna `data-reveal-delay="0..9"` a hijos → delays 0ms, 60ms, 120ms … 540ms.
+- Scroll progress: CSS variable `--scroll-progress` en `:root`, barra sutil en navbar desktop (0.1rem, opacity 0.5).
+- `progressListenerSet` module-level flag evita duplicar scroll listeners en view transitions.
+- Compatible con `@media (prefers-reduced-motion: reduce)` de globals.css (transitions colapsadas a 0.01ms).
+
 ## Próximo paso
 
-Ejecutar UI-2 — Motion system nativo.
-Ver `UI_DIRECTION.md` para detalle y `MIGRATION_TASK.md` para alcance exacto de UI-2.
+Ejecutar UI-3 — Hero premium.
+Ver `UI_DIRECTION.md` para detalle y `MIGRATION_TASK.md` para alcance exacto de UI-3.

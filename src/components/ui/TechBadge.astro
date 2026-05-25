@@ -11,7 +11,7 @@ interface Props {
 const { name, techKey, colorVar } = Astro.props
 ---
 
-<div class="skill" style={colorVar ? `--tech-color: ${colorVar}` : undefined}>
+<div class="skill" data-reveal style={colorVar ? `--tech-color: ${colorVar}` : undefined}>
   <span class="skill__icon">
     <TechIcon techKey={techKey} size={30} />
   </span>

@@ -45,6 +45,7 @@ const { variant = 'home', backHref = '/' } = Astro.props
 
     <ThemeToggle />
   </div>
+  <div class="header__progress" aria-hidden="true"></div>
 </header>
 
 <script>
@@ -152,6 +153,10 @@ const { variant = 'home', backHref = '/' } = Astro.props
     color: var(--title-color);
   }
 
+  .header__progress {
+    display: none;
+  }
+
   @media (min-width: 768px) {
     .header {
       position: sticky;
@@ -202,6 +207,19 @@ const { variant = 'home', backHref = '/' } = Astro.props
 
     .nav__link-icon {
       display: none;
+    }
+
+    .header__progress {
+      display: block;
+      position: absolute;
+      inset-block-end: 0;
+      inset-inline-start: 0;
+      height: 0.1rem;
+      width: calc(var(--scroll-progress, 0) * 1%);
+      background: var(--primary-color);
+      opacity: 0.5;
+      pointer-events: none;
+      transition: width 80ms linear;
     }
   }
 </style>

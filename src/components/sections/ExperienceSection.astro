@@ -5,12 +5,12 @@ import JobCard from '@components/home/JobCard.astro'
 
 <section class="experience section" id="experiencia">
   <div class="container">
-    <h2 class="section__title">Experiencia</h2>
-    <p class="section__description">
+    <h2 class="section__title" data-reveal>Experiencia</h2>
+    <p class="section__description" data-reveal data-reveal-delay="1">
       He tenido la oportunidad de agregar valor a diferentes tipos empresas
       utilizando una gran variedad de herramientas.
     </p>
-    <div class="jobs">
+    <div class="jobs" data-reveal-stagger>
       {jobs.map((job) => (
         <JobCard job={job} />
       ))}

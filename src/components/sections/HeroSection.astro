@@ -4,7 +4,7 @@ import { siteConfig, socialLinks } from '@data/site'
 
 <section class="hero" id="hola">
   <div class="hero__container container">
-    <div class="hero__content">
+    <div class="hero__content" data-reveal>
       <figure class="hero__figure">
         <img
           class="hero__img"
@@ -34,9 +34,9 @@ import { siteConfig, socialLinks } from '@data/site'
       </div>
     </div>
 
-    <p class="hero__about">{siteConfig.description}</p>
+    <p class="hero__about" data-reveal data-reveal-delay="1">{siteConfig.description}</p>
 
-    <div class="hero__actions">
+    <div class="hero__actions" data-reveal data-reveal-delay="2">
       <a
         class="hero__actions-link"
         href={siteConfig.cvPath}

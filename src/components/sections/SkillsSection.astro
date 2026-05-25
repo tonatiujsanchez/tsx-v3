@@ -5,8 +5,8 @@ import TechBadge from '@components/ui/TechBadge.astro'
 
 <section class="skills-section section" id="habilidades">
   <div class="container">
-    <h2 class="section__title">Habilidades</h2>
-    <div class="skills">
+    <h2 class="section__title" data-reveal>Habilidades</h2>
+    <div class="skills" data-reveal-stagger>
       {skills.map((skill) => (
         <TechBadge name={skill.name} techKey={skill.name} />
       ))}

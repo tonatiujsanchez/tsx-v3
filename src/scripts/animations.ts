@@ -1,4 +1,29 @@
+let progressListenerSet = false
+
 export function initAnimations(): void {
+  const elements = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'))
+
+  if (elements.length === 0) return
+
+  // Assign stagger delays to children inside [data-reveal-stagger] groups
+  document.querySelectorAll<HTMLElement>('[data-reveal-stagger]').forEach((group) => {
+    group.querySelectorAll<HTMLElement>('[data-reveal]').forEach((item, i) => {
+      item.dataset.revealDelay = String(Math.min(i, 9))
+    })
+  })
+
+  // Pre-mark elements already in the viewport — prevents flash of invisibility
+  elements.forEach((el) => {
+    const rect = el.getBoundingClientRect()
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      el.classList.add('is-visible')
+    }
+  })
+
+  // Enable motion CSS — only affects elements not yet marked as is-visible
+  document.documentElement.classList.add('motion-ready')
+
+  // Observe off-viewport elements
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -8,10 +33,26 @@ export function initAnimations(): void {
         }
       })
     },
-    { threshold: 0.15 }
+    { threshold: 0.1, rootMargin: '0px 0px -5% 0px' }
   )
 
-  document.querySelectorAll<HTMLElement>('[data-animate]').forEach((el) => {
-    observer.observe(el)
+  elements.forEach((el) => {
+    if (!el.classList.contains('is-visible')) {
+      observer.observe(el)
+    }
   })
+
+  // Scroll progress — set up once, survives view transitions
+  const updateProgress = (): void => {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight
+    const progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0
+    document.documentElement.style.setProperty('--scroll-progress', String(progress))
+  }
+
+  if (!progressListenerSet) {
+    window.addEventListener('scroll', updateProgress, { passive: true })
+    progressListenerSet = true
+  }
+
+  updateProgress()
 }

@@ -380,7 +380,32 @@ Fase actual: Fase 11.1 completada — Optimización SEO para Lighthouse 100.
 - `progressListenerSet` module-level flag evita duplicar scroll listeners en view transitions.
 - Compatible con `@media (prefers-reduced-motion: reduce)` de globals.css (transitions colapsadas a 0.01ms).
 
+### Fase UI-3
+
+**Modificados:**
+- `src/components/sections/HeroSection.astro` — rediseño completo del Hero premium
+
+**Cambios visuales:**
+- Estructura: figura + body en fila (desktop), columna (mobile). Description y actions ahora dentro del body para composición coherente.
+- Dot pattern: `radial-gradient` CSS en pseudo-capa absoluta, adaptada a dark/light con CSS variable local `--dot-color`.
+- Nombre: `3.4rem` mobile / `5rem` desktop, gradient text `title-color → primary-color` (sutil), `letter-spacing: -0.02em`.
+- Rol: `1.7rem` mobile / `2.1rem` desktop, `font-weight: 500`, `--primary-color`.
+- Figura: `11rem` mobile / `14rem` desktop, ring de `box-shadow` con `--primary-color-alpha`, hover intensifica el ring, sin rotación en la imagen.
+- CTA primario (CV): borde con `--border-normal`, hover fill `--primary-color`, `translateY(-1px)`, estilo de botón real.
+- CTA secundario (Contacto): texto link, flecha con `translateX(4px)` en hover.
+- Social links: iconos en caja `3.6rem`, borde `--card-border`, background `--surface-1`, hover `translateY(-2px)` + primary color border.
+- Eliminadas animaciones `float-up`/`float-down` en hover (eran continuas/ruidosas).
+- Stagger con `data-reveal-delay` 1–4 sobre figura → intro → descripción → acciones → social.
+- `loading="eager" fetchpriority="high"` en imagen de perfil (LCP crítico).
+
+**Decisiones técnicas:**
+- `hero__pattern` usa `:global(html.dark-theme)` para override de `--dot-color` sin tocar globals.css.
+- `background-clip: text` + `-webkit-text-fill-color: transparent` para gradient en nombre. Adapta automáticamente a ambos temas vía `var(--title-color)`.
+- `var(--border-normal)` en CTA primario — shorthand shorthand ya definido con variantes light/dark.
+- `var(--card-border)` en social icons — misma estrategia.
+- `astro check`: 0 errores, 0 warnings. `build`: 6 páginas + robots + sitemap.
+
 ## Próximo paso
 
-Ejecutar UI-3 — Hero premium.
-Ver `UI_DIRECTION.md` para detalle y `MIGRATION_TASK.md` para alcance exacto de UI-3.
+Ejecutar UI-4 — Project cards modernizadas.
+Ver `UI_DIRECTION.md` sección UI-4 y `MIGRATION_TASK.md` para alcance exacto.

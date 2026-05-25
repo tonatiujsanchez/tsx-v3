@@ -2,17 +2,38 @@
 
 ## Tarea actual
 
-Fase UI-3 — Hero premium.
+Fase UI-4 — Project cards modernizadas.
 
 ## Contexto
 
-UI-2 completada. Motion system activo: scroll reveal con IntersectionObserver, stagger 60ms por item, scroll progress bar en navbar desktop. Contenido visible sin JS.
+La UI ya tiene:
 
-Ahora el Hero debe sentirse editorial y premium. Es el primer contacto con el visitante — impacto máximo, sin exceso.
+- UI-0: dirección visual "Engineered Darkness".
+- UI-1: design tokens premium en `globals.css`.
+- UI-2: motion system nativo con scroll reveal, stagger y scroll progress.
+- UI-3: Hero premium — dot pattern, gradient text, CTA buttons, social icons boxed, ring de perfil.
+
+Ahora se deben modernizar las Project Cards sin rediseñar el resto del sitio.
 
 ## Objetivo
 
-Elevar HeroSection a nivel editorial. Nombre más grande, rol con peso visual, foto con presencia, dot pattern sutil, CTAs visibles, social links refinados. Sin exceso. Máximo 2 efectos simultáneos.
+Modernizar `ProjectCard.astro` y `ProjectsSection.astro` para que las tarjetas sean más premium en hover, con shine border y elevación sutil.
+
+Debe conservar el estilo actual:
+
+- dark
+- minimal
+- técnico
+- sobrio
+- lista vertical (no cambiar a grid 2col)
+
+Y mejorarlo con:
+
+- hover con `translateY(-2px)` + border glow.
+- shine border: CSS `::after` sweep en hover.
+- eliminar `scale(1.1)` en imagen.
+- stagger reveal al scroll (ya tiene `data-reveal`).
+- spotlight hover opcional (TS mousemove, solo desktop con `@media (pointer: fine)`).
 
 ## Archivos permitidos para lectura
 
@@ -22,84 +43,218 @@ Elevar HeroSection a nivel editorial. Nombre más grande, rol con peso visual, f
 - `UI_DIRECTION.md`
 - `.claude/skills/ui-modernizer/SKILL.md`
 - `.claude/skills/astro-effects-engineer/SKILL.md`
+- `src/components/sections/HeroSection.astro`
+- `src/components/ui/SocialLink.astro`
+- `src/data/site.ts`
+- `src/types/index.ts`
 - `src/styles/globals.css`
 - `src/styles/animations.css`
-- `src/data/site.ts`
-- `src/components/sections/HeroSection.astro`
+- `src/scripts/animations.ts`
+- `public/img/profile/**`
+- `public/img/**`
+
+## Comandos baratos permitidos
+
+Usar primero:
+
+    git status --short
+    git diff --stat
+    rg "HeroSection|hero|profile|author|role|description|cvPath|socialLinks|data-reveal|gradient|badge|cta" src -n
+    find public/img -maxdepth 3 -type f | sort
 
 ## Archivos permitidos para edición
 
 - `src/components/sections/HeroSection.astro`
-- `src/styles/animations.css`
 - `MIGRATION_STATUS.md`
 - `MIGRATION_TASK.md`
 
+## Edición excepcional permitida solo si es necesaria
+
+Solo si `HeroSection.astro` necesita datos ya existentes pero no tipados o no expuestos correctamente, se permite editar de forma mínima:
+
+- `src/data/site.ts`
+- `src/types/index.ts`
+
+Reglas de excepción:
+
+- No inventar datos.
+- No cambiar estructura general de `siteConfig` sin necesidad.
+- No tocar otros datos.
+- Justificar el cambio.
+
 ## Archivos prohibidos
 
-No modificar nada fuera de la lista anterior. En particular:
+No modificar:
 
-- `src/styles/globals.css`
-- `src/scripts/**`
+- `src/components/shared/**`
+- `src/components/home/**`
+- `src/components/project/**`
+- `src/components/ui/**`, salvo lectura.
+- `src/components/sections/**`, excepto `HeroSection.astro`.
 - `src/layouts/**`
 - `src/pages/**`
-- `src/data/**`
+- `src/scripts/**`
+- `src/styles/**`
+- `src/content/**`
+- `src/icons/**`
 - `public/**`
 - `package.json`
 - `tsconfig.json`
 - `astro.config.mjs`
 
+Si necesitas modificar un archivo prohibido, primero explica por qué y espera confirmación.
+
 ## Alcance exacto
 
-### 1. Tipografía hero
+### 1. Mejorar composición del Hero
 
-- `hero__name` (p con el nombre): `font-size` a `3.8rem` desktop. Mantener mobile.
-- `hero__title` (h1 con el rol): `font-size: 1.8rem` desktop, `color: --primary-color`, peso visual.
-- No cambiar copy.
+Actualizar únicamente `HeroSection.astro`.
 
-### 2. Foto de perfil
+El Hero debe tener una estructura más premium y editorial:
 
-- Mantener `border-radius: 100%`.
-- Aumentar tamaño ligeramente en desktop: `12rem x 12rem`.
-- Border sutil con `--border-normal` (token de UI-1).
+- bloque de presentación más fuerte.
+- jerarquía clara: eyebrow opcional, nombre, rol, descripción, acciones.
+- imagen de perfil integrada con mejor composición.
+- social links bien ubicados.
+- CTAs visibles y profesionales.
+- mejor balance entre texto, imagen y espacio.
 
-### 3. Dot pattern en fondo del hero
+Reglas:
 
-- CSS nativo via `background` con `radial-gradient`.
-- Muy sutil: `opacity` baja, solo en el section hero.
-- Sin JavaScript.
-- Solo `--primary-color` o gris.
-
-### 4. CTAs refinados
-
-- Usar `--border-normal` o `--border-primary` para un borde en el CTA primario.
-- Hover con `background-color: --primary-color` o similar.
-- No crear botón genérico SaaS.
-- Mantener los dos links actuales, solo mejorar su apariencia.
-
-### 5. Social links
-
-- Hover con `translateY(-2px)` en lugar de `scale(1.2)`.
-
-### 6. No implementar
-
-- No gradient text todavía (reservado para evaluar en UI-7).
-- No spotlight hover (requiere JS complejo).
-- No moving border (reservado para UI-7).
-- No cambiar la estructura del markup.
+- No cambiar todo el layout del sitio.
 - No crear secciones nuevas.
+- No cambiar copy principal salvo ajustes mínimos de claridad.
+- No hacerlo parecer landing SaaS genérica.
+
+### 2. Agregar acentos visuales sutiles
+
+Inspirarse en Magic UI / Aceternity UI, pero implementado con CSS local del componente.
+
+Ideas permitidas:
+
+- subtle spotlight radial.
+- soft grid/dot pattern.
+- gradient text discreto.
+- border glow controlado en imagen.
+- card-like surface sutil.
+- background accent muy suave.
+- hover refinado en CTAs.
+
+Reglas:
+
+- No usar gradientes arcoíris.
+- No usar blobs exagerados.
+- No usar partículas.
+- No meter canvas.
+- No instalar dependencias.
+- No usar React.
+- No usar Tailwind.
+- No duplicar tokens globales si ya existen en `globals.css`.
+
+### 3. Usar motion system existente
+
+Aplicar atributos del motion system ya creado:
+
+- `data-reveal`
+- `data-reveal-delay`
+- `data-reveal-stagger`
+
+Reglas:
+
+- No modificar `animations.ts`.
+- No modificar `animations.css`.
+- No hacer que el contenido dependa de JS para verse.
+- No usar delays excesivos.
+
+### 4. Mejorar CTAs
+
+Los CTAs del hero deben ser más claros y modernos:
+
+- CV.
+- Contacto.
+- links sociales.
+
+Reglas:
+
+- Usar `<a>` para navegación o descarga.
+- Usar `aria-label` cuando aplique.
+- No usar botones para navegación.
+- Mantener accesibilidad.
+- Mantener `target="_blank"` y `rel="noopener noreferrer"` en externos.
+
+### 5. Responsive
+
+El Hero debe verse bien en:
+
+- mobile.
+- tablet.
+- desktop.
+
+Reglas:
+
+- No romper el ancho del container.
+- No crear overflow horizontal.
+- No ocultar contenido importante.
+- No usar tamaños excesivos.
+
+## Fuera de alcance
+
+- No modernizar Navbar.
+- No modernizar ProjectCard.
+- No modernizar Experience.
+- No modernizar Skills.
+- No modernizar Contact.
+- No modificar páginas.
+- No modificar layouts.
+- No modificar tokens globales.
+- No modificar motion system.
+- No instalar dependencias.
+- No avanzar a UI-4.
 
 ## Criterios de aceptación
 
-- Hero se ve premium, editorial, técnico.
-- No rompe layout mobile.
-- No hay exceso de efectos.
+- `HeroSection.astro` se ve más moderno y premium.
+- El estilo sigue siendo dark, técnico, sobrio y editorial.
+- No parece plantilla genérica de IA.
+- No se instalaron dependencias.
+- No se usó React.
+- No se usó Tailwind.
+- No hay `any`.
+- No hay overflow horizontal.
+- El contenido sigue visible sin JS.
+- Se usan atributos de reveal existentes.
 - `pnpm astro check` pasa.
 - `pnpm build` pasa.
-- `MIGRATION_STATUS.md` actualizado.
-- `MIGRATION_TASK.md` preparado para UI-4, sin ejecutarla.
+- `MIGRATION_STATUS.md` queda actualizado.
+- `MIGRATION_TASK.md` queda preparado para UI-4, pero UI-4 no se ejecuta.
 
 ## Validaciones
+
+Ejecutar:
 
     pnpm astro check
     pnpm build
     git diff --stat
+
+Si el entorno permite preview:
+
+    pnpm preview
+
+Revisar visualmente:
+
+- home desktop.
+- home mobile.
+- dark theme.
+- light theme si existe.
+- que el Hero no rompa el layout.
+
+## Respuesta esperada
+
+Responder solo con:
+
+1. Cambios visuales aplicados al Hero.
+2. Archivos modificados.
+3. Resultado de `pnpm astro check`.
+4. Resultado de `pnpm build`.
+5. Pendientes visuales.
+6. Confirmación de que no se avanzó a UI-4.

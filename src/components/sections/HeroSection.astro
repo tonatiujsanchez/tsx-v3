@@ -3,24 +3,57 @@ import { siteConfig, socialLinks } from '@data/site'
 ---
 
 <section class="hero" id="hola">
+  <div class="hero__pattern" aria-hidden="true"></div>
+
   <div class="hero__container container">
-    <div class="hero__content" data-reveal>
-      <figure class="hero__figure">
+    <div class="hero__content">
+
+      <figure class="hero__figure" data-reveal>
         <img
           class="hero__img"
           src="/img/profile/tsj.webp"
-          alt={`Tonatiuj Sánchez`}
-          width="90"
-          height="90"
+          alt={`Foto de perfil de ${siteConfig.author}`}
+          width="200"
+          height="200"
+          loading="eager"
+          fetchpriority="high"
         />
       </figure>
+
       <div class="hero__body">
-        <p class="hero__name">{siteConfig.author}</p>
-        <h1 class="hero__title">{siteConfig.role}</h1>
-        <ul class="hero__social-list">
+        <div class="hero__intro" data-reveal data-reveal-delay="1">
+          <p class="hero__name">{siteConfig.author}</p>
+          <h1 class="hero__title">{siteConfig.role}</h1>
+        </div>
+
+        <p class="hero__about" data-reveal data-reveal-delay="2">{siteConfig.description}</p>
+
+        <div class="hero__actions" data-reveal data-reveal-delay="3">
+          <a
+            class="hero__cta hero__cta--primary"
+            href={siteConfig.cvPath}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Descargar CV de Tonatiuj Sánchez"
+          >
+            <i class="bx bx-download" aria-hidden="true"></i>
+            Descargar CV
+          </a>
+          <a
+            class="hero__cta hero__cta--secondary"
+            href="#contacto"
+            aria-label="Ir a la sección de contacto"
+          >
+            Contacto
+            <i class="bx bx-right-arrow-alt hero__cta-arrow" aria-hidden="true"></i>
+          </a>
+        </div>
+
+        <ul class="hero__social-list" data-reveal data-reveal-delay="4">
           {socialLinks.map((link) => (
-            <li class="hero__social-item">
+            <li>
               <a
+                class="hero__social-link"
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -32,138 +65,240 @@ import { siteConfig, socialLinks } from '@data/site'
           ))}
         </ul>
       </div>
-    </div>
 
-    <p class="hero__about" data-reveal data-reveal-delay="1">{siteConfig.description}</p>
-
-    <div class="hero__actions" data-reveal data-reveal-delay="2">
-      <a
-        class="hero__actions-link"
-        href={siteConfig.cvPath}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Descargar CV"
-      >
-        <i class="bx bx-download hero__download-cv" aria-hidden="true"></i>
-        Descargar CV
-      </a>
-      <a class="hero__actions-link" href="#contacto" aria-label="Ir a contacto">
-        <i class="bx bx-mail-send" aria-hidden="true"></i>
-        Contacto
-        <i class="bx bx-right-arrow-alt link-external-icon" aria-hidden="true"></i>
-      </a>
     </div>
   </div>
 </section>
 
 <style>
+  /* ── Section ── */
   .hero {
-    padding-block: 4rem;
+    position: relative;
+    padding-block: 5rem 4rem;
+    overflow: hidden;
   }
 
+  /* ── Dot pattern background ── */
+  .hero__pattern {
+    --dot-color: rgba(0, 0, 0, 0.05);
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse 90% 80% at 50% 0%, black 20%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 0%, black 20%, transparent 80%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  :global(html.dark-theme) .hero__pattern {
+    --dot-color: rgba(255, 255, 255, 0.07);
+  }
+
+  /* ── Container above pattern ── */
   .hero__container {
-    /* container class handles max-width and padding */
+    position: relative;
+    z-index: 1;
   }
 
+  /* ── Content layout ── */
   .hero__content {
     display: flex;
     flex-direction: column;
-    row-gap: 0.5rem;
-    column-gap: 2rem;
-    padding-block-end: 2rem;
+    gap: 2.4rem;
   }
 
+  /* ── Profile figure ── */
   .hero__figure {
-    width: 10rem;
-    height: 10rem;
-    background: var(--content-color);
-    border-radius: 100%;
+    width: 11rem;
+    height: 11rem;
+    border-radius: 50%;
     overflow: hidden;
     flex-shrink: 0;
+    box-shadow:
+      0 0 0 2px var(--surface-2),
+      0 0 0 4px var(--primary-color-alpha),
+      var(--shadow-medium);
+    transition: box-shadow var(--transition-base);
+  }
+
+  .hero__figure:hover {
+    box-shadow:
+      0 0 0 2px var(--surface-2),
+      0 0 0 5px rgba(211, 115, 78, 0.45),
+      var(--shadow-strong);
   }
 
   .hero__img {
-    height: 10rem;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    object-position: center;
-    transform: rotate(8deg);
+    object-position: center top;
+  }
+
+  /* ── Body ── */
+  .hero__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+  }
+
+  /* ── Name + role block ── */
+  .hero__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
   .hero__name {
-    font-size: 3rem;
+    font-size: 3.4rem;
     font-weight: 700;
-    color: var(--title-color);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    background: linear-gradient(
+      140deg,
+      var(--title-color) 55%,
+      rgba(211, 115, 78, 0.75) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* fallback */
   }
 
   .hero__title {
-    font-size: 1.6rem;
-    font-weight: 400;
+    font-size: 1.7rem;
+    font-weight: 500;
     color: var(--primary-color);
-    line-height: 1;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
   }
 
-  .hero__social-list {
-    margin-top: 1rem;
-    display: flex;
-    gap: 1.5rem;
-    list-style: none;
-    padding: 0;
-    margin-inline: 0;
-  }
-
-  .hero__social-item {
-    font-size: 2rem;
-    transition: transform 0.3s;
-  }
-
-  .hero__social-item:hover {
-    transform: scale(1.2);
-  }
-
+  /* ── Description ── */
   .hero__about {
-    text-wrap: pretty;
     color: var(--text-color);
+    line-height: 1.75;
+    max-width: 54ch;
+    text-wrap: pretty;
   }
 
+  /* ── CTAs ── */
   .hero__actions {
-    margin-block: 3rem;
     display: flex;
-    gap: 3rem;
+    align-items: center;
+    gap: 2rem;
     flex-wrap: wrap;
   }
 
-  .hero__actions-link {
-    display: flex;
+  .hero__cta {
+    display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    color: var(--text-color);
+    gap: 0.6rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    transition:
+      background-color var(--transition-fast),
+      border-color var(--transition-fast),
+      color var(--transition-fast),
+      transform var(--transition-fast);
   }
 
-  .hero__actions-link:hover {
+  .hero__cta--primary {
+    padding: 0.9rem 2rem;
+    border: var(--border-normal);
+    color: var(--title-color);
+    background-color: transparent;
+  }
+
+  .hero__cta--primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .hero__cta--primary .bx-download {
+    font-size: 1.7rem;
+  }
+
+  .hero__cta--secondary {
+    padding: 0.9rem 0.2rem;
+    color: var(--text-color);
+    border: none;
+  }
+
+  .hero__cta--secondary:hover {
     color: var(--title-color);
   }
 
-  .hero__actions-link:hover .link-external-icon {
-    animation: float-up 2s ease-in-out infinite;
-  }
-
-  .hero__download-cv {
+  .hero__cta-arrow {
+    display: inline-block;
     font-size: 1.8rem;
+    transition: transform var(--transition-fast);
   }
 
-  .hero__actions-link:hover .hero__download-cv {
-    animation: float-down 2s ease-in-out infinite;
+  .hero__cta--secondary:hover .hero__cta-arrow {
+    transform: translateX(4px);
   }
 
+  /* ── Social links ── */
+  .hero__social-list {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .hero__social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.6rem;
+    height: 3.6rem;
+    border-radius: var(--radius-sm);
+    border: var(--card-border);
+    background-color: var(--surface-1);
+    color: var(--text-color);
+    font-size: 1.8rem;
+    transition:
+      color var(--transition-fast),
+      background-color var(--transition-fast),
+      border-color var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .hero__social-link:hover {
+    color: var(--primary-color);
+    background-color: var(--surface-2);
+    border-color: var(--primary-color-alpha);
+    transform: translateY(-2px);
+  }
+
+  /* ── Desktop ── */
   @media (min-width: 768px) {
     .hero {
-      padding-block-start: 8rem;
-      padding-block-end: 4rem;
+      padding-block-start: 9rem;
+      padding-block-end: 5rem;
     }
 
     .hero__content {
       flex-direction: row;
-      align-items: center;
+      align-items: flex-start;
+      gap: 5rem;
+    }
+
+    .hero__figure {
+      width: 14rem;
+      height: 14rem;
+      margin-top: 0.6rem;
+    }
+
+    .hero__name {
+      font-size: 5rem;
+    }
+
+    .hero__title {
+      font-size: 2.1rem;
     }
   }
 </style>

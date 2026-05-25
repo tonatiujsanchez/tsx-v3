@@ -2,13 +2,17 @@
 
 ## Tarea actual
 
-Fase UI-1 — Design tokens y base visual premium.
+Fase UI-2 — Motion system nativo.
 
 ## Contexto
 
-La dirección visual está definida en `UI_DIRECTION.md`. Esta fase solo toca `src/styles/globals.css`. No se modifican componentes, páginas ni scripts.
+UI-1 completada. `src/styles/globals.css` tiene sistema completo de tokens: superficies, bordes visibles en dark, radius, shadows, transitions y tokens de card/backdrop para fases posteriores.
 
-El objetivo es enriquecer el sistema de tokens CSS para soportar profundidad, jerarquía de superficies, bordes visibles y transitions consistentes. Los tokens se definen ahora y se consumen en fases siguientes (UI-2 en adelante).
+`animations.ts` existe pero no está conectado. `animations.css` tiene keyframes base. No hay scroll reveal activo. Contenido aparece sin transición.
+
+## Objetivo
+
+Conectar el motion system: scroll reveal blur-fade en secciones, stagger en listas, scroll progress bar. Sin dependencias. Respetar `prefers-reduced-motion`.
 
 ## Archivos permitidos para lectura
 
@@ -16,103 +20,60 @@ El objetivo es enriquecer el sistema de tokens CSS para soportar profundidad, je
 - `MIGRATION_STATUS.md`
 - `MIGRATION_TASK.md`
 - `UI_DIRECTION.md`
+- `.claude/skills/ui-modernizer/SKILL.md`
+- `src/scripts/animations.ts`
+- `src/styles/animations.css`
 - `src/styles/globals.css`
+- `src/layouts/MainLayout.astro`
+- `src/components/sections/HeroSection.astro`
+- `src/components/sections/ExperienceSection.astro`
+- `src/components/sections/ProjectsSection.astro`
+- `src/components/sections/SkillsSection.astro`
+- `src/components/sections/ContactSection.astro`
 
 ## Archivos permitidos para edición
 
-- `src/styles/globals.css`
+- `src/scripts/animations.ts`
+- `src/styles/animations.css`
+- `src/layouts/MainLayout.astro`
+- `src/components/sections/HeroSection.astro`
+- `src/components/sections/ExperienceSection.astro`
+- `src/components/sections/ProjectsSection.astro`
+- `src/components/sections/SkillsSection.astro`
+- `src/components/sections/ContactSection.astro`
 - `MIGRATION_STATUS.md`
 - `MIGRATION_TASK.md`
 
-## Archivos prohibidos
-
-Todo lo demás. Si necesitas leer otro archivo, detente y pide confirmación.
+Se puede crear:
+- `src/components/shared/ScrollProgress.astro`
 
 ## Alcance exacto
 
-### 1. Añadir tokens de superficie (dark theme y light theme)
+1. Extender `animations.ts` con blur-fade reveal y stagger por item.
+2. Añadir keyframes `blur-fade-in` y `stagger-reveal` a `animations.css`.
+3. Añadir `[data-animate]` a secciones en sus respectivos `.astro`. CSS no oculta por defecto — JS añade clase `.is-visible`.
+4. Crear `ScrollProgress.astro` (barra de progreso en top del viewport, TS inline, sin React).
+5. Integrar `ScrollProgress` en `MainLayout.astro`.
+6. `prefers-reduced-motion` respetado: opacity puro, sin translate.
+7. No conectar en `ProjectLayout` todavía.
 
-En `:root` (light):
-- `--surface-0: var(--body-color)` — fondo base
-- `--surface-1: #F1F1F1` — superficie elevada leve
-- `--surface-2: #E8E8E8` — superficie elevada media
+## Fuera de alcance
 
-En `html.dark-theme`:
-- `--surface-0: #18181B` — fondo base (igual a `--body-color` dark)
-- `--surface-1: #1F1F23` — superficie elevada leve
-- `--surface-2: #27272A` — superficie elevada media
-
-### 2. Añadir tokens de borde
-
-En `:root`:
-- `--border-subtle: 0.1rem solid rgba(0, 0, 0, 0.06)`
-- `--border-normal: 0.1rem solid rgba(0, 0, 0, 0.12)`
-- `--border-glow: 0 0 0 1px rgba(211, 115, 78, 0.35)` — para hover states
-
-En `html.dark-theme`:
-- `--border-subtle: 0.1rem solid rgba(255, 255, 255, 0.05)`
-- `--border-normal: 0.1rem solid rgba(255, 255, 255, 0.10)`
-- `--border-glow: 0 0 0 1px rgba(211, 115, 78, 0.40)`
-
-### 3. Añadir tokens de border-radius
-
-En `:root` (global, no varían por tema):
-- `--radius-sm: 0.4rem`
-- `--radius-md: 0.8rem`
-- `--radius-lg: 1.2rem`
-
-### 4. Añadir tokens de transición
-
-En `:root`:
-- `--transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1)`
-- `--transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1)`
-- `--transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1)`
-
-### 5. Añadir token de color primario con transparencia
-
-En `:root`:
-- `--primary-color-alpha: rgba(211, 115, 78, 0.15)`
-
-En `html.dark-theme`:
-- `--primary-color-alpha: rgba(211, 115, 78, 0.20)`
-
-### 6. Añadir base `prefers-reduced-motion`
-
-Al final de `globals.css`, antes de los media queries existentes o al final:
-
-```css
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-```
-
-### 7. Opcional — ajustar container max-width
-
-Si se decide: cambiar `max-width: 76rem` a `max-width: 82rem`. Evaluar si tiene impacto visual positivo. Solo aplicar si la decisión es clara.
+- No modificar componentes de home/ui/project.
+- No modificar páginas.
+- No instalar dependencias.
+- No avanzar a UI-3.
 
 ## Criterios de aceptación
 
-- Nuevas variables en `:root` y `html.dark-theme`.
+- Secciones revelan al entrar al viewport.
+- Sin contenido invisible si JS falla (no hay CSS que oculte).
+- Scroll progress bar visible en desktop.
 - `pnpm astro check` sin errores.
 - `pnpm build` sin errores.
-- No hay cambio visual perceptible (tokens definidos pero no usados aún).
-- `git diff --stat` muestra solo `globals.css`.
 
 ## Validaciones
 
-```
-pnpm astro check
-git diff --stat
-```
-
-No ejecutar `pnpm build` salvo necesidad.
-
-## Respuesta esperada
-
-1. Tokens añadidos.
-2. `git diff --stat` output.
-3. Confirmación de que no se modificaron otros archivos.
+    pnpm astro check
+    pnpm build
+    git diff --stat

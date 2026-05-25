@@ -44,6 +44,53 @@
     --border-primary: 0.1rem solid var(--gray-primary-color);
     --shadow-primary: 0 0.5rem 1rem var(--gray-primary-color);
     --shadow-primary-top: 0 -0.1rem 0.6rem var(--gray-primary-color);
+
+    /* Superficies */
+    --surface-0: #F8FAFC;
+    --surface-1: #FFFFFF;
+    --surface-2: #F1F5F9;
+    --surface-elevated: #FFFFFF;
+
+    /* Bordes semánticos */
+    --border-subtle: 0.1rem solid rgba(0, 0, 0, 0.06);
+    --border-normal: 0.1rem solid rgba(0, 0, 0, 0.12);
+
+    /* Acento con transparencia */
+    --primary-color-alpha: rgba(211, 115, 78, 0.2);
+
+    /* Texto adicional */
+    --text-muted: #A1A1AA;
+
+    /* Radius */
+    --radius-xs: 0.2rem;
+    --radius-sm: 0.4rem;
+    --radius-md: 0.6rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.6rem;
+    --radius-pill: 10rem;
+
+    /* Sombras */
+    --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
+    --shadow-strong: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
+    --shadow-glow: 0 0 0 1px var(--primary-color-alpha), 0 4px 12px var(--primary-color-alpha);
+    --shadow-inner: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+
+    /* Transiciones */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-emphasized: cubic-bezier(0.0, 0, 0.2, 1);
+
+    /* Cards y backdrop */
+    --backdrop-surface: rgba(248, 250, 252, 0.85);
+    --backdrop-blur: blur(12px);
+    --card-border: 0.1rem solid rgba(0, 0, 0, 0.08);
+    --card-surface: #FFFFFF;
+    --card-surface-hover: #F8FAFC;
+    --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --card-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.1), 0 0 0 1px var(--primary-color-alpha);
 }
 
 /* Tema oscuro — clase en <html> para evitar FOUC */
@@ -53,9 +100,40 @@ html.dark-theme {
     --body-color: #18181B;
     --container-color: #242424;
     --content-color: #222222;
-    --border-primary: 0.1rem solid var(--black-primary-color);
+    --border-primary: 0.1rem solid #3F3F46;
     --shadow-primary: 0 0.5rem 1.4rem var(--black-primary-color);
     --shadow-primary-top: 0 -0.1rem 0.6rem var(--black-primary-color);
+
+    /* Superficies dark */
+    --surface-0: #18181B;
+    --surface-1: #1E1E21;
+    --surface-2: #27272A;
+    --surface-elevated: #2D2D30;
+
+    /* Bordes semánticos dark */
+    --border-subtle: 0.1rem solid rgba(255, 255, 255, 0.05);
+    --border-normal: 0.1rem solid rgba(255, 255, 255, 0.10);
+
+    /* Acento con transparencia dark */
+    --primary-color-alpha: rgba(211, 115, 78, 0.25);
+
+    /* Texto adicional dark */
+    --text-muted: #71717A;
+
+    /* Sombras dark */
+    --shadow-soft: 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.3);
+    --shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 0 1px var(--primary-color-alpha), 0 4px 16px var(--primary-color-alpha);
+    --shadow-inner: inset 0 1px 4px rgba(0, 0, 0, 0.4);
+
+    /* Cards y backdrop dark */
+    --backdrop-surface: rgba(24, 24, 27, 0.85);
+    --card-border: 0.1rem solid rgba(255, 255, 255, 0.07);
+    --card-surface: #1E1E21;
+    --card-surface-hover: #252528;
+    --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --card-shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--primary-color-alpha);
 }
 
 
@@ -75,10 +153,22 @@ html {
 body {
     font-family: var(--font-primary);
     font-size: 1.6rem;
+    line-height: 1.5;
     margin: 0;
     background-color: var(--body-color);
     color: var(--text-color);
-    transition: background-color 0.3s;
+    transition: background-color var(--transition-base);
+}
+
+::selection {
+    background-color: var(--primary-color-alpha);
+    color: var(--title-color);
+}
+
+:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 3px;
+    border-radius: var(--radius-xs);
 }
 
 h1, h2, h3, h4, h5, h6, p {
@@ -118,6 +208,7 @@ img {
 }
 
 input {
+    font-family: inherit;
     border: none;
     outline: none;
 }
@@ -342,5 +433,16 @@ textarea {
         margin-block-start: 1rem;
         margin-block-end: 0;
         border-block-start: var(--border-primary);
+    }
+}
+
+/* ===================================================
+   REDUCED MOTION
+   =================================================== */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

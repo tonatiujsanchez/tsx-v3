@@ -326,7 +326,37 @@ Fase actual: Fase 11.1 completada — Optimización SEO para Lighthouse 100.
 **Creados:**
 - `UI_DIRECTION.md` — dirección visual completa, sistema de efectos por niveles, evaluación de Magic UI / Aceternity, fases UI-1 a UI-8 definidas.
 
+### Fase UI-1
+
+**Modificados:**
+- `src/styles/globals.css` — sistema completo de tokens modernos
+
+**Tokens agregados en `:root` (light):**
+- `--surface-0/1/2`, `--surface-elevated` — jerarquía de superficies
+- `--border-subtle`, `--border-normal` — bordes semánticos con rgba
+- `--primary-color-alpha: rgba(211,115,78,0.2)` — acento para glows
+- `--text-muted: #A1A1AA`
+- `--radius-xs/sm/md/lg/xl/pill` — sistema de radius completo
+- `--shadow-soft/medium/strong/glow/inner` — sistema de sombras light
+- `--transition-fast/base/slow` — duraciones: 150ms / 250ms / 400ms
+- `--ease-standard`, `--ease-emphasized` — cubic-bezier estandarizados
+- `--backdrop-surface`, `--backdrop-blur: blur(12px)` — preparación navbar
+- `--card-border/surface/surface-hover/shadow/shadow-hover` — preparación cards premium
+
+**Tokens modificados:**
+- `--border-primary` dark: `#2B2B2B` → `#3F3F46` (Zinc-700, visible en dark)
+
+**Tokens dark sobreescritos:**
+- Todas las variantes anteriores (superficies, bordes, sombras, cards, alpha) con valores calibrados para `#18181B`
+
+**Base global mejorada:**
+- `body` — añadido `line-height: 1.5`, `transition` usa `--transition-base`
+- `::selection` — `background: --primary-color-alpha`, `color: --title-color`
+- `:focus-visible` — `outline: 2px solid --primary-color`, `border-radius: --radius-xs`
+- `input` — añadido `font-family: inherit`
+- `@media (prefers-reduced-motion: reduce)` — desactiva animaciones/transiciones globalmente
+
 ## Próximo paso
 
-Ejecutar UI-1 — Design tokens y base visual premium.
-Ver `UI_DIRECTION.md` para detalle de fases y `MIGRATION_TASK.md` para alcance exacto de UI-1.
+Ejecutar UI-2 — Motion system nativo.
+Ver `UI_DIRECTION.md` para detalle y `MIGRATION_TASK.md` para alcance exacto de UI-2.

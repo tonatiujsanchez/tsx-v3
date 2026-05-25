@@ -321,11 +321,12 @@ Fase actual: Fase 11.1 completada — Optimización SEO para Lighthouse 100.
 - `siteConfig.contactApi` vacío — form no puede enviar.
 - `animations.ts` no conectado.
 
+### Fase UI-0
+
+**Creados:**
+- `UI_DIRECTION.md` — dirección visual completa, sistema de efectos por niveles, evaluación de Magic UI / Aceternity, fases UI-1 a UI-8 definidas.
+
 ## Próximo paso
 
-Ejecutar Lighthouse SEO manualmente:
-```
-pnpm preview
-npx lighthouse http://localhost:4321 --only-categories=seo --chrome-flags="--headless"
-npx lighthouse http://localhost:4321/projects/admin-sites --only-categories=seo --chrome-flags="--headless"
-```
+Ejecutar UI-1 — Design tokens y base visual premium.
+Ver `UI_DIRECTION.md` para detalle de fases y `MIGRATION_TASK.md` para alcance exacto de UI-1.

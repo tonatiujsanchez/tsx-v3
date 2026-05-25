@@ -6,6 +6,7 @@ export const navItems: NavItem[] = [
         href: '#hola',
         icon: 'bxs-home',
         ariaLabel: 'Inicio',
+        mobileOnly: true,
     },
     {
         label: 'Experiencia',

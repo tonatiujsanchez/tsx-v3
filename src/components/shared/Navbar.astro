@@ -26,7 +26,7 @@ const { variant = 'home', backHref = '/' } = Astro.props
         <nav class="nav">
           <ul class="nav__list" role="list">
             {navItems.map((item) => (
-              <li class="nav__item">
+              <li class:list={['nav__item', { 'nav__item--mobile-only': item.mobileOnly }]}>
                 <a href={item.href} aria-label={item.ariaLabel} class="nav__link">
                   <i class={`bx ${item.icon} nav__link-icon`} aria-hidden="true"></i>
                   <span class="nav__link-text">{item.label}</span>
@@ -106,6 +106,12 @@ const { variant = 'home', backHref = '/' } = Astro.props
 
   .nav__item {
     z-index: 10;
+  }
+
+  @media (min-width: 768px) {
+    .nav__item--mobile-only {
+      display: none;
+    }
   }
 
   .nav__link {

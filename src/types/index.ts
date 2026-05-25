@@ -14,6 +14,7 @@ export interface NavItem {
     href: string;
     icon: string;
     ariaLabel: string;
+    mobileOnly?: boolean;
 }
 
 export interface Job {

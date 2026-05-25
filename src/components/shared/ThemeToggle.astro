@@ -13,4 +13,5 @@
 <script>
   import { initTheme } from '@scripts/theme'
   initTheme()
+  document.addEventListener('astro:after-swap', initTheme)
 </script>

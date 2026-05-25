@@ -88,9 +88,14 @@ const ogImageURL = ogImage?.startsWith('http')
 
     <script is:inline>
       ;(() => {
-        const theme = localStorage.getItem('selected-theme-tsx')
-        const safeTheme = theme === 'light-theme' || theme === 'dark-theme' ? theme : 'dark-theme'
-        document.documentElement.classList.add(safeTheme)
+        const applyTheme = () => {
+          const t = localStorage.getItem('selected-theme-tsx')
+          const safeTheme = t === 'light-theme' || t === 'dark-theme' ? t : 'dark-theme'
+          document.documentElement.classList.remove('light-theme', 'dark-theme')
+          document.documentElement.classList.add(safeTheme)
+        }
+        applyTheme()
+        document.addEventListener('astro:after-swap', applyTheme)
       })()
     </script>
   </head>

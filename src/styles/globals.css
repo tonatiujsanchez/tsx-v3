@@ -17,6 +17,9 @@
     --black-primary-color: #2B2B2B;
     --white-primary-color: #F8FAFC;
 
+    /* Brand */
+    --primary-color: #D3734E;
+
     /* Feedback */
     --success-color: #07AC4F;
     --error-color: #d30000;

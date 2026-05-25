@@ -19,17 +19,17 @@ const { title, slug, year, summary, thumbnail } = Astro.props
     <img
       class="project__img"
       src={thumbnail.md}
-      alt={title}
+      alt={`Captura de pantalla de ${title}`}
       loading="lazy"
       transition:name={`project-cover-${slug}`}
     />
   </figure>
   <div class="project__description">
-    <div class="project__title-container">
+    <div class="project__header">
       <h3 class="project__title">
-        <a class="project__title-link" href={`/projects/${slug}`} aria-label={`Ver detalles de ${title}`}>
+        <a class="project__link" href={`/projects/${slug}`} aria-label={`Ver proyecto ${title}`}>
           {title}
-          <i class="bx bx-right-arrow-alt link-external-icon" aria-hidden="true"></i>
+          <i class="bx bx-right-arrow-alt project__arrow" aria-hidden="true"></i>
         </a>
       </h3>
       <span class="project__year">{year}</span>
@@ -40,71 +40,135 @@ const { title, slug, year, summary, thumbnail } = Astro.props
 
 <style>
   .project {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    background: var(--card-surface);
+    border: var(--card-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition:
+      transform var(--transition-base),
+      box-shadow var(--transition-base),
+      border-color var(--transition-base);
+  }
+
+  /* shine sweep on hover */
+  .project::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      transparent 35%,
+      rgba(211, 115, 78, 0.07) 50%,
+      transparent 65%
+    );
+    background-size: 300% 300%;
+    background-position: 200% 200%;
+    transition: background-position 0.7s var(--ease-standard);
+    pointer-events: none;
+    z-index: 1;
+    border-radius: inherit;
+  }
+
+  .project:hover,
+  .project:focus-within {
+    transform: translateY(-2px);
+    box-shadow: var(--card-shadow-hover);
+    border-color: rgba(211, 115, 78, 0.3);
+  }
+
+  .project:hover::before,
+  .project:focus-within::before {
+    background-position: -50% -50%;
   }
 
   .project__figure {
-    min-width: 25rem;
+    width: 100%;
     aspect-ratio: 543 / 326;
-    border-radius: 0.5rem;
     overflow: hidden;
-    background-color: var(--content-color);
-    padding-inline: 0.4rem;
-    border: var(--border-primary);
+    background: var(--surface-2);
+    flex: none;
   }
 
   .project__img {
-    transition: transform 0.3s;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform var(--transition-slow);
   }
 
-  .project__img:hover {
-    transform: scale(1.1);
-    opacity: 0.8;
-  }
-
-  .project__title-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .project__title {
-    font-weight: 500;
-    font-size: 1.8rem;
-  }
-
-  .project__title-link {
-    color: var(--title-color);
-  }
-
-  .project__title-link:hover {
-    text-decoration: underline;
-  }
-
-  .project:hover .link-external-icon {
-    animation: float-up 2s ease-in-out infinite;
-    color: var(--title-color);
-  }
-
-  .project__year {
-    font-size: 1.6rem;
-    font-weight: 400;
-    color: var(--text-color);
+  .project:hover .project__img,
+  .project:focus-within .project__img {
+    transform: scale(1.03);
   }
 
   .project__description {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.8rem;
+    padding: 1.6rem 2rem 2rem;
+    flex: 1;
+  }
+
+  .project__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .project__title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .project__link {
+    color: var(--title-color);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: color var(--transition-fast);
+  }
+
+  .project__link:hover {
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+
+  .project__arrow {
+    font-size: 1.9rem;
+    transition: transform var(--transition-fast);
+    flex: none;
+  }
+
+  .project:hover .project__arrow,
+  .project:focus-within .project__arrow {
+    transform: translateX(4px);
+  }
+
+  .project__year {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    padding: 0.3rem 0.9rem;
+    border-radius: var(--radius-pill);
+    border: var(--border-subtle);
+    white-space: nowrap;
+    flex: none;
+    align-self: flex-start;
   }
 
   .project__summary {
     color: var(--text-color);
+    font-size: 1.5rem;
+    line-height: 1.6;
     text-wrap: pretty;
   }
 
@@ -116,6 +180,14 @@ const { title, slug, year, summary, thumbnail } = Astro.props
     .project__figure {
       flex: none;
       width: 30rem;
+      aspect-ratio: auto;
+      align-self: stretch;
+    }
+
+    .project__description {
+      flex: 1;
+      justify-content: center;
+      padding: 2rem 2.4rem;
     }
   }
 </style>

@@ -2,38 +2,41 @@
 
 ## Tarea actual
 
-Fase UI-4 — Project cards modernizadas.
+Fase UI-5 — Skills, Experience y Contact polish.
 
 ## Contexto
 
 La UI ya tiene:
 
 - UI-0: dirección visual "Engineered Darkness".
-- UI-1: design tokens premium en `globals.css`.
-- UI-2: motion system nativo con scroll reveal, stagger y scroll progress.
-- UI-3: Hero premium — dot pattern, gradient text, CTA buttons, social icons boxed, ring de perfil.
+- UI-1: design tokens premium.
+- UI-2: motion system nativo.
+- UI-3: Hero premium.
+- UI-4: Project cards premium.
 
-Ahora se deben modernizar las Project Cards sin rediseñar el resto del sitio.
+Ahora se deben refinar las secciones de habilidades, experiencia y contacto para mantener coherencia visual con lo ya modernizado.
 
 ## Objetivo
 
-Modernizar `ProjectCard.astro` y `ProjectsSection.astro` para que las tarjetas sean más premium en hover, con shine border y elevación sutil.
+Elevar `JobCard`, `TechBadge`, `SkillsSection`, `ExperienceSection` y `ContactSection` al mismo nivel de refinamiento que Hero y ProjectCard.
 
 Debe conservar el estilo actual:
 
-- dark
-- minimal
-- técnico
-- sobrio
-- lista vertical (no cambiar a grid 2col)
+- dark.
+- minimal.
+- técnico.
+- sobrio.
+- editorial.
+- compacto.
 
 Y mejorarlo con:
 
-- hover con `translateY(-2px)` + border glow.
-- shine border: CSS `::after` sweep en hover.
-- eliminar `scale(1.1)` en imagen.
-- stagger reveal al scroll (ya tiene `data-reveal`).
-- spotlight hover opcional (TS mousemove, solo desktop con `@media (pointer: fine)`).
+- JobCard más jerarquizada visualmente.
+- TechBadge con hover sutil y consistente.
+- Skills grid con mejor hover por celda.
+- Separación visual entre trabajos más clara.
+- Contact social cards con hover refinado.
+- Uso del motion system existente.
 
 ## Archivos permitidos para lectura
 
@@ -42,16 +45,13 @@ Y mejorarlo con:
 - `MIGRATION_TASK.md`
 - `UI_DIRECTION.md`
 - `.claude/skills/ui-modernizer/SKILL.md`
-- `.claude/skills/astro-effects-engineer/SKILL.md`
-- `src/components/sections/HeroSection.astro`
+- `src/components/home/JobCard.astro`
+- `src/components/ui/TechBadge.astro`
+- `src/components/sections/SkillsSection.astro`
+- `src/components/sections/ExperienceSection.astro`
+- `src/components/sections/ContactSection.astro`
 - `src/components/ui/SocialLink.astro`
-- `src/data/site.ts`
-- `src/types/index.ts`
 - `src/styles/globals.css`
-- `src/styles/animations.css`
-- `src/scripts/animations.ts`
-- `public/img/profile/**`
-- `public/img/**`
 
 ## Comandos baratos permitidos
 
@@ -59,202 +59,102 @@ Usar primero:
 
     git status --short
     git diff --stat
-    rg "HeroSection|hero|profile|author|role|description|cvPath|socialLinks|data-reveal|gradient|badge|cta" src -n
-    find public/img -maxdepth 3 -type f | sort
+    rg "JobCard|TechBadge|skill|job|contact|social|hover|card|badge" src/components -n
 
 ## Archivos permitidos para edición
 
-- `src/components/sections/HeroSection.astro`
+- `src/components/home/JobCard.astro`
+- `src/components/ui/TechBadge.astro`
+- `src/components/sections/SkillsSection.astro`
+- `src/components/sections/ExperienceSection.astro`
+- `src/components/sections/ContactSection.astro`
 - `MIGRATION_STATUS.md`
 - `MIGRATION_TASK.md`
 
 ## Edición excepcional permitida solo si es necesaria
 
-Solo si `HeroSection.astro` necesita datos ya existentes pero no tipados o no expuestos correctamente, se permite editar de forma mínima:
+Solo si un dato impide la mejora visual:
 
-- `src/data/site.ts`
-- `src/types/index.ts`
-
-Reglas de excepción:
-
-- No inventar datos.
-- No cambiar estructura general de `siteConfig` sin necesidad.
-- No tocar otros datos.
-- Justificar el cambio.
+- `src/components/ui/SocialLink.astro`
 
 ## Archivos prohibidos
 
 No modificar:
 
+- `src/components/sections/HeroSection.astro`
+- `src/components/sections/ProjectsSection.astro`
+- `src/components/home/ProjectCard.astro`
 - `src/components/shared/**`
-- `src/components/home/**`
 - `src/components/project/**`
-- `src/components/ui/**`, salvo lectura.
-- `src/components/sections/**`, excepto `HeroSection.astro`.
 - `src/layouts/**`
 - `src/pages/**`
 - `src/scripts/**`
 - `src/styles/**`
-- `src/content/**`
+- `src/data/**`
 - `src/icons/**`
 - `public/**`
 - `package.json`
 - `tsconfig.json`
 - `astro.config.mjs`
 
-Si necesitas modificar un archivo prohibido, primero explica por qué y espera confirmación.
-
 ## Alcance exacto
 
-### 1. Mejorar composición del Hero
+### 1. JobCard
 
-Actualizar únicamente `HeroSection.astro`.
+- Hover sutil: `translateY(-1px)` + border más visible.
+- Mejor jerarquía: empresa/rol/periodo.
+- Separación visual entre trabajos.
+- Usar tokens `--card-border`, `--card-shadow`, `--surface-1`.
 
-El Hero debe tener una estructura más premium y editorial:
+### 2. TechBadge
 
-- bloque de presentación más fuerte.
-- jerarquía clara: eyebrow opcional, nombre, rol, descripción, acciones.
-- imagen de perfil integrada con mejor composición.
-- social links bien ubicados.
-- CTAs visibles y profesionales.
-- mejor balance entre texto, imagen y espacio.
+- Hover con color del badge o primary-color sutil.
+- Transición consistente con el sistema.
+- Focus visible.
 
-Reglas:
+### 3. SkillsSection
 
-- No cambiar todo el layout del sitio.
-- No crear secciones nuevas.
-- No cambiar copy principal salvo ajustes mínimos de claridad.
-- No hacerlo parecer landing SaaS genérica.
+- Grid hover por celda con `--shadow-glow` sutil.
+- Separar grupos de skills si existen.
 
-### 2. Agregar acentos visuales sutiles
+### 4. ExperienceSection
 
-Inspirarse en Magic UI / Aceternity UI, pero implementado con CSS local del componente.
+- Timeline o separadores visuales entre trabajos más claros.
+- Header editorial como en ProjectsSection.
 
-Ideas permitidas:
+### 5. ContactSection
 
-- subtle spotlight radial.
-- soft grid/dot pattern.
-- gradient text discreto.
-- border glow controlado en imagen.
-- card-like surface sutil.
-- background accent muy suave.
-- hover refinado en CTAs.
+- Social cards con hover refinado.
+- Coherencia visual con las cards de proyectos.
 
-Reglas:
+### 6. Responsive estable
 
-- No usar gradientes arcoíris.
-- No usar blobs exagerados.
-- No usar partículas.
-- No meter canvas.
-- No instalar dependencias.
-- No usar React.
-- No usar Tailwind.
-- No duplicar tokens globales si ya existen en `globals.css`.
-
-### 3. Usar motion system existente
-
-Aplicar atributos del motion system ya creado:
-
-- `data-reveal`
-- `data-reveal-delay`
-- `data-reveal-stagger`
-
-Reglas:
-
-- No modificar `animations.ts`.
-- No modificar `animations.css`.
-- No hacer que el contenido dependa de JS para verse.
-- No usar delays excesivos.
-
-### 4. Mejorar CTAs
-
-Los CTAs del hero deben ser más claros y modernos:
-
-- CV.
-- Contacto.
-- links sociales.
-
-Reglas:
-
-- Usar `<a>` para navegación o descarga.
-- Usar `aria-label` cuando aplique.
-- No usar botones para navegación.
-- Mantener accesibilidad.
-- Mantener `target="_blank"` y `rel="noopener noreferrer"` en externos.
-
-### 5. Responsive
-
-El Hero debe verse bien en:
-
-- mobile.
-- tablet.
-- desktop.
-
-Reglas:
-
-- No romper el ancho del container.
-- No crear overflow horizontal.
-- No ocultar contenido importante.
-- No usar tamaños excesivos.
-
-## Fuera de alcance
-
-- No modernizar Navbar.
-- No modernizar ProjectCard.
-- No modernizar Experience.
-- No modernizar Skills.
-- No modernizar Contact.
-- No modificar páginas.
-- No modificar layouts.
-- No modificar tokens globales.
-- No modificar motion system.
-- No instalar dependencias.
-- No avanzar a UI-4.
+- Mobile: sin overflow.
+- Tablet y desktop: layouts correctos.
 
 ## Criterios de aceptación
 
-- `HeroSection.astro` se ve más moderno y premium.
-- El estilo sigue siendo dark, técnico, sobrio y editorial.
-- No parece plantilla genérica de IA.
+- Coherencia visual con Hero y ProjectCards.
+- Sin hover agresivo.
+- Sin overflow horizontal.
+- Accesible con teclado.
 - No se instalaron dependencias.
-- No se usó React.
-- No se usó Tailwind.
+- No se usó React ni Tailwind.
 - No hay `any`.
-- No hay overflow horizontal.
-- El contenido sigue visible sin JS.
-- Se usan atributos de reveal existentes.
 - `pnpm astro check` pasa.
 - `pnpm build` pasa.
-- `MIGRATION_STATUS.md` queda actualizado.
-- `MIGRATION_TASK.md` queda preparado para UI-4, pero UI-4 no se ejecuta.
 
 ## Validaciones
-
-Ejecutar:
 
     pnpm astro check
     pnpm build
     git diff --stat
 
-Si el entorno permite preview:
-
-    pnpm preview
-
-Revisar visualmente:
-
-- home desktop.
-- home mobile.
-- dark theme.
-- light theme si existe.
-- que el Hero no rompa el layout.
-
 ## Respuesta esperada
 
-Responder solo con:
-
-1. Cambios visuales aplicados al Hero.
+1. Cambios visuales aplicados.
 2. Archivos modificados.
 3. Resultado de `pnpm astro check`.
 4. Resultado de `pnpm build`.
 5. Pendientes visuales.
-6. Confirmación de que no se avanzó a UI-4.
+6. Confirmación de que no avanzaste a UI-6.

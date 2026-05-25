@@ -405,7 +405,35 @@ Fase actual: Fase 11.1 completada — Optimización SEO para Lighthouse 100.
 - `var(--card-border)` en social icons — misma estrategia.
 - `astro check`: 0 errores, 0 warnings. `build`: 6 páginas + robots + sitemap.
 
+### Fase UI-4
+
+**Modificados:**
+- `src/components/home/ProjectCard.astro` — rediseño premium completo
+- `src/components/sections/ProjectsSection.astro` — header editorial + gap reducido
+
+**Cambios visuales:**
+- Card: background `--card-surface`, borde `--card-border`, `--radius-lg`, `--card-shadow`
+- Hover: `translateY(-2px)`, `--card-shadow-hover`, border-color primary alpha
+- Shine border: `::before` pseudo sweep 135deg en hover (CSS nativo, sin JS)
+- Imagen: `scale(1.03)` en hover (reemplaza `scale(1.1)` agresivo anterior), `object-fit: cover`
+- Eliminado `padding-inline` en figura, `overflow: hidden` en card maneja corners
+- `float-up` infinito eliminado del icono flecha
+- Flecha: `translateX(4px)` en hover (`.project:hover .project__arrow`)
+- Año: badge pill con `--surface-2` + `--border-subtle` + `--text-muted`
+- Título: `font-weight: 600`, `display: inline-flex` con flecha alineada
+- Summary: `font-size: 1.5rem`, `line-height: 1.6`, `text-wrap: pretty`
+- Focus: `:focus-within` dispara hover styles → accesible con teclado
+- Alt descriptivo: `"Captura de pantalla de ${title}"`
+- Desktop: `flex-direction: row`, figura `width: 30rem` se estira al alto del card
+- Mobile: flex column, `aspect-ratio: 543/326` en figura
+- Section: `header.projects-section__header` + descripción editorial breve
+- Gap entre cards: `8rem/5rem` → `2rem` (cards son unidades visuales con surface)
+
+**Validaciones:**
+- `pnpm astro check`: 0 errores, 0 warnings, 25 hints preexistentes
+- `pnpm build`: 6 páginas + robots + sitemap generados
+
 ## Próximo paso
 
-Ejecutar UI-4 — Project cards modernizadas.
-Ver `UI_DIRECTION.md` sección UI-4 y `MIGRATION_TASK.md` para alcance exacto.
+Ejecutar UI-5 — Skills, Experience y Contact polish.
+Ver `UI_DIRECTION.md` sección UI-5 y `MIGRATION_TASK.md` para alcance exacto.

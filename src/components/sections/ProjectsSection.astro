@@ -9,7 +9,12 @@ const projects = (await getCollection('projects')).sort(
 
 <section class="projects-section section" id="proyectos">
   <div class="container">
-    <h2 class="section__title" data-reveal>Proyectos</h2>
+    <header class="projects-section__header">
+      <h2 class="section__title" data-reveal>Proyectos</h2>
+      <p class="projects-section__lead" data-reveal>
+        Una selección de los proyectos que mejor representan mi trabajo.
+      </p>
+    </header>
     <div class="projects" data-reveal-stagger>
       {projects.map((project) => (
         <ProjectCard
@@ -29,16 +34,19 @@ const projects = (await getCollection('projects')).sort(
 </section>
 
 <style>
+  .projects-section__header {
+    margin-block-end: 3.5rem;
+  }
+
+  .projects-section__lead {
+    color: var(--text-muted);
+    font-size: 1.6rem;
+    margin-block-start: 0.8rem;
+  }
+
   .projects {
     display: flex;
     flex-direction: column;
-    gap: 8rem;
-    margin-block-start: 4.5rem;
-  }
-
-  @media (min-width: 768px) {
-    .projects {
-      gap: 5rem;
-    }
+    gap: 2rem;
   }
 </style>

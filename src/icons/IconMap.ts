@@ -28,8 +28,8 @@ export const iconMap: Record<TechName, string> = {
     'TailwindCSS': 'tailwindcss',
     'Figma': 'figma',
     'Photoshop': 'photoshop',
-    'Mongoose': 'mongoose',
-    'Emotion': 'emotion',
+    'Mongoose': 'mongoose_logo',
+    'Emotion': 'emotion_logo',
     'Vite': 'vite',
     'Express': 'express',
 };

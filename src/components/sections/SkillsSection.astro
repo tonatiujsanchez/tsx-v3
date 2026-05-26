@@ -6,6 +6,9 @@ import TechBadge from '@components/ui/TechBadge.astro'
 <section class="skills-section section" id="habilidades">
   <div class="container">
     <h2 class="section__title" data-reveal>Habilidades</h2>
+    <p class="skills-section__lead" data-reveal>
+      Tecnologías con las que trabajo a diario.
+    </p>
     <div class="skills" data-reveal-stagger>
       {skills.map((skill) => (
         <TechBadge name={skill.name} techKey={skill.name} />
@@ -15,17 +18,23 @@ import TechBadge from '@components/ui/TechBadge.astro'
 </section>
 
 <style>
+  .skills-section__lead {
+    color: var(--text-muted);
+    font-size: 1.6rem;
+    margin-block-start: 0.8rem;
+  }
+
   .skills {
     padding-block-start: 3rem;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    gap: 0.8rem;
   }
 
   @media (min-width: 768px) {
     .skills {
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.2rem;
+      gap: 1rem;
     }
   }
 </style>

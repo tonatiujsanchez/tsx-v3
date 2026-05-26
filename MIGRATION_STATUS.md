@@ -433,7 +433,35 @@ Fase actual: Fase 11.1 completada — Optimización SEO para Lighthouse 100.
 - `pnpm astro check`: 0 errores, 0 warnings, 25 hints preexistentes
 - `pnpm build`: 6 páginas + robots + sitemap generados
 
+### Fase UI-5
+
+**Modificados:**
+- `src/icons/IconMap.ts` — slugs corregidos: `emotion` → `emotion_logo`, `mongoose` → `mongoose_logo`
+- `src/components/ui/TechBadge.astro` — premium badge con surface + hover
+- `src/components/sections/SkillsSection.astro` — lead editorial + gap reducido
+- `src/components/home/JobCard.astro` — card con surface + jerarquía mejorada
+- `src/components/sections/ExperienceSection.astro` — gap reducido (`3rem` → `1.2rem`)
+- `src/components/ui/SocialLink.astro` — base styles para layout
+- `src/components/sections/ContactSection.astro` — social links con surface + hover glow + arrow
+- `src/components/home/ContactForm.astro` — wrapper surface, inputs mejorados, submit primary-color
+
+**Cambios visuales:**
+- TechBadge: `background: --surface-1`, `border: --card-border`, `--radius-md`, hover `translateY(-1px)` + `--shadow-glow`
+- TechIcon: slugs corregidos via iconMap → emotion_logo/mongoose_logo resuelven a .webp correcto
+- JobCard: eliminada estructura `job__header-company` anidada; nueva jerarquía `job__title` (600) + `job__company` (muted) + `job__period` (badge pill)
+- JobCard: `background: --surface-1`, `border: --card-border`, `--radius-lg`, hover sutil
+- Logo empresa: `border-radius: --radius-md` (cuadrado redondeado vs círculo), `--surface-2` bg
+- ExperienceSection: gap jobs `3rem` → `1.2rem` (tarjetas con surface no necesitan aire extra)
+- SocialLink: `.social-link__label` explícito en `<span>` para styling preciso
+- ContactSection: social cards con `--surface-1` + `--card-border` + `--shadow-soft`, hover con `--shadow-glow` + arrow `translateX(3px)`
+- ContactForm: wrapper con `--surface-1` + `--card-border` + `--radius-lg`, inputs con `--border-normal` + `--surface-2` bg, focus `--primary-color` border, submit `--primary-color` fill → hover transparente
+- Floating label bg: `--surface-1` (matchea wrapper surface), color activo `--primary-color`
+
+**Validaciones:**
+- `pnpm astro check`: 0 errores, 0 warnings, 25 hints preexistentes
+- `pnpm build`: 6 páginas + robots + sitemap. Completado en 872ms
+
 ## Próximo paso
 
-Ejecutar UI-5 — Skills, Experience y Contact polish.
-Ver `UI_DIRECTION.md` sección UI-5 y `MIGRATION_TASK.md` para alcance exacto.
+Ejecutar UI-6 — Páginas de detalle modernas.
+Ver `UI_DIRECTION.md` sección UI-6 y `MIGRATION_TASK.md` para alcance exacto.

@@ -2,7 +2,7 @@
 
 ## Tarea actual
 
-Fase UI-5 — Skills, Experience y Contact polish.
+Fase UI-6 — Páginas de detalle de proyecto modernizadas.
 
 ## Contexto
 
@@ -13,30 +13,23 @@ La UI ya tiene:
 - UI-2: motion system nativo.
 - UI-3: Hero premium.
 - UI-4: Project cards premium.
+- UI-5: Experience, Skills y Contact polish.
 
-Ahora se deben refinar las secciones de habilidades, experiencia y contacto para mantener coherencia visual con lo ya modernizado.
+Ahora se deben modernizar las páginas de detalle de proyectos para que mantengan coherencia con el home modernizado.
+
+No se debe instalar Magic UI, Aceternity UI, React, Tailwind ni Motion.
 
 ## Objetivo
 
-Elevar `JobCard`, `TechBadge`, `SkillsSection`, `ExperienceSection` y `ContactSection` al mismo nivel de refinamiento que Hero y ProjectCard.
+Elevar visualmente `/projects/[slug]` para que tenga la misma calidad premium que el home.
 
-Debe conservar el estilo actual:
+La mejora debe sentirse:
 
-- dark.
-- minimal.
-- técnico.
-- sobrio.
+- dark premium.
+- técnica.
 - editorial.
-- compacto.
-
-Y mejorarlo con:
-
-- JobCard más jerarquizada visualmente.
-- TechBadge con hover sutil y consistente.
-- Skills grid con mejor hover por celda.
-- Separación visual entre trabajos más clara.
-- Contact social cards con hover refinado.
-- Uso del motion system existente.
+- coherente con el home.
+- con microinteracciones sutiles.
 
 ## Archivos permitidos para lectura
 
@@ -45,49 +38,37 @@ Y mejorarlo con:
 - `MIGRATION_TASK.md`
 - `UI_DIRECTION.md`
 - `.claude/skills/ui-modernizer/SKILL.md`
-- `src/components/home/JobCard.astro`
-- `src/components/ui/TechBadge.astro`
-- `src/components/sections/SkillsSection.astro`
-- `src/components/sections/ExperienceSection.astro`
-- `src/components/sections/ContactSection.astro`
-- `src/components/ui/SocialLink.astro`
+- `src/pages/projects/[slug].astro`
+- `src/components/project/ProjectLinks.astro`
+- `src/components/project/ProjectContact.astro`
+- `src/components/ui/ProjectFigure.astro`
 - `src/styles/globals.css`
 
 ## Comandos baratos permitidos
 
-Usar primero:
-
     git status --short
     git diff --stat
-    rg "JobCard|TechBadge|skill|job|contact|social|hover|card|badge" src/components -n
+    rg "ProjectLinks|ProjectContact|ProjectFigure|project|slug|detail|header|tech|gallery|markdown" src/pages/projects -n
 
 ## Archivos permitidos para edición
 
-- `src/components/home/JobCard.astro`
-- `src/components/ui/TechBadge.astro`
-- `src/components/sections/SkillsSection.astro`
-- `src/components/sections/ExperienceSection.astro`
-- `src/components/sections/ContactSection.astro`
+- `src/pages/projects/[slug].astro`
+- `src/components/project/ProjectLinks.astro`
+- `src/components/project/ProjectContact.astro`
+- `src/components/ui/ProjectFigure.astro`
 - `MIGRATION_STATUS.md`
 - `MIGRATION_TASK.md`
-
-## Edición excepcional permitida solo si es necesaria
-
-Solo si un dato impide la mejora visual:
-
-- `src/components/ui/SocialLink.astro`
 
 ## Archivos prohibidos
 
 No modificar:
 
-- `src/components/sections/HeroSection.astro`
-- `src/components/sections/ProjectsSection.astro`
-- `src/components/home/ProjectCard.astro`
+- `src/components/sections/**`
+- `src/components/home/**`
 - `src/components/shared/**`
-- `src/components/project/**`
+- `src/components/ui/TechBadge.astro`
+- `src/components/ui/TechIcon.astro`
 - `src/layouts/**`
-- `src/pages/**`
 - `src/scripts/**`
 - `src/styles/**`
 - `src/data/**`
@@ -99,48 +80,40 @@ No modificar:
 
 ## Alcance exacto
 
-### 1. JobCard
+### 1. Página de detalle `[slug].astro`
 
-- Hover sutil: `translateY(-1px)` + border más visible.
-- Mejor jerarquía: empresa/rol/periodo.
-- Separación visual entre trabajos.
-- Usar tokens `--card-border`, `--card-shadow`, `--surface-1`.
+- Header de proyecto más prominente (título grande, año, tech stack).
+- Cover con mejor tratamiento visual.
+- TechBadge en entrada con stagger.
+- ProjectLinks más visibles y refinados.
+- Contenido markdown legible y tipográficamente correcto.
+- `data-reveal` en secciones clave.
 
-### 2. TechBadge
+### 2. ProjectLinks
 
-- Hover con color del badge o primary-color sutil.
-- Transición consistente con el sistema.
-- Focus visible.
+- Botones con borde visible y hover premium.
+- Usar tokens globales existentes.
 
-### 3. SkillsSection
+### 3. ProjectContact
 
-- Grid hover por celda con `--shadow-glow` sutil.
-- Separar grupos de skills si existen.
+- CTA más integrado con el diseño.
+- Coherencia con el home.
 
-### 4. ExperienceSection
+### 4. ProjectFigure
 
-- Timeline o separadores visuales entre trabajos más claros.
-- Header editorial como en ProjectsSection.
+- Imagen con mejor tratamiento.
+- Caption más legible.
 
-### 5. ContactSection
+### 5. Responsive
 
-- Social cards con hover refinado.
-- Coherencia visual con las cards de proyectos.
-
-### 6. Responsive estable
-
-- Mobile: sin overflow.
-- Tablet y desktop: layouts correctos.
+- Mobile, tablet, desktop sin overflow.
 
 ## Criterios de aceptación
 
-- Coherencia visual con Hero y ProjectCards.
-- Sin hover agresivo.
+- Detalle de proyecto se siente premium y coherente con el home.
+- ProjectLinks visibles y accesibles.
+- Markdown content legible.
 - Sin overflow horizontal.
-- Accesible con teclado.
-- No se instalaron dependencias.
-- No se usó React ni Tailwind.
-- No hay `any`.
 - `pnpm astro check` pasa.
 - `pnpm build` pasa.
 
@@ -157,4 +130,4 @@ No modificar:
 3. Resultado de `pnpm astro check`.
 4. Resultado de `pnpm build`.
 5. Pendientes visuales.
-6. Confirmación de que no avanzaste a UI-6.
+6. Confirmación de que no avanzaste a UI-7.

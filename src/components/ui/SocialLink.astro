@@ -18,7 +18,22 @@ const { href, label, icon, ariaLabel } = Astro.props
 >
   <span class="social-link__name">
     <i class={`bx ${icon} social-link__icon`} aria-hidden="true"></i>
-    {label}
+    <span class="social-link__label">{label}</span>
   </span>
-  <i class="bx bx-right-arrow-alt link-external-icon social-link__arrow" aria-hidden="true"></i>
+  <i class="bx bx-right-arrow-alt social-link__arrow" aria-hidden="true"></i>
 </a>
+
+<style>
+  .social-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+  }
+
+  .social-link__name {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+</style>

@@ -461,7 +461,53 @@ Fase actual: Fase 11.1 completada — Optimización SEO para Lighthouse 100.
 - `pnpm astro check`: 0 errores, 0 warnings, 25 hints preexistentes
 - `pnpm build`: 6 páginas + robots + sitemap. Completado en 872ms
 
+### Fase UI-6
+
+**Modificados:**
+- `src/pages/projects/[slug].astro` — redesign editorial completo
+- `src/components/ui/ProjectFigure.astro` — frame premium con hover
+- `src/components/project/ProjectLinks.astro` — props extendidas + botones premium
+- `src/components/project/ProjectContact.astro` — callout card con CTA
+
+**Cambios visuales:**
+
+`[slug].astro`:
+- Hero: título `3rem` mobile / `4.8rem` desktop, `font-weight: 700`, `letter-spacing: -0.02em`
+- Descripción largo en hero, `line-height: 1.7`, `max-width: 68rem`
+- Meta row: year + Desktop/Mobile como pills `--surface-2` + `--border-subtle`
+- Links en hero como action buttons: outline (`--surface-1` + `--card-border`) + demo fill `--primary-color`
+- `project-info` section eliminada (absorbida en hero)
+- Tech stack: pills inline con `--surface-1` + `--card-border` + `--radius-pill`, hover glow sutil
+- `project-subtitle` estilo ALL-CAPS small-label (`1.4rem`, `text-transform: uppercase`, `letter-spacing: 0.08em`)
+- Gallery: título + espaciado mejorado
+- Markdown content: `:global()` con h2/h3/p/ul/li/strong/a/code styled
+- `year` añadido al destructuring de `project.data`
+- `data-reveal` en hero + subtitle, `data-reveal-stagger` en tech stack
+
+`ProjectFigure.astro`:
+- `--card-border` + `--radius-lg` + `--card-shadow` (reemplaza `--border-primary` + `0.5rem` + ninguno)
+- `--surface-1` bg (reemplaza `--content-color` no definida en UI-1)
+- Hover `translateY(-2px)` en figura + `--shadow-strong` en frame
+- Caption: `1.4rem`, `--text-muted`, `line-height: 1.5`
+
+`ProjectLinks.astro`:
+- Props extendidas: añadidos `githubFrontend?` + `githubBackend?`
+- DevManager `githubBackend` ahora renderizable
+- Estilos premium: misma familia que hero actions
+- Demo fill `--primary-color` → hover transparente
+
+`ProjectContact.astro`:
+- Card con `--surface-1` + `--card-border` + `--radius-lg`
+- Accent gradient line en top (pseudo `::before`)
+- Ícono mail `--primary-color`, `3.2rem`
+- CTA: fill `--primary-color` → hover outline
+- `float-up` infinito eliminado, flecha `translateX(3px)` en hover
+
+**Validaciones:**
+- `pnpm astro check`: 0 errores, 0 warnings, 25 hints preexistentes
+- `pnpm build`: 6 páginas + robots + sitemap. 902ms
+
 ## Próximo paso
 
-Ejecutar UI-6 — Páginas de detalle modernas.
-Ver `UI_DIRECTION.md` sección UI-6 y `MIGRATION_TASK.md` para alcance exacto.
+Ejecutar UI-7 — Integración selectiva efectos Nivel 3 + Visual QA final.
+Ver `UI_DIRECTION.md` sección UI-7/UI-8 y `MIGRATION_TASK.md` para alcance exacto.

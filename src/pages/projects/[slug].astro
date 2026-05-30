@@ -20,7 +20,7 @@ interface Props {
 }
 
 const { project } = Astro.props
-const { title, description, cover, coverCaption, tech, demo, github, githubFrontend, githubBackend, gallery } =
+const { title, description, cover, coverCaption, tech, demo, github, githubFrontend, githubBackend, gallery, year } =
   project.data
 const { Content } = await render(project)
 
@@ -39,6 +39,8 @@ const jsonLd = {
     url: siteConfig.url,
   },
 }
+
+const hasLinks = github || githubFrontend || githubBackend || demo
 ---
 
 <ProjectLayout
@@ -49,11 +51,72 @@ const jsonLd = {
   ogType="article"
   jsonLd={jsonLd}
 >
-  <main class="container">
+  <main class="project-detail container">
 
-    <section class="hero">
-      <h1 class="project-title">{title}</h1>
-      <p class="project-summary">{description}</p>
+    <!-- Hero -->
+    <section class="project-hero" data-reveal>
+      <h1 class="project-hero__title">{title}</h1>
+      <p class="project-hero__description">{description}</p>
+
+      <div class="project-hero__meta">
+        {year && <span class="meta-tag">{year}</span>}
+        <span class="meta-tag">Desktop</span>
+        <span class="meta-tag">Mobile</span>
+      </div>
+
+      {hasLinks && (
+        <div class="project-hero__links">
+          {githubFrontend && (
+            <a
+              class="project-action"
+              href={githubFrontend}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Ver repositorio frontend en GitHub"
+            >
+              <i class="bx bxl-github" aria-hidden="true"></i>
+              <span>Frontend</span>
+            </a>
+          )}
+          {githubBackend && (
+            <a
+              class="project-action"
+              href={githubBackend}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Ver repositorio backend en GitHub"
+            >
+              <i class="bx bxl-github" aria-hidden="true"></i>
+              <span>Backend</span>
+            </a>
+          )}
+          {github && (
+            <a
+              class="project-action"
+              href={github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Ver código fuente en GitHub"
+            >
+              <i class="bx bxl-github" aria-hidden="true"></i>
+              <span>Repositorio</span>
+            </a>
+          )}
+          {demo && (
+            <a
+              class="project-action project-action--primary"
+              href={demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Ver demo en vivo"
+            >
+              <i class="bx bx-link-external" aria-hidden="true"></i>
+              <span>Ver demo</span>
+            </a>
+          )}
+        </div>
+      )}
+
       <ProjectFigure
         src={cover}
         alt={`Portada de ${title}`}
@@ -62,8 +125,25 @@ const jsonLd = {
       />
     </section>
 
+    <!-- Tech stack -->
+    <section class="project-section">
+      <h2 class="project-subtitle" data-reveal>Tecnologías</h2>
+      <div class="project-tech" data-reveal-stagger>
+        {tech.map((t) => (
+          <div class="tech-pill" data-reveal>
+            <span class="tech-pill__icon">
+              <TechIcon techKey={t} size={18} />
+            </span>
+            <span class="tech-pill__name">{t}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Gallery -->
     {gallery && gallery.length > 0 && (
-      <section class="projects-views">
+      <section class="project-section project-gallery">
+        <h2 class="project-subtitle" data-reveal>Vistas del proyecto</h2>
         {gallery.map((item) => (
           <ProjectFigure
             src={item.src}
@@ -74,95 +154,8 @@ const jsonLd = {
       </section>
     )}
 
-    <section>
-      <h2 class="subtitle">Tecnologías utilizadas</h2>
-      <div class="technologies">
-        {tech.map((t) => (
-          <div class="technology">
-            <span class="technology__icon">
-              <TechIcon techKey={t} size={20} />
-            </span>
-            <span class="technology__name">{t}</span>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <section class="project-info">
-      <div>
-        <h2 class="subtitle">Versiones</h2>
-        <div class="versions">
-          <div class="versions__item">Desktop</div>
-          <div class="versions__item">Mobile</div>
-        </div>
-      </div>
-
-      {(github || githubFrontend || githubBackend || demo) && (
-        <div>
-          <h2 class="subtitle">Enlaces</h2>
-          <div class="links">
-            {githubFrontend && (
-              <a
-                class="links__item"
-                href={githubFrontend}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Ver repositorio frontend del proyecto"
-              >
-                <span class="links__item-name">
-                  <i class="bx bxl-github" aria-hidden="true"></i> Frontend
-                </span>
-                <i class="bx bx-right-arrow-alt link-external-icon" aria-hidden="true"></i>
-              </a>
-            )}
-            {githubBackend && (
-              <a
-                class="links__item"
-                href={githubBackend}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Ver repositorio backend del proyecto"
-              >
-                <span class="links__item-name">
-                  <i class="bx bxl-github" aria-hidden="true"></i> Backend
-                </span>
-                <i class="bx bx-right-arrow-alt link-external-icon" aria-hidden="true"></i>
-              </a>
-            )}
-            {github && (
-              <a
-                class="links__item"
-                href={github}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Ver repositorio del proyecto"
-              >
-                <span class="links__item-name">
-                  <i class="bx bxl-github" aria-hidden="true"></i> Repositorio
-                </span>
-                <i class="bx bx-right-arrow-alt link-external-icon" aria-hidden="true"></i>
-              </a>
-            )}
-            {demo && (
-              <a
-                class="links__item"
-                href={demo}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Ir al proyecto"
-              >
-                <span class="links__item-name">
-                  <i class="bx bx-world" aria-hidden="true"></i> Proyecto
-                </span>
-                <i class="bx bx-right-arrow-alt link-external-icon" aria-hidden="true"></i>
-              </a>
-            )}
-          </div>
-        </div>
-      )}
-    </section>
-
-    <div class="project-content">
+    <!-- Markdown content -->
+    <div class="project-content" data-reveal>
       <Content />
     </div>
 
@@ -172,139 +165,239 @@ const jsonLd = {
 </ProjectLayout>
 
 <style>
-  .hero {
-    padding-block-start: 3rem;
+  .project-detail {
+    padding-block-end: 0;
   }
 
-  .project-title {
+  /* ===== Hero ===== */
+
+  .project-hero {
+    padding-block-start: 4rem;
+    padding-block-end: 0;
+    margin-block-end: 5rem;
+  }
+
+  .project-hero__title {
     color: var(--title-color);
-    font-size: 2.5rem;
-    margin-block-end: 1.5rem;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-block-end: 1.4rem;
   }
 
-  .project-summary {
+  .project-hero__description {
     color: var(--text-color);
-    margin-block-end: 4rem;
-  }
-
-  .projects-views {
-    margin-block-end: 2rem;
-  }
-
-  .subtitle {
     font-size: 1.6rem;
-    color: var(--title-color);
+    line-height: 1.7;
+    max-width: 68rem;
+    text-wrap: pretty;
     margin-block-end: 2rem;
-    font-weight: 500;
   }
 
-  /* ===== Technologies ===== */
-
-  .technologies {
+  .project-hero__meta {
     display: flex;
-    gap: 0.8rem;
     flex-wrap: wrap;
-    margin-block-end: 4rem;
+    gap: 0.6rem;
+    margin-block-end: 2rem;
   }
 
-  .technology {
+  .meta-tag {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    padding: 0.3rem 1rem;
+    border-radius: var(--radius-pill);
+    border: var(--border-subtle);
+  }
+
+  .project-hero__links {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
     gap: 0.8rem;
-    border: var(--border-primary);
-    border-radius: 2rem;
-    padding-block: 0.3rem;
-    padding-inline: 1.5rem;
+    margin-block-end: 3rem;
   }
 
-  .technology__icon {
+  .project-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding-block: 0.8rem;
+    padding-inline: 1.6rem;
+    background: var(--surface-1);
+    border: var(--card-border);
+    border-radius: var(--radius-md);
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--title-color);
+    text-decoration: none;
+    transition:
+      transform var(--transition-fast),
+      border-color var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .project-action:hover {
+    transform: translateY(-1px);
+    border-color: rgba(211, 115, 78, 0.3);
+    box-shadow: var(--shadow-glow);
+    text-decoration: none;
+  }
+
+  .project-action--primary {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+  }
+
+  .project-action--primary:hover {
+    background: transparent;
+    color: var(--primary-color);
+  }
+
+  .project-action i {
+    font-size: 1.6rem;
+    flex: none;
+  }
+
+  /* ===== Sections ===== */
+
+  .project-section {
+    margin-block-end: 5rem;
+  }
+
+  .project-subtitle {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-block-end: 1.6rem;
+  }
+
+  /* ===== Tech stack ===== */
+
+  .project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .tech-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--surface-1);
+    border: var(--card-border);
+    border-radius: var(--radius-pill);
+    padding-block: 0.4rem;
+    padding-inline: 1.2rem;
+    font-size: 1.4rem;
+    color: var(--title-color);
+    transition:
+      border-color var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .tech-pill:hover {
+    border-color: rgba(211, 115, 78, 0.2);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .tech-pill__icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.2rem;
-    height: 2.4rem;
-    border-radius: 0.4rem;
+    width: 1.8rem;
+    height: 1.8rem;
     overflow: hidden;
   }
 
-  .technology__name {
-    font-size: 1.4rem;
+  .tech-pill__name {
+    font-size: 1.3rem;
+    font-weight: 500;
   }
 
-  /* ===== Project info (versions + links) ===== */
+  /* ===== Gallery ===== */
 
-  .project-info {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4rem;
-    margin-block-end: 8rem;
+  .project-gallery {
+    margin-block-end: 2rem;
   }
 
-  .versions {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .versions__item {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    border: var(--border-primary);
-    border-radius: 2rem;
-    padding-block: 0.3rem;
-    padding-inline: 1.5rem;
-  }
-
-  .links {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-  }
-
-  .links__item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding-block: 0.5rem;
-    padding-inline: 1.5rem;
-    border: var(--border-primary);
-    border-radius: 0.5rem;
-    transition: all 0.3s;
-  }
-
-  .links__item:hover {
-    color: var(--title-color);
-    border: 0.1rem solid var(--text-color);
-  }
-
-  .links__item:hover .link-external-icon {
-    animation: float-up 2s ease-in-out infinite;
-  }
-
-  .links__item-name {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .links__item-name i {
-    font-size: 1.8rem;
-  }
+  /* ===== Markdown content ===== */
 
   .project-content {
+    margin-block-end: 5rem;
     color: var(--text-color);
-    line-height: 1.7;
-    margin-block-end: 4rem;
+    line-height: 1.75;
+    font-size: 1.6rem;
   }
 
+  .project-content :global(h2) {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--title-color);
+    margin-block-start: 3rem;
+    margin-block-end: 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .project-content :global(h3) {
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: var(--title-color);
+    margin-block-start: 2.4rem;
+    margin-block-end: 0.8rem;
+  }
+
+  .project-content :global(p) {
+    margin-block-end: 1.4rem;
+    text-wrap: pretty;
+  }
+
+  .project-content :global(ul),
+  .project-content :global(ol) {
+    padding-inline-start: 2rem;
+    margin-block-end: 1.4rem;
+  }
+
+  .project-content :global(li) {
+    margin-block-end: 0.4rem;
+  }
+
+  .project-content :global(strong) {
+    color: var(--title-color);
+    font-weight: 600;
+  }
+
+  .project-content :global(a) {
+    color: var(--primary-color);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .project-content :global(a:hover) {
+    opacity: 0.8;
+  }
+
+  .project-content :global(code) {
+    font-size: 0.9em;
+    background: var(--surface-2);
+    border: var(--border-subtle);
+    border-radius: var(--radius-xs);
+    padding: 0.1em 0.4em;
+  }
+
+  /* ===== Responsive ===== */
+
   @media (min-width: 768px) {
-    .hero {
+    .project-hero {
       padding-block-start: 9rem;
     }
 
-    .project-info {
-      gap: 8rem;
+    .project-hero__title {
+      font-size: 4.8rem;
     }
   }
 </style>

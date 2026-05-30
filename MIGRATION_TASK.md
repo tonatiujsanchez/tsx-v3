@@ -2,7 +2,7 @@
 
 ## Tarea actual
 
-Fase UI-6 — Páginas de detalle de proyecto modernizadas.
+Fase UI-7/UI-8 — Visual QA + Lighthouse audit.
 
 ## Contexto
 
@@ -14,120 +14,58 @@ La UI ya tiene:
 - UI-3: Hero premium.
 - UI-4: Project cards premium.
 - UI-5: Experience, Skills y Contact polish.
+- UI-6: Páginas de detalle premium.
 
-Ahora se deben modernizar las páginas de detalle de proyectos para que mantengan coherencia con el home modernizado.
-
-No se debe instalar Magic UI, Aceternity UI, React, Tailwind ni Motion.
+El home y las páginas de detalle están modernizadas. Toca hacer QA visual + auditoría Lighthouse final.
 
 ## Objetivo
 
-Elevar visualmente `/projects/[slug]` para que tenga la misma calidad premium que el home.
+Verificar que el portafolio completo funcione correctamente, sin regresiones, accesible y con buen performance.
 
-La mejora debe sentirse:
+## Tareas
 
-- dark premium.
-- técnica.
-- editorial.
-- coherente con el home.
-- con microinteracciones sutiles.
+### 1. Visual QA con skill `visual-qa`
 
-## Archivos permitidos para lectura
+Ejecutar el skill `visual-qa` sobre:
+- Home desktop
+- Home mobile
+- Páginas de detalle
 
-- `CLAUDE.md`
-- `MIGRATION_STATUS.md`
-- `MIGRATION_TASK.md`
-- `UI_DIRECTION.md`
-- `.claude/skills/ui-modernizer/SKILL.md`
-- `src/pages/projects/[slug].astro`
-- `src/components/project/ProjectLinks.astro`
-- `src/components/project/ProjectContact.astro`
-- `src/components/ui/ProjectFigure.astro`
-- `src/styles/globals.css`
+Detectar:
+- Overflow horizontal
+- Inconsistencias visuales entre secciones
+- Exceso de efectos
+- Problemas de contraste
+- Focus visible en interactivos
+- Contenido visible sin JS
+- Comportamiento en light theme
 
-## Comandos baratos permitidos
+### 2. Lighthouse audit
 
-    git status --short
-    git diff --stat
-    rg "ProjectLinks|ProjectContact|ProjectFigure|project|slug|detail|header|tech|gallery|markdown" src/pages/projects -n
+Ejecutar `pnpm preview` + Lighthouse:
+- Performance ≥ 90
+- SEO = 100
+- Accesibilidad ≥ 95
+- Best Practices ≥ 90
 
-## Archivos permitidos para edición
+### 3. Fixes de regresión
 
-- `src/pages/projects/[slug].astro`
-- `src/components/project/ProjectLinks.astro`
-- `src/components/project/ProjectContact.astro`
-- `src/components/ui/ProjectFigure.astro`
-- `MIGRATION_STATUS.md`
-- `MIGRATION_TASK.md`
+Solo fixes puntuales detectados en QA. No rediseñar.
 
-## Archivos prohibidos
+## Archivos probables para edición
 
-No modificar:
-
-- `src/components/sections/**`
-- `src/components/home/**`
-- `src/components/shared/**`
-- `src/components/ui/TechBadge.astro`
-- `src/components/ui/TechIcon.astro`
-- `src/layouts/**`
-- `src/scripts/**`
-- `src/styles/**`
-- `src/data/**`
-- `src/icons/**`
-- `public/**`
-- `package.json`
-- `tsconfig.json`
-- `astro.config.mjs`
-
-## Alcance exacto
-
-### 1. Página de detalle `[slug].astro`
-
-- Header de proyecto más prominente (título grande, año, tech stack).
-- Cover con mejor tratamiento visual.
-- TechBadge en entrada con stagger.
-- ProjectLinks más visibles y refinados.
-- Contenido markdown legible y tipográficamente correcto.
-- `data-reveal` en secciones clave.
-
-### 2. ProjectLinks
-
-- Botones con borde visible y hover premium.
-- Usar tokens globales existentes.
-
-### 3. ProjectContact
-
-- CTA más integrado con el diseño.
-- Coherencia con el home.
-
-### 4. ProjectFigure
-
-- Imagen con mejor tratamiento.
-- Caption más legible.
-
-### 5. Responsive
-
-- Mobile, tablet, desktop sin overflow.
+Depende de los hallazgos del QA. Cualquier archivo de componente permitido anteriormente.
 
 ## Criterios de aceptación
 
-- Detalle de proyecto se siente premium y coherente con el home.
-- ProjectLinks visibles y accesibles.
-- Markdown content legible.
-- Sin overflow horizontal.
+- Visual QA sin hallazgos críticos.
+- Lighthouse mínimos alcanzados.
 - `pnpm astro check` pasa.
 - `pnpm build` pasa.
+- MIGRATION_STATUS.md actualizado.
 
 ## Validaciones
 
     pnpm astro check
     pnpm build
-    git diff --stat
-
-## Respuesta esperada
-
-1. Cambios visuales aplicados.
-2. Archivos modificados.
-3. Resultado de `pnpm astro check`.
-4. Resultado de `pnpm build`.
-5. Pendientes visuales.
-6. Confirmación de que no avanzaste a UI-7.
+    pnpm preview  # luego Lighthouse manual

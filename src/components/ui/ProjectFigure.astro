@@ -10,7 +10,7 @@ const { src, alt, caption, transitionName } = Astro.props
 ---
 
 <figure class="project-figure">
-  <div class="project-figure__content">
+  <div class="project-figure__frame">
     <img
       class="project-figure__img"
       src={src}
@@ -24,15 +24,26 @@ const { src, alt, caption, transitionName } = Astro.props
 
 <style>
   .project-figure {
-    margin-block-end: 5rem;
+    margin-block-end: 4rem;
+    transition: transform var(--transition-base);
   }
 
-  .project-figure__content {
-    border-radius: 0.5rem;
+  .project-figure:hover {
+    transform: translateY(-2px);
+  }
+
+  .project-figure__frame {
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    background-color: var(--content-color);
-    border: var(--border-primary);
+    background: var(--surface-1);
+    border: var(--card-border);
+    box-shadow: var(--card-shadow);
     margin-block-end: 1rem;
+    transition: box-shadow var(--transition-base);
+  }
+
+  .project-figure:hover .project-figure__frame {
+    box-shadow: var(--shadow-strong);
   }
 
   .project-figure__img {
@@ -43,7 +54,10 @@ const { src, alt, caption, transitionName } = Astro.props
   }
 
   .project-figure__caption {
-    font-size: 1.5rem;
-    padding-inline: 1rem;
+    font-size: 1.4rem;
+    color: var(--text-muted);
+    padding-inline: 0.4rem;
+    line-height: 1.5;
+    text-wrap: pretty;
   }
 </style>

@@ -735,3 +735,38 @@ Portafolio completamente modernizado. Todas las fases UI-0 → UI-8 completadas.
 **Validaciones:**
 - `pnpm astro check`: 0 errores, 0 warnings, 45 hints preexistentes.
 - `pnpm build`: 7 páginas (sin rutas de categoria/tag — solo draft) + robots.txt + sitemap.xml + rss.xml. 945ms.
+
+### Fase BLOG-6
+
+**Creados:**
+- `src/content/blog/claude-code-sin-gastar-tantos-tokens.md` — artículo real, `draft: true`. ~1,500 palabras. Categoría: `tutoriales`. Tags: `claude-code`, `ia-generativa`, `productividad`, `frontend`, `workflow`. `featured: true`.
+
+**Frontmatter:**
+- `title`: "Cómo usar Claude Code sin gastar tantos tokens"
+- `publishedAt`: 2026-05-31
+- `updatedAt`: 2026-05-31
+- `category`: tutoriales
+- `author`: Tonatiuj Sánchez
+- `featured`: true
+- `draft`: true (no publicado)
+- `cover.src`: `/img/blog/claude-code-sin-gastar-tantos-tokens/cover.webp` (imagen no creada — draft)
+- `ogImage`: mismo path que cover
+
+**Contenido cubre:**
+- El problema de contexto sin persistencia
+- Error común: "analiza todo el proyecto"
+- Los tres archivos de contexto: `CLAUDE.md`, `MIGRATION_STATUS.md`, `MIGRATION_TASK.md`
+- Prompts cortos para ejecutar fases
+- Cuándo usar `/clear` vs `/compact`
+- Skills locales en `.claude/skills/`
+- Flujo paso a paso
+- Tabla checklist de buenas prácticas
+- Conclusión
+
+**Pendientes conocidos:**
+- Cover real no creada — draft no la necesita
+- Revisión editorial pendiente (BLOG-6.1)
+
+**Validaciones:**
+- `pnpm astro check`: 0 errores, 0 warnings, 45 hints preexistentes.
+- `pnpm build`: 7 páginas (artículo excluido — draft: true) + robots.txt + sitemap.xml + rss.xml. 937ms.

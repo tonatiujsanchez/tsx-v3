@@ -507,7 +507,71 @@ Fase actual: Fase 11.1 completada — Optimización SEO para Lighthouse 100.
 - `pnpm astro check`: 0 errores, 0 warnings, 25 hints preexistentes
 - `pnpm build`: 6 páginas + robots + sitemap. 902ms
 
-## Próximo paso
+### Fase UI-7
 
-Ejecutar UI-7 — Integración selectiva efectos Nivel 3 + Visual QA final.
-Ver `UI_DIRECTION.md` sección UI-7/UI-8 y `MIGRATION_TASK.md` para alcance exacto.
+**Creados:**
+- `UI_QA_REPORT.md` — reporte completo de QA visual, accesibilidad y decisión Magic UI/Aceternity
+
+**Auditoría:**
+- 0 regresiones críticas
+- Home: PASS todas las secciones
+- Detail pages: PASS con 3 issues menores
+- Accesibilidad: PASS checklist completo
+- `pnpm astro check`: 0 errores, `pnpm build`: clean
+
+**Issues menores para UI-7.1:**
+1. `.section__title` sin `font-size` explícito en globals
+2. Toast `background: --white-primary-color` inconsistente en dark theme
+3. Gallery `<ProjectFigure>` sin `data-reveal` en `[slug].astro`
+4. `year` ausente en los 5 frontmatters de proyectos
+
+**Decisión Magic UI / Aceternity:** No necesario. Implementación nativa alcanza nivel premium.
+
+### Fase UI-7.1
+
+**Modificados:**
+- `src/styles/globals.css` — fix 1 + fix 2
+- `src/components/ui/ProjectFigure.astro` — fix 3
+
+**Fix 1 — `section__title` font-size:**
+Añadido `font-size: 2.4rem; font-weight: 700; letter-spacing: -0.01em;` a `.section__title` en globals. Ya no depende del browser default de `<h2>`.
+
+**Fix 2 — Toast dark theme:**
+`.toast` cambiado de `background: --white-primary-color; color: --black-primary-color` a `background: --surface-elevated; color: --title-color; box-shadow: --shadow-strong; border: --border-normal`. Toast ahora es coherente en dark y light theme.
+
+**Fix 3 — Gallery data-reveal:**
+`data-reveal` añadido al root `<figure class="project-figure">` de `ProjectFigure.astro`. Aplica a galería Y a la cover del hero (la cover es pre-marcada `is-visible` al estar en viewport — sin flash).
+
+**Fix 4 — year en frontmatters:**
+**PENDIENTE — sin datos confiables.** Los 5 proyectos (Legado de Tlapa, Contextos Guerrero, DevManager, Share Groups, Admin Sites) no tienen año en frontmatter ni en contenido del `.md`. No se inventaron años. Requiere confirmación del usuario con fechas reales de entrega/lanzamiento. El campo `year` es `optional()` en el schema — las páginas de detalle muestran solo Desktop/Mobile hasta que se agregue.
+
+**Validaciones:**
+- `pnpm astro check`: 0 errores, 0 warnings, 25 hints preexistentes
+- `pnpm build`: 6 páginas + robots + sitemap. 909ms
+
+### Fase UI-8
+
+**Modificados:**
+- `src/components/home/ContactForm.astro` — toast `aria-live="polite" role="status" aria-atomic="true"` + `aria-hidden` en ícono
+
+**Creados:**
+- `FINAL_RELEASE_CHECKLIST.md` — checklist completo de readiness para deploy
+
+**Validaciones:**
+- `pnpm astro check`: 0 errores, 0 warnings, 25 hints preexistentes
+- `pnpm build`: 6 páginas + robots.txt + sitemap.xml — 936ms
+- Todas las rutas presentes en `dist/`
+
+**Veredicto:** `READY_WITH_NON_BLOCKING_PENDING`
+
+## Estado final del proyecto
+
+Portafolio completamente modernizado. Todas las fases UI-0 → UI-8 completadas.
+
+**Pendientes no bloqueantes:**
+- `year` en 5 frontmatters de proyectos (requiere confirmación de fechas reales)
+- `siteConfig.contactApi` — endpoint pendiente (form falla de forma controlada)
+- Light theme no verificado visualmente en browser
+- Lighthouse manual requiere `pnpm preview` + Chrome
+
+**Para deploy:** `pnpm build` → subir `dist/`. Ver `FINAL_RELEASE_CHECKLIST.md`.

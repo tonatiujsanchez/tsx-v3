@@ -235,6 +235,9 @@ textarea {
 }
 
 .section__title {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     margin-block-end: 1rem;
 }
 
@@ -298,16 +301,16 @@ textarea {
     justify-content: center;
     align-items: center;
     gap: 0.8rem;
-    background: var(--white-primary-color);
-    color: var(--black-primary-color);
+    background: var(--surface-elevated);
+    color: var(--title-color);
     padding-inline: 2rem;
     min-width: 22rem;
     width: 85%;
     padding-block: 1.2rem;
     border-radius: 0.5rem;
     z-index: 99;
-    box-shadow: var(--shadow-primary);
-    border: var(--border-primary);
+    box-shadow: var(--shadow-strong);
+    border: var(--border-normal);
     transition: all 0.3s ease-out;
     visibility: hidden;
 }

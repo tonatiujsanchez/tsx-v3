@@ -765,8 +765,60 @@ Portafolio completamente modernizado. Todas las fases UI-0 → UI-8 completadas.
 
 **Pendientes conocidos:**
 - Cover real no creada — draft no la necesita
-- Revisión editorial pendiente (BLOG-6.1)
+- Revisión editorial completada en BLOG-6.1
 
 **Validaciones:**
 - `pnpm astro check`: 0 errores, 0 warnings, 45 hints preexistentes.
 - `pnpm build`: 7 páginas (artículo excluido — draft: true) + robots.txt + sitemap.xml + rss.xml. 937ms.
+
+### Fase BLOG-6.1
+
+**Modificados:**
+- `src/content/blog/claude-code-sin-gastar-tantos-tokens.md` — revisión editorial completa
+
+**Mejoras editoriales:**
+- `description` recortada a ~140 chars (era 239 — sobre el target SEO de ~155)
+- `excerpt` mejorado: gancho más directo desde la primera oración
+- Abre sin "herramienta poderosa" genérico — arranca directo con la característica clave (sin memoria)
+- `frontend` tag reemplazado por `herramientas` (el artículo es sobre workflow, no sobre frontend)
+- Secciones "El problema" y "El error más común" fusionadas en una sola cohesiva — eliminaba redundancia
+- `---` separador añadido antes de la sección `/compact` (faltaba)
+- "con los tres archivos en lugar" (calque inglés) → "con los tres archivos listos"
+- Nota añadida: los nombres de archivos son propios del proyecto, adaptables
+- Ejemplo de skill renombrado de `caveman` (muy específico) a `conciso` (genérico y reutilizable)
+- Tabla de checklist: columna derecha más específica en cada fila
+- Conclusión: más directa, sin repetir la misma idea dos veces
+
+**Validaciones:**
+- `pnpm astro check`: 0 errores, 0 warnings, 45 hints preexistentes.
+- `pnpm build`: 7 páginas (artículo excluido — draft: true). 1.08s.
+
+### Fase BLOG-6.3
+
+**Modificados:**
+- `src/content/blog/claude-code-sin-gastar-tantos-tokens.md` — `draft: true` → `draft: false`, `cover.alt` y `cover.caption` actualizados
+
+**Publicación:**
+- `draft: false`. Artículo publicado.
+- Cover: `public/img/blog/claude-code-sin-gastar-tantos-tokens/cover.webp` — existente, verificada.
+- Sin imágenes internas en el cuerpo del artículo.
+- `cover.alt`: "Ilustración técnica sobre cómo usar Claude Code con contexto persistente para reducir consumo de tokens."
+- `cover.caption`: "Un flujo de trabajo por fases ayuda a reducir reanálisis innecesarios y mantener control del contexto."
+
+**Rutas generadas en build:**
+- `/blog/claude-code-sin-gastar-tantos-tokens`
+- `/blog` (artículo aparece como featured)
+- `/blog/categoria/tutoriales`
+- `/blog/tag/claude-code`, `/blog/tag/herramientas`, `/blog/tag/ia-generativa`, `/blog/tag/productividad`, `/blog/tag/workflow`
+- `/rss.xml` — incluye el artículo
+- `/sitemap.xml` — incluye la ruta del artículo
+
+**Validaciones:**
+- `pnpm astro check`: 0 errores, 0 warnings, 45 hints preexistentes.
+- `pnpm build`: 14 páginas. 1.03s.
+
+### Fix: Navbar en páginas de blog (fuera de BLOG-6.3)
+
+**Modificados:**
+- `src/components/shared/Navbar.astro` — `resolveHref()`: hrefs de anclaje (`#section`) se convierten en `/#section` cuando `Astro.url.pathname !== '/'`. Evita links rotos en `/blog` y otras rutas fuera del home.
+- `src/layouts/BlogLayout.astro` — revertido a `variant="home"` (se mantenía el navbar completo).

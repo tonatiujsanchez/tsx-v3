@@ -2,49 +2,42 @@
 
 ## Tarea actual
 
-Fase BLOG-6.1 — Revisión editorial del primer artículo.
+Fase BLOG-7 — QA, SEO y Lighthouse del blog.
 
 ## Contexto
 
-BLOG-6 completada. Artículo real creado como draft:
+Blog completo y primer artículo publicado:
 
-- `src/content/blog/claude-code-sin-gastar-tantos-tokens.md`
-- `draft: true`, `featured: true`, categoría `tutoriales`.
-- ~1,500 palabras en español.
-- Cubre: contexto persistente, CLAUDE.md, MIGRATION_STATUS.md, MIGRATION_TASK.md, /clear, /compact, skills locales, flujo por fases, checklist.
+- `src/content/blog/claude-code-sin-gastar-tantos-tokens.md` — `draft: false`, publicado.
+- `/blog`, `/blog/[slug]`, `/blog/categoria/[category]`, `/blog/tag/[tag]` — funcionando.
+- RSS, sitemap — incluyen el artículo.
+- `pnpm build`: 14 páginas. Limpio.
 
 ## Objetivo
 
-Revisión editorial del artículo antes de publicarlo.
+Auditoría completa del blog antes de deploy:
+
+1. Lighthouse SEO ≥ 90 en `/blog` y `/blog/claude-code-sin-gastar-tantos-tokens`.
+2. JSON-LD `BlogPosting` válido.
+3. RSS válido (W3C o lector).
+4. `prefers-reduced-motion` respetado.
+5. Contraste AA en texto del artículo.
+6. Mobile: ancho de lectura correcto, código sin scroll horizontal roto.
 
 ## Archivos permitidos para lectura
 
-- `src/content/blog/claude-code-sin-gastar-tantos-tokens.md`
-- `BLOG_STRATEGY.md`
-- `MIGRATION_STATUS.md`
-
-## Archivos permitidos para edición
-
-- `src/content/blog/claude-code-sin-gastar-tantos-tokens.md`
+- `CLAUDE.md`
 - `MIGRATION_STATUS.md`
 - `MIGRATION_TASK.md`
-
-## Alcance
-
-1. Revisar tono: técnico, directo, sin exagerar, sin sonar genérico.
-2. Revisar estructura: flujo lógico, transiciones entre secciones.
-3. Revisar ejemplos: compactos, útiles, correctos.
-4. Revisar frontmatter: todos los campos requeridos válidos.
-5. Revisar Markdown editorial: headings, callouts, tabla, código.
-6. Ajustar redacción donde sea necesario.
-7. No cambiar `draft: false` todavía — solo revisión.
-8. No crear imágenes ni covers.
-9. No modificar código de producción.
+- `src/pages/blog/[slug].astro`
+- `src/pages/blog/index.astro`
+- `src/layouts/BlogLayout.astro`
+- `src/components/blog/PostHeader.astro`
+- `src/styles/globals.css`
 
 ## Fuera de alcance
 
-- No publicar el artículo (`draft: true` se mantiene).
-- No crear cover real.
-- No modificar páginas, componentes ni estilos.
-- No agregar secciones nuevas sin justificación.
+- No agregar artículos.
+- No modificar el artículo publicado (solo si hay error de schema o SEO crítico).
 - No instalar dependencias.
+- No cambiar diseño del blog.

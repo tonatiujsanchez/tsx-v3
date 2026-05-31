@@ -8,6 +8,9 @@ interface Props {
 }
 
 const { variant = 'home', backHref = '/' } = Astro.props
+const isHome = Astro.url.pathname === '/'
+const resolveHref = (href: string) =>
+  href.startsWith('#') && !isHome ? `/${href}` : href
 ---
 
 <header class="header" data-variant={variant}>
@@ -27,7 +30,7 @@ const { variant = 'home', backHref = '/' } = Astro.props
           <ul class="nav__list" role="list">
             {navItems.map((item) => (
               <li class:list={['nav__item', { 'nav__item--mobile-only': item.mobileOnly }]}>
-                <a href={item.href} aria-label={item.ariaLabel} class="nav__link">
+                <a href={resolveHref(item.href)} aria-label={item.ariaLabel} class="nav__link">
                   <i class={`bx ${item.icon} nav__link-icon`} aria-hidden="true"></i>
                   <span class="nav__link-text">{item.label}</span>
                 </a>
@@ -37,7 +40,7 @@ const { variant = 'home', backHref = '/' } = Astro.props
         </nav>
       </>
     ) : (
-      <a href={backHref} class="nav__back" aria-label="Regresar al listado de proyectos">
+      <a href={backHref} class="nav__back">
         <i class="bx bx-arrow-back" aria-hidden="true"></i>
         <span>Regresar</span>
       </a>

@@ -17,7 +17,7 @@ const resolveHref = (href: string) =>
   <div class="navbar container">
     {variant === 'home' ? (
       <>
-        <a class="navbar__logo" href="#hola" aria-label="Inicio">
+        <a class="navbar__logo" href={resolveHref('#hola')} aria-label="Inicio">
           <img
             class="navbar__logo-img"
             src="/favicon/logo-ts.svg"

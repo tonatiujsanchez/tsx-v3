@@ -2,6 +2,8 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { TECH_NAMES } from './types/index';
 
+const BLOG_CATEGORIES = ['ia', 'tutoriales', 'desarrollo', 'herramientas', 'novedades', 'prompt-engineering'] as const;
+
 const projects = defineCollection({
     loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
     schema: z.object({
@@ -21,4 +23,30 @@ const projects = defineCollection({
     }),
 });
 
-export const collections = { projects };
+const blog = defineCollection({
+    loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+    schema: z.object({
+        // required
+        title: z.string(),
+        description: z.string(),
+        excerpt: z.string(),
+        publishedAt: z.coerce.date(),
+        category: z.enum(BLOG_CATEGORIES),
+        cover: z.object({
+            src: z.string(),
+            alt: z.string(),
+            caption: z.string().optional(),
+        }),
+        draft: z.boolean().default(true),
+        tags: z.array(z.string()).default([]),
+        // optional
+        updatedAt: z.coerce.date().optional(),
+        author: z.string().optional(),
+        featured: z.boolean().default(false),
+        series: z.string().optional(),
+        canonical: z.string().url().optional(),
+        ogImage: z.string().optional(),
+    }),
+});
+
+export const collections = { projects, blog };

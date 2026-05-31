@@ -34,6 +34,20 @@ export interface SocialLink {
     icon: string;
 }
 
+export type BlogCategory =
+    | 'ia'
+    | 'tutoriales'
+    | 'desarrollo'
+    | 'herramientas'
+    | 'novedades'
+    | 'prompt-engineering';
+
+export interface BlogCover {
+    src: string;
+    alt: string;
+    caption?: string;
+}
+
 export interface SiteConfig {
     title: string;
     description: string;

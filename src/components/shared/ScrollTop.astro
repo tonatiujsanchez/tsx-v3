@@ -12,5 +12,5 @@
 
 <script>
   import { initScrollTop } from '@scripts/scroll'
-  initScrollTop()
+  document.addEventListener('astro:page-load', initScrollTop)
 </script>

@@ -352,32 +352,42 @@ textarea {
 .scroll-top {
     position: fixed;
     inset-inline-end: 2rem;
-    inset-block-end: 80rem;
+    inset-block-end: 8rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0.3rem;
-    border-radius: 0.4rem;
+    padding: 0.6rem;
+    border-radius: var(--radius-md, 0.6rem);
     z-index: 10;
-    border: var(--border-primary);
-    background-color: var(--title-color);
-    color: var(--body-color);
-    transition: all 0.5s ease-out;
+    background: var(--surface-elevated);
+    border: var(--card-border);
+    box-shadow: var(--card-shadow);
+    color: var(--title-color);
+    cursor: pointer;
+    transition:
+        visibility 0s,
+        opacity var(--transition-base),
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast),
+        border-color var(--transition-fast);
     visibility: hidden;
     opacity: 0;
 }
 
-.scroll-top:hover {
-    border: 0.1rem solid var(--text-color);
+.scroll-top__show {
+    visibility: visible;
+    opacity: 1;
 }
 
-.scroll-top:hover .scroll-top__icon {
-    animation: float-up 2s ease-in-out infinite;
+.scroll-top:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+    border-color: rgba(211, 115, 78, 0.3);
 }
 
 .scroll-top__icon {
-    font-size: 3rem;
-    color: var(--body-color);
+    font-size: 2.4rem;
+    color: var(--title-color);
 }
 
 
@@ -418,13 +428,8 @@ textarea {
 
     .scroll-top {
         inset-inline-end: 3rem;
-        padding: 0.4rem;
-    }
-
-    .scroll-top__show {
-        visibility: visible;
-        opacity: 1;
-        inset-block-end: 2.5rem;
+        inset-block-end: 3rem;
+        padding: 0.8rem;
     }
 
     .section {

@@ -16,72 +16,155 @@ interface Props {
   featured?: boolean
 }
 
-const { title, excerpt, href, publishedAt, updatedAt, category, tags, cover } = Astro.props
+const { title, excerpt, href, publishedAt, updatedAt, category, tags, cover, featured } = Astro.props
 ---
 
 <article class="blog-card" data-reveal>
   <a href={href} class="blog-card__link">
-    <figure class="blog-card__figure">
-      {cover
-        ? <img
-            src={cover.src}
-            alt={cover.alt}
-            loading="lazy"
-            class="blog-card__img"
-          />
-        : <div class="blog-card__fallback" aria-hidden="true">
-            <i class="bx bx-code-block"></i>
-          </div>
-      }
-    </figure>
-    <div class="blog-card__body">
-      <PostMeta publishedAt={publishedAt} updatedAt={updatedAt} category={category} />
+    <div class="blog-card__content">
+      <div class="blog-card__meta-row">
+        {featured && <span class="blog-card__featured">Destacado</span>}
+        <PostMeta publishedAt={publishedAt} updatedAt={updatedAt} category={category} />
+      </div>
       <h2 class="blog-card__title">{title}</h2>
       <p class="blog-card__excerpt">{excerpt}</p>
-      {tags && tags.length > 0 && (
-        <div class="blog-card__tags">
-          {tags.map(tag => <TagPill tag={tag} />)}
-        </div>
-      )}
-      <span class="blog-card__read">
-        Leer artículo <i class="bx bx-right-arrow-alt blog-card__arrow"></i>
-      </span>
+      <div class="blog-card__footer">
+        {tags && tags.length > 0 && (
+          <div class="blog-card__tags">
+            {tags.slice(0, 3).map(tag => <TagPill tag={tag} />)}
+          </div>
+        )}
+        <span class="blog-card__read">
+          Leer <i class="bx bx-right-arrow-alt blog-card__arrow" aria-hidden="true"></i>
+        </span>
+      </div>
     </div>
+    {cover && (
+      <figure class="blog-card__figure" aria-hidden="true">
+        <img src={cover.src} alt="" loading="lazy" class="blog-card__img" />
+      </figure>
+    )}
   </a>
 </article>
 
 <style>
 .blog-card {
-  background: var(--surface-1);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  transition:
-    transform var(--transition-base),
-    box-shadow var(--transition-base),
-    border-color var(--transition-base);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background-color var(--transition-fast);
 }
 
-.blog-card:hover,
-.blog-card:focus-within {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-soft);
-  border-color: var(--primary-color-alpha);
+.blog-card:last-child {
+  border-bottom: none;
 }
 
 .blog-card__link {
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
+  gap: 2.4rem;
   text-decoration: none;
   color: inherit;
-  height: 100%;
+  padding-block: 2.8rem;
+}
+
+.blog-card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.blog-card__meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.blog-card__featured {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+}
+
+.blog-card__title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--title-color);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin: 0;
+  transition: color var(--transition-fast);
+}
+
+.blog-card:hover .blog-card__title {
+  color: var(--primary-color);
+}
+
+.blog-card__excerpt {
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.blog-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  margin-top: 0.4rem;
+}
+
+.blog-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.blog-card__read {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.blog-card__arrow {
+  font-size: 1.8rem;
+  transition: transform var(--transition-fast);
+}
+
+.blog-card:hover .blog-card__arrow {
+  transform: translateX(4px);
 }
 
 .blog-card__figure {
+  display: none;
   margin: 0;
-  overflow: hidden;
-  aspect-ratio: 16 / 9;
-  background: var(--surface-2);
+}
+
+@media (min-width: 640px) {
+  .blog-card__figure {
+    display: block;
+    flex-shrink: 0;
+    width: 15rem;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--surface-2);
+    order: 1;
+  }
 }
 
 .blog-card__img {
@@ -93,70 +176,6 @@ const { title, excerpt, href, publishedAt, updatedAt, category, tags, cover } = 
 }
 
 .blog-card:hover .blog-card__img {
-  transform: scale(1.02);
-}
-
-.blog-card__fallback {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--border-normal);
-  font-size: 4rem;
-}
-
-.blog-card__body {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  padding: 2rem 2.4rem 2.4rem;
-  flex: 1;
-}
-
-.blog-card__title {
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: var(--title-color);
-  line-height: 1.35;
-  letter-spacing: -0.01em;
-  margin: 0;
-}
-
-.blog-card__excerpt {
-  font-size: 1.5rem;
-  color: var(--text-color);
-  line-height: 1.6;
-  margin: 0;
-  flex: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.blog-card__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-}
-
-.blog-card__read {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: var(--primary-color);
-  margin-top: auto;
-}
-
-.blog-card__arrow {
-  font-size: 1.8rem;
-  transition: transform var(--transition-fast);
-}
-
-.blog-card:hover .blog-card__arrow {
-  transform: translateX(4px);
+  transform: scale(1.03);
 }
 </style>

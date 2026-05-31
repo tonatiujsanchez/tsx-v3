@@ -822,3 +822,23 @@ Portafolio completamente modernizado. Todas las fases UI-0 → UI-8 completadas.
 **Modificados:**
 - `src/components/shared/Navbar.astro` — `resolveHref()`: hrefs de anclaje (`#section`) se convierten en `/#section` cuando `Astro.url.pathname !== '/'`. Evita links rotos en `/blog` y otras rutas fuera del home.
 - `src/layouts/BlogLayout.astro` — revertido a `variant="home"` (se mantenía el navbar completo).
+
+### Fase BLOG-6.4
+
+**Creados:**
+- `src/components/blog/BlogPagination.astro` — paginación prev/next con `aria-label` accesible. Renderiza nada si `totalPages <= 1`. URL de página 1 = `/blog`, páginas 2+ = `/blog/page/N`.
+- `src/pages/blog/page/[page].astro` — rutas de paginación desde página 2. `getStaticPaths` solo genera páginas si `totalPages > 1`. Sin drafts en build.
+
+**Modificados:**
+- `src/utils/blog.ts` — añadidos `getTotalPages(total, perPage)` y `paginatePosts(posts, page, perPage)`.
+- `src/components/blog/BlogCard.astro` — rediseño editorial completo. De grid card con imagen grande a list-item horizontal con thumbnail pequeño. Sin card background (solo `border-bottom` separador). Título cambia a `--primary-color` en hover. Thumbnail `15rem` oculto en mobile, visible en `≥640px`. `featured?: boolean` → badge "Destacado" pequeño. Excerpt truncado a 2 líneas.
+- `src/pages/blog/index.astro` — rediseño minimalista. Elimina `FeaturedPostCard` y grid. Lista vertical con `border-top`. Header left-aligned, más pequeño. 10 posts por página. Paginación al fondo.
+
+**Decisiones:**
+- `FeaturedPostCard.astro` no modificado — con el diseño editorial no se usa en `/blog`. El post destacado aparece primero en la lista con badge "Destacado" en `BlogCard`. Componente disponible para uso futuro.
+- `POSTS_PER_PAGE` definido dentro de `getStaticPaths` (literal `10`) — Astro ejecuta `getStaticPaths` en contexto separado; la constante del módulo no es accesible ahí.
+- `/blog/page/` no genera rutas en build actual — solo 1 artículo publicado, `totalPages = 1`. Correcto.
+
+**Validaciones:**
+- `pnpm astro check`: 0 errores, 0 warnings, 45 hints preexistentes.
+- `pnpm build`: 14 páginas. 1.02s. Todas las rutas de blog generadas.

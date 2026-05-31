@@ -10,7 +10,7 @@ tags:
 cover:
   src: /img/blog/primer-borrador-blog/cover.webp
   alt: Portada de prueba del blog
-draft: true
+draft: false
 ---
 
 ## Headings y párrafos

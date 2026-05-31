@@ -30,6 +30,15 @@ export function getAllCategories(posts: BlogEntry[]): string[] {
   return [...cats].sort()
 }
 
+export function getTotalPages(total: number, perPage = 10): number {
+  return Math.max(1, Math.ceil(total / perPage))
+}
+
+export function paginatePosts(posts: BlogEntry[], page: number, perPage = 10): BlogEntry[] {
+  const start = (page - 1) * perPage
+  return posts.slice(start, start + perPage)
+}
+
 export function getRelatedPosts(
   currentId: string,
   posts: BlogEntry[],

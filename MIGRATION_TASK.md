@@ -2,31 +2,30 @@
 
 ## Tarea actual
 
-Fase BLOG-5 — Mejoras de UX del blog: paginación, filtros, RSS y sitemap de blog.
+Fase BLOG-6 — Primer artículo real de producción.
 
 ## Contexto
 
-La Fase BLOG-4 completó los estilos editoriales del artículo:
+La Fase BLOG-5 completó la infraestructura editorial del blog:
 
-- Sistema completo de headings (h2/h3/h4) con jerarquía editorial
-- Párrafos, listas, enlaces, strong, em
-- Código inline y bloques de código con font monospace stack
-- Blockquotes como callouts con accent label (Nota/Tip/Advertencia)
-- Tablas con overflow horizontal seguro para mobile
-- Imágenes Markdown nativas con border y radius coherentes
-- Draft de prueba actualizado con todos los ejemplos
+- `src/utils/blog.ts` — helpers: getVisiblePosts, sortPostsByDate, getAllTags, getAllCategories, getRelatedPosts
+- `/blog/categoria/[category]` — páginas por categoría
+- `/blog/tag/[tag]` — páginas por tag
+- `/rss.xml` — RSS nativo válido
+- `RelatedPosts.astro` — sección de relacionados
+- Sitemap extendido con categorías/tags publicados
 
-Ahora BLOG-5 puede mejorar la experiencia de navegación y descubrimiento del blog.
+Ahora se debe publicar el primer artículo real. El contenido debe ser técnico, editorial y coherente con el portfolio.
 
 ## Objetivo
 
-Mejorar la navegación del blog y preparar el contenido para descubrimiento:
+Crear y publicar el primer artículo real del blog:
 
-- Paginación en `/blog` si los posts superan N artículos.
-- Filtros por categoría en `/blog`.
-- Página `/blog/categoria/[slug]` opcional.
-- RSS en `/rss.xml`.
-- Sitemap actualizado para incluir artículos publicados.
+- Frontmatter completo y correcto.
+- Contenido técnico real (no relleno).
+- Cover WebP optimizada.
+- `draft: false`.
+- SEO completo.
 
 ## Archivos permitidos para lectura
 
@@ -34,121 +33,103 @@ Mejorar la navegación del blog y preparar el contenido para descubrimiento:
 - `MIGRATION_STATUS.md`
 - `MIGRATION_TASK.md`
 - `BLOG_STRATEGY.md`
-- `UI_DIRECTION.md`
-- `src/pages/blog/index.astro`
-- `src/pages/blog/[slug].astro`
-- `src/pages/sitemap.xml.ts`
-- `src/layouts/BlogLayout.astro`
-- `src/components/blog/BlogCard.astro`
-- `src/components/blog/FeaturedPostCard.astro`
-- `src/components/blog/CategoryPill.astro`
 - `src/content.config.ts`
-- `src/data/navigation.ts`
-- `src/styles/globals.css`
+- `src/content/blog/primer-borrador-blog.md` — referencia de estructura
+- `src/pages/blog/[slug].astro`
 
 ## Comandos baratos permitidos
 
-Usar primero:
-
     git status --short
-    git diff --stat
-    find src/pages/blog -type f | sort
-    find src/components/blog -type f | sort
-    rg "getCollection|category|filter|paginate|rss|sitemap" src/pages/ -n
+    find src/content/blog -type f | sort
+    find public/img/blog -type f | sort
 
 ## Archivos permitidos para edición
 
-- `src/pages/blog/index.astro`
-- `src/pages/sitemap.xml.ts`
+- `src/content/blog/{slug-real}.md` — artículo nuevo
 - `MIGRATION_STATUS.md`
 - `MIGRATION_TASK.md`
 
-## Archivos que se pueden crear
-
-- `src/pages/rss.xml.ts` — endpoint RSS para el blog
-- `src/pages/blog/categoria/[category].astro` — opcional, si aplica filtro por categoría
-- `src/components/blog/CategoryFilter.astro` — filtro de categorías en el índice (si se implementa como componente)
-
 ## Archivos prohibidos
 
-No modificar:
-
-- `src/pages/blog/[slug].astro`
-- `src/layouts/**`
-- `src/components/blog/BlogCard.astro`
-- `src/components/blog/FeaturedPostCard.astro`
-- `src/components/blog/PostHeader.astro`
-- `src/components/blog/PostMeta.astro`
-- `src/components/blog/TagPill.astro`
-- `src/components/blog/CategoryPill.astro`
-- `src/content.config.ts`
-- `src/data/**`
-- `src/styles/**`
-- `src/scripts/**`
-- `public/**`
-- `package.json`
-- `pnpm-lock.yaml`
-- `astro.config.mjs`
-- `tsconfig.json`
+No modificar ningún otro archivo salvo el artículo nuevo y los docs de estado.
 
 ## Alcance exacto
 
-### 1. RSS
+### 1. Definir el tema del artículo
 
-Crear `/src/pages/rss.xml.ts`:
+El usuario debe confirmar el tema antes de redactar. Opciones sugeridas:
 
-- Solo posts con `draft: false`.
-- Ordenados por `publishedAt` desc.
-- Incluir `title`, `description`, `pubDate`, `link`.
-- Usar `@astrojs/rss` si ya está instalado; si no, implementar XML nativo.
-- No instalar dependencias nuevas.
+- Cómo uso Claude Code en flujos de desarrollo reales.
+- RAG en producción: lecciones de implementación.
+- Astro Content Collections en proyectos profesionales.
+- Prompt engineering para desarrolladores.
+- Arquitectura de un proyecto full-stack moderno.
 
-### 2. Sitemap de blog
+### 2. Estructura del artículo
 
-Actualizar `src/pages/sitemap.xml.ts`:
+Frontmatter requerido:
 
-- Añadir `/blog` como URL estática (si no está ya).
-- Añadir todos los posts publicados (`!draft`).
-- Mantener las rutas de proyectos existentes.
-- No duplicar rutas.
+```yaml
+title: "..."
+description: "..." # ~155 chars, SEO
+excerpt: "..." # 1-2 oraciones para cards
+publishedAt: YYYY-MM-DD
+category: desarrollo | ia | tutoriales | herramientas | novedades
+tags:
+  - tag1
+  - tag2
+cover:
+  src: /img/blog/{slug}/cover.webp
+  alt: "..."
+draft: false
+featured: false # cambiar a true si es destacado
+```
 
-### 3. Filtros por categoría (opcional)
+### 3. Cover image
 
-Si la lógica es limpia, añadir filtro de categorías en `/blog`:
+Agregar cover a `public/img/blog/{slug}/cover.webp`.
 
-- Botones de categoría encima del grid.
-- Filtraje client-side con JS o páginas estáticas `/blog/categoria/[category]`.
-- No instalar librerías.
+Requisitos:
+- WebP optimizada.
+- ~1200×630px (proporción 16/9 o similar).
+- Sin texto embebido en la imagen (accesibilidad).
 
-### 4. Paginación (opcional)
+### 4. Contenido del artículo
 
-Si hay más de 6 posts publicados, añadir paginación con `Astro.paginate()`.
+Debe usar las estructuras editoriales implementadas en BLOG-4:
 
-Por ahora, con un solo post de prueba, la paginación es prematura. Preparar la arquitectura pero no activar hasta tener contenido real.
+- Headings h2 y h3.
+- Párrafos con buena densidad informativa.
+- Al menos un bloque de código.
+- Al menos un callout (Nota/Tip/Advertencia).
+- Links a recursos externos relevantes.
+
+### 5. Eliminar el draft de prueba
+
+Opcionalmente, eliminar o renombrar `primer-borrador-blog.md` después de confirmar que el artículo real funciona.
 
 ## Fuera de alcance
 
-- No instalar dependencias.
-- No instalar MDX.
-- No instalar CMS.
-- No agregar search.
-- No modificar estilos ya definidos en BLOG-4.
-- No tocar `[slug].astro`.
-- No avanzar a BLOG-6.
+- No escribir contenido de relleno.
+- No usar imágenes PNG/JPG sin optimizar.
+- No modificar ningún componente.
+- No agregar dependencias.
+- No avanzar a BLOG-7.
 
 ## Criterios de aceptación
 
-- `/rss.xml` accesible y válido.
-- Sitemap incluye posts publicados.
-- Filtro de categorías funciona o la arquitectura está preparada.
+- Artículo con `draft: false`.
+- Cover WebP presente en `public/img/blog/{slug}/`.
+- Frontmatter completo.
+- Contenido técnico real.
+- `/blog` muestra el artículo.
+- `/blog/{slug}` renderiza correctamente.
+- `/blog/categoria/{category}` muestra el artículo.
+- `/rss.xml` incluye el artículo.
 - `pnpm astro check` pasa.
 - `pnpm build` pasa.
-- `MIGRATION_STATUS.md` queda actualizado.
-- `MIGRATION_TASK.md` queda preparado para BLOG-6.
 
 ## Validaciones
-
-Ejecutar:
 
     pnpm astro check
     pnpm build
@@ -158,9 +139,10 @@ Ejecutar:
 
 Responder solo con:
 
-1. Funcionalidades implementadas.
-2. Archivos creados o modificados.
-3. Resultado de `pnpm astro check`.
-4. Resultado de `pnpm build`.
-5. Pendientes.
-6. Confirmación de que no se avanzó a BLOG-6.
+1. Slug y título del artículo.
+2. Frontmatter final.
+3. Archivos creados.
+4. Resultado de `pnpm astro check`.
+5. Resultado de `pnpm build`.
+6. Pendientes.
+7. Confirmación de que no se avanzó a BLOG-7.

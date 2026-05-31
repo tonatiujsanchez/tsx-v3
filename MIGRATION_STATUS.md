@@ -23,6 +23,8 @@ Fase actual: BLOG-3 completada — Páginas `/blog` y `/blog/[slug]` creadas y f
 - [x] Fase BLOG-2 — Componentes base del blog
 - [x] Fase BLOG-3 — Páginas /blog y /blog/[slug]
 - [x] Fase BLOG-4 — Estilos avanzados de contenido de artículo
+- [x] Fase BLOG-5 — Categorías, tags, RSS y related posts
+- [ ] Fase BLOG-6 — Primer artículo real de producción
 - [ ] Fase 12 — Lighthouse audit completo (performance, accesibilidad)
 
 ## Archivos creados o modificados
@@ -711,3 +713,25 @@ Portafolio completamente modernizado. Todas las fases UI-0 → UI-8 completadas.
 - `data-reveal` sin dependencia de JS para visibilidad — motion system es aditivo.
 - `pnpm astro check`: 0 errores, 0 warnings, 45 hints preexistentes.
 - `pnpm build`: 6 páginas + robots.txt + sitemap.xml. 846ms.
+
+### Fase BLOG-5
+
+**Creados:**
+- `src/utils/blog.ts` — helpers puros: `getVisiblePosts`, `sortPostsByDate`, `getAllTags`, `getAllCategories`, `getRelatedPosts`. Sin dependencias del DOM. Cero `any`.
+- `src/pages/blog/categoria/[category].astro` — página dinámica por categoría. `getStaticPaths` desde categorías de posts visibles. `BlogLayout` + `BlogCard`. Empty state. SEO propio.
+- `src/pages/blog/tag/[tag].astro` — página dinámica por tag. Mismo patrón. `getStaticPaths` desde tags de posts visibles.
+- `src/pages/rss.xml.ts` — RSS nativo XML. Solo posts sin draft. `title`, `link`, `guid`, `description`, `pubDate`. XML escapado. `Content-Type: application/xml`. Válido aunque no haya items.
+- `src/components/blog/RelatedPosts.astro` — sección compacta. Props tipadas como array de datos planos (no CollectionEntry). Renderiza nada si no hay relacionados. Cards con surface + hover. `CategoryPill` inline.
+
+**Modificados:**
+- `src/pages/sitemap.xml.ts` — añadido import de `getAllCategories`/`getAllTags`. URLs de categorías (`priority: 0.6`) y tags (`priority: 0.5`) solo si existen posts publicados. Sin romper proyectos existentes.
+- `src/pages/blog/[slug].astro` — import `RelatedPosts` + `getRelatedPosts`. `getStaticPaths` pasa `allPosts` como prop. Calcula relacionados por tags + categoría (score: 2 pts tag, 1 pt categoría). Mapea a props planas. Renderiza `<RelatedPosts>` tras `.post-content`.
+
+**Comportamiento de drafts:**
+- En dev: drafts visibles → `categoria/[category]` y `tag/[tag]` generan rutas con drafts incluidos.
+- En build: drafts filtrados → categorías/tags solo generados si hay posts publicados. RSS excluye drafts. Sitemap excluye drafts. Related posts excluye drafts.
+- Con solo el draft actual en producción: `/blog/categoria/` y `/blog/tag/` no generan páginas (correcto). RSS sin items (válido). Related posts vacío en `[slug]`.
+
+**Validaciones:**
+- `pnpm astro check`: 0 errores, 0 warnings, 45 hints preexistentes.
+- `pnpm build`: 7 páginas (sin rutas de categoria/tag — solo draft) + robots.txt + sitemap.xml + rss.xml. 945ms.

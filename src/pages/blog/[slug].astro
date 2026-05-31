@@ -3,22 +3,25 @@ import { getCollection, render } from 'astro:content'
 import type { CollectionEntry } from 'astro:content'
 import BlogLayout from '../../layouts/BlogLayout.astro'
 import PostHeader from '../../components/blog/PostHeader.astro'
+import RelatedPosts from '../../components/blog/RelatedPosts.astro'
 import { siteConfig } from '../../data/site'
+import { getRelatedPosts } from '../../utils/blog'
 
 export async function getStaticPaths() {
   const isDev = import.meta.env.DEV
   const posts = await getCollection('blog', ({ data }) => isDev || !data.draft)
   return posts.map(post => ({
     params: { slug: post.id },
-    props: { post },
+    props: { post, allPosts: posts },
   }))
 }
 
 interface Props {
   post: CollectionEntry<'blog'>
+  allPosts: CollectionEntry<'blog'>[]
 }
 
-const { post } = Astro.props
+const { post, allPosts } = Astro.props
 const { Content } = await render(post)
 
 const {
@@ -36,6 +39,15 @@ const {
 
 const canonical = postCanonical ?? `${siteConfig.url}/blog/${post.id}`
 const ogImageUrl = ogImage ?? cover?.src
+
+const related = getRelatedPosts(post.id, allPosts).map(p => ({
+  title: p.data.title,
+  description: p.data.description,
+  href: `/blog/${p.id}`,
+  publishedAt: p.data.publishedAt,
+  category: p.data.category,
+  tags: p.data.tags,
+}))
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -75,6 +87,9 @@ const jsonLd = {
     />
     <div class="post-content container">
       <Content />
+    </div>
+    <div class="container">
+      <RelatedPosts posts={related} />
     </div>
   </article>
 </BlogLayout>

@@ -1,10 +1,14 @@
 import type { APIRoute } from 'astro'
 import { getCollection } from 'astro:content'
 import { siteConfig } from '@data/site'
+import { getAllCategories, getAllTags } from '../utils/blog'
 
 export const GET: APIRoute = async () => {
   const projects = await getCollection('projects')
   const blogPosts = await getCollection('blog', ({ data }) => !data.draft)
+
+  const categories = getAllCategories(blogPosts)
+  const tags = getAllTags(blogPosts)
 
   const urls = [
     `  <url><loc>${siteConfig.url}/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>`,
@@ -16,6 +20,14 @@ export const GET: APIRoute = async () => {
     ...blogPosts.map(
       (p) =>
         `  <url><loc>${siteConfig.url}/blog/${p.id}</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`
+    ),
+    ...categories.map(
+      (c) =>
+        `  <url><loc>${siteConfig.url}/blog/categoria/${c}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>`
+    ),
+    ...tags.map(
+      (t) =>
+        `  <url><loc>${siteConfig.url}/blog/tag/${t}</loc><changefreq>weekly</changefreq><priority>0.5</priority></url>`
     ),
   ]
 

@@ -2,34 +2,31 @@
 
 ## Tarea actual
 
-Fase BLOG-4 — Estilos avanzados de contenido de artículo y refinamiento del blog.
+Fase BLOG-5 — Mejoras de UX del blog: paginación, filtros, RSS y sitemap de blog.
 
 ## Contexto
 
-La Fase BLOG-3 creó las páginas principales del blog:
+La Fase BLOG-4 completó los estilos editoriales del artículo:
 
-- `src/pages/blog/index.astro` — índice con empty state, FeaturedPostCard, grid de BlogCard
-- `src/pages/blog/[slug].astro` — detalle con PostHeader, contenido Markdown, JSON-LD BlogPosting
+- Sistema completo de headings (h2/h3/h4) con jerarquía editorial
+- Párrafos, listas, enlaces, strong, em
+- Código inline y bloques de código con font monospace stack
+- Blockquotes como callouts con accent label (Nota/Tip/Advertencia)
+- Tablas con overflow horizontal seguro para mobile
+- Imágenes Markdown nativas con border y radius coherentes
+- Draft de prueba actualizado con todos los ejemplos
 
-Estilos de contenido actuales en `[slug].astro` son mínimos (legibilidad básica).
-BLOG-4 debe elevar la experiencia de lectura al nivel "Engineered Darkness" del resto del sitio.
+Ahora BLOG-5 puede mejorar la experiencia de navegación y descubrimiento del blog.
 
 ## Objetivo
 
-Mejorar la experiencia de lectura de artículos en `/blog/[slug]`:
+Mejorar la navegación del blog y preparar el contenido para descubrimiento:
 
-- Estilos tipográficos avanzados para contenido long-form.
-- Callouts estilizados (Nota, Advertencia, Tip) via blockquote + CSS.
-- Separadores y spacing editorial.
-- Imagen inline con `BlogImage.astro`.
-- Scroll progress en Navbar durante la lectura (ya existe `header__progress`).
-- Posiblemente: tabla de contenidos automática desde headings.
-
-También revisar y afinar el índice `/blog`:
-
-- Header editorial más rico.
-- Posible sección "Últimas notas" si hay múltiples categorías.
-- Verificar coherencia visual con el portfolio principal.
+- Paginación en `/blog` si los posts superan N artículos.
+- Filtros por categoría en `/blog`.
+- Página `/blog/categoria/[slug]` opcional.
+- RSS en `/rss.xml`.
+- Sitemap actualizado para incluir artículos publicados.
 
 ## Archivos permitidos para lectura
 
@@ -40,42 +37,54 @@ También revisar y afinar el índice `/blog`:
 - `UI_DIRECTION.md`
 - `src/pages/blog/index.astro`
 - `src/pages/blog/[slug].astro`
+- `src/pages/sitemap.xml.ts`
 - `src/layouts/BlogLayout.astro`
-- `src/layouts/BaseLayout.astro`
-- `src/components/blog/*.astro`
+- `src/components/blog/BlogCard.astro`
+- `src/components/blog/FeaturedPostCard.astro`
+- `src/components/blog/CategoryPill.astro`
+- `src/content.config.ts`
+- `src/data/navigation.ts`
 - `src/styles/globals.css`
-- `src/styles/animations.css`
-- `src/content/blog/*.md`
-- `src/data/site.ts`
-- `src/types/index.ts`
+
+## Comandos baratos permitidos
+
+Usar primero:
+
+    git status --short
+    git diff --stat
+    find src/pages/blog -type f | sort
+    find src/components/blog -type f | sort
+    rg "getCollection|category|filter|paginate|rss|sitemap" src/pages/ -n
 
 ## Archivos permitidos para edición
 
-- `src/pages/blog/[slug].astro`
 - `src/pages/blog/index.astro`
-- `src/layouts/BlogLayout.astro`
-- `src/components/blog/PostHeader.astro`
-- `src/components/blog/BlogImage.astro`
+- `src/pages/sitemap.xml.ts`
 - `MIGRATION_STATUS.md`
 - `MIGRATION_TASK.md`
+
+## Archivos que se pueden crear
+
+- `src/pages/rss.xml.ts` — endpoint RSS para el blog
+- `src/pages/blog/categoria/[category].astro` — opcional, si aplica filtro por categoría
+- `src/components/blog/CategoryFilter.astro` — filtro de categorías en el índice (si se implementa como componente)
 
 ## Archivos prohibidos
 
 No modificar:
 
+- `src/pages/blog/[slug].astro`
+- `src/layouts/**`
+- `src/components/blog/BlogCard.astro`
+- `src/components/blog/FeaturedPostCard.astro`
+- `src/components/blog/PostHeader.astro`
+- `src/components/blog/PostMeta.astro`
+- `src/components/blog/TagPill.astro`
+- `src/components/blog/CategoryPill.astro`
 - `src/content.config.ts`
-- `src/content/blog/*.md`
-- `src/components/shared/**`
-- `src/components/sections/**`
-- `src/components/home/**`
-- `src/components/project/**`
-- `src/components/ui/**`
-- `src/layouts/BaseLayout.astro`
-- `src/layouts/MainLayout.astro`
-- `src/layouts/ProjectLayout.astro`
+- `src/data/**`
 - `src/styles/**`
 - `src/scripts/**`
-- `src/icons/**`
 - `public/**`
 - `package.json`
 - `pnpm-lock.yaml`
@@ -84,73 +93,58 @@ No modificar:
 
 ## Alcance exacto
 
-### 1. Estilos avanzados de `.post-content`
+### 1. RSS
 
-Elevar los estilos de contenido Markdown en `[slug].astro`:
+Crear `/src/pages/rss.xml.ts`:
 
-- Tipografía: tamaños, line-height, letter-spacing para lectura cómoda a 70rem.
-- Headings: separación visual clara, anchor links opcionales.
-- Listas: sangría, bullets, numeración coherentes.
-- Blockquotes: callout styling. Detectar `**Nota:**`, `**⚠ Advertencia:**`, `**💡 Tip:**` via CSS.
-- Código inline: color `--primary-color`, fondo `--surface-2`.
-- Code blocks: syntax highlighting básico o estilo visual premium con fondo y borde.
-- Imágenes inline: centradas, con caption si aplica (usar `BlogImage.astro`).
-- Tablas: si aplica, fondo alternado, borde `--card-border`.
-- HR: separador sutil `--border-subtle`.
-- Links: subrayado con `text-underline-offset`, hover `--primary-color`.
+- Solo posts con `draft: false`.
+- Ordenados por `publishedAt` desc.
+- Incluir `title`, `description`, `pubDate`, `link`.
+- Usar `@astrojs/rss` si ya está instalado; si no, implementar XML nativo.
+- No instalar dependencias nuevas.
 
-### 2. Callouts CSS
+### 2. Sitemap de blog
 
-Los callouts se escriben en Markdown como blockquotes con marcador en negrita:
+Actualizar `src/pages/sitemap.xml.ts`:
 
-```md
-> **Nota:** texto informativo.
-> **⚠ Advertencia:** texto de advertencia.
-> **💡 Tip:** texto de consejo.
-```
+- Añadir `/blog` como URL estática (si no está ya).
+- Añadir todos los posts publicados (`!draft`).
+- Mantener las rutas de proyectos existentes.
+- No duplicar rutas.
 
-CSS `:global()` en `.post-content` detecta el marcador y aplica estilos:
-- Nota: borde `--primary-color`, fondo `--primary-color-alpha`.
-- Advertencia: borde amarillo/naranja, fondo cálido.
-- Tip: borde verde, fondo verde sutil.
+### 3. Filtros por categoría (opcional)
 
-### 3. Scroll progress en lectura
+Si la lógica es limpia, añadir filtro de categorías en `/blog`:
 
-El Navbar ya tiene `.header__progress` con `--scroll-progress` CSS variable.
-Verificar que el scroll progress funcione correctamente en `/blog/[slug]`.
-Si el script no cubre páginas de blog, ajustar `initAnimations` o `animations.ts` via el layout.
+- Botones de categoría encima del grid.
+- Filtraje client-side con JS o páginas estáticas `/blog/categoria/[category]`.
+- No instalar librerías.
 
-### 4. Refinamiento del índice `/blog`
+### 4. Paginación (opcional)
 
-Revisar visualmente el índice:
-- Header: ¿necesita más jerarquía visual?
-- Grid: ¿el spacing y proportions son correctos?
-- Empty state: ¿es sobrio y editorial?
+Si hay más de 6 posts publicados, añadir paginación con `Astro.paginate()`.
 
-No cambiar la arquitectura. Solo ajustes CSS si hay algo fuera de tono.
+Por ahora, con un solo post de prueba, la paginación es prematura. Preparar la arquitectura pero no activar hasta tener contenido real.
 
 ## Fuera de alcance
 
-- No crear `/blog/tag/[tag]`.
-- No crear `/blog/categoria/[category]`.
-- No crear RSS.
-- No implementar related posts.
+- No instalar dependencias.
 - No instalar MDX.
 - No instalar CMS.
 - No agregar search.
-- No modificar el schema.
-- No escribir artículo real.
-- No avanzar a BLOG-5.
+- No modificar estilos ya definidos en BLOG-4.
+- No tocar `[slug].astro`.
+- No avanzar a BLOG-6.
 
 ## Criterios de aceptación
 
-- `.post-content` estilos avanzados implementados.
-- Callouts estilizados con CSS `:global()`.
-- Scroll progress funciona en `/blog/[slug]`.
-- `pnpm astro check`: 0 errores.
-- `pnpm build`: limpio.
-- `MIGRATION_STATUS.md` actualizado.
-- `MIGRATION_TASK.md` preparado para BLOG-5, sin ejecutarlo.
+- `/rss.xml` accesible y válido.
+- Sitemap incluye posts publicados.
+- Filtro de categorías funciona o la arquitectura está preparada.
+- `pnpm astro check` pasa.
+- `pnpm build` pasa.
+- `MIGRATION_STATUS.md` queda actualizado.
+- `MIGRATION_TASK.md` queda preparado para BLOG-6.
 
 ## Validaciones
 
@@ -160,24 +154,13 @@ Ejecutar:
     pnpm build
     git diff --stat
 
-Si el entorno permite preview:
-
-    pnpm preview
-
-Revisar:
-
-    /blog
-    /blog/primer-borrador-blog (en dev)
-
 ## Respuesta esperada
 
 Responder solo con:
 
-1. Estilos implementados.
-2. Callouts funcionando.
-3. Scroll progress.
-4. Archivos modificados.
-5. Resultado de `pnpm astro check`.
-6. Resultado de `pnpm build`.
-7. Pendientes.
-8. Confirmación de que no se avanzó a BLOG-5.
+1. Funcionalidades implementadas.
+2. Archivos creados o modificados.
+3. Resultado de `pnpm astro check`.
+4. Resultado de `pnpm build`.
+5. Pendientes.
+6. Confirmación de que no se avanzó a BLOG-6.

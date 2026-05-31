@@ -22,7 +22,7 @@ Fase actual: BLOG-3 completada — Páginas `/blog` y `/blog/[slug]` creadas y f
 - [x] Fase BLOG-1 — Content Collection schema + estructura base
 - [x] Fase BLOG-2 — Componentes base del blog
 - [x] Fase BLOG-3 — Páginas /blog y /blog/[slug]
-- [ ] Fase BLOG-4 — Estilos avanzados de contenido de artículo
+- [x] Fase BLOG-4 — Estilos avanzados de contenido de artículo
 - [ ] Fase 12 — Lighthouse audit completo (performance, accesibilidad)
 
 ## Archivos creados o modificados
@@ -647,6 +647,49 @@ Portafolio completamente modernizado. Todas las fases UI-0 → UI-8 completadas.
 **Validaciones:**
 - `pnpm astro check`: 0 errores, 0 warnings, 45 hints preexistentes.
 - `pnpm build`: 7 páginas + robots.txt + sitemap.xml. 883ms.
+
+### Fase BLOG-4
+
+**Modificados:**
+- `src/pages/blog/[slug].astro` — estilos editoriales completos en `.post-content` vía `:global()`
+- `src/content/blog/primer-borrador-blog.md` — ejemplos mínimos añadidos para validar todos los estilos
+
+**Estilos aplicados en `.post-content`:**
+- `h2` — `border-block-end` editorial, margen superior generoso (`5.2rem`)
+- `h3`, `h4` — jerarquía clara, peso y tamaño diferenciados
+- `h2/h3/h4:first-child` — sin margen superior al inicio del artículo
+- `p` — `line-height: 1.85`, `text-wrap: pretty`, `font-size: 1.7rem`
+- `strong` — `--title-color`, `font-weight: 600`
+- `em` — `--text-muted`, `font-style: italic`
+- `ul/ol/li` — espaciado cómodo, `padding-inline-start: 2.4rem`
+- `li > ul/ol` — nested lists sin margen extra al fondo
+- `a` — `--primary-color`, `text-decoration-thickness: 1px`, `transition`
+- `code` — `--surface-2` bg, `--border-subtle` border, `--primary-color`, font stack monospace
+- `pre` — `--surface-2` bg, `--border-normal` border, `--radius-md`, scroll horizontal, `-webkit-overflow-scrolling: touch`
+- `pre code` — reset estilos inline, font stack monospace, `tab-size: 2`, `line-height: 1.75`
+- `blockquote` — `border-inline-start` accent + `border` completo, `--surface-1` bg, `--radius-md`
+- `blockquote p` — `color: --text-color` (no muted)
+- `blockquote p strong:first-child` — `--primary-color` (resalta etiqueta Nota/Tip/Advertencia)
+- `hr` — `border-subtle`, margen `4.8rem`
+- `table` — `display: block; overflow-x: auto` (mobile safe), `border-collapse: collapse`
+- `th` — `--surface-2` bg, `--border-normal`, `white-space: nowrap`
+- `td` — `--border-subtle`, zebra stripes en pares
+- `img` (markdown nativo) — `max-width: 100%`, `--radius-lg`, `--card-border`, centrada
+- `figure/figcaption` — márgenes y tipografía muted
+
+**Draft actualizado con:**
+- `h2`, `h3`, `h4`
+- párrafo con inline, bold e itálica
+- listas ordenada y desordenada con anidación
+- código inline en párrafo
+- bloque TypeScript + bloque bash
+- callout Nota, Tip, Advertencia
+- tabla de 4 columnas
+- imagen Markdown nativa (ruta de cover como placeholder)
+
+**Validaciones:**
+- `pnpm astro check`: 0 errores, 0 warnings, 45 hints preexistentes.
+- `pnpm build`: 7 páginas + robots.txt + sitemap.xml. 914ms.
 
 ### Fase BLOG-2
 

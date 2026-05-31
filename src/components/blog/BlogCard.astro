@@ -1,0 +1,162 @@
+---
+import type { BlogCategory, BlogCover } from '../../types/index'
+import PostMeta from './PostMeta.astro'
+import TagPill from './TagPill.astro'
+
+interface Props {
+  title: string
+  description: string
+  excerpt: string
+  href: string
+  publishedAt: Date
+  updatedAt?: Date
+  category: BlogCategory
+  tags?: string[]
+  cover?: BlogCover
+  featured?: boolean
+}
+
+const { title, excerpt, href, publishedAt, updatedAt, category, tags, cover } = Astro.props
+---
+
+<article class="blog-card" data-reveal>
+  <a href={href} class="blog-card__link">
+    <figure class="blog-card__figure">
+      {cover
+        ? <img
+            src={cover.src}
+            alt={cover.alt}
+            loading="lazy"
+            class="blog-card__img"
+          />
+        : <div class="blog-card__fallback" aria-hidden="true">
+            <i class="bx bx-code-block"></i>
+          </div>
+      }
+    </figure>
+    <div class="blog-card__body">
+      <PostMeta publishedAt={publishedAt} updatedAt={updatedAt} category={category} />
+      <h2 class="blog-card__title">{title}</h2>
+      <p class="blog-card__excerpt">{excerpt}</p>
+      {tags && tags.length > 0 && (
+        <div class="blog-card__tags">
+          {tags.map(tag => <TagPill tag={tag} />)}
+        </div>
+      )}
+      <span class="blog-card__read">
+        Leer artículo <i class="bx bx-right-arrow-alt blog-card__arrow"></i>
+      </span>
+    </div>
+  </a>
+</article>
+
+<style>
+.blog-card {
+  background: var(--surface-1);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base),
+    border-color var(--transition-base);
+}
+
+.blog-card:hover,
+.blog-card:focus-within {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+  border-color: var(--primary-color-alpha);
+}
+
+.blog-card__link {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+}
+
+.blog-card__figure {
+  margin: 0;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--surface-2);
+}
+
+.blog-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--transition-slow);
+}
+
+.blog-card:hover .blog-card__img {
+  transform: scale(1.02);
+}
+
+.blog-card__fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--border-normal);
+  font-size: 4rem;
+}
+
+.blog-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 2rem 2.4rem 2.4rem;
+  flex: 1;
+}
+
+.blog-card__title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--title-color);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.blog-card__excerpt {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.blog-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.blog-card__read {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--primary-color);
+  margin-top: auto;
+}
+
+.blog-card__arrow {
+  font-size: 1.8rem;
+  transition: transform var(--transition-fast);
+}
+
+.blog-card:hover .blog-card__arrow {
+  transform: translateX(4px);
+}
+</style>

@@ -4,12 +4,18 @@ import { siteConfig } from '@data/site'
 
 export const GET: APIRoute = async () => {
   const projects = await getCollection('projects')
+  const blogPosts = await getCollection('blog', ({ data }) => !data.draft)
 
   const urls = [
     `  <url><loc>${siteConfig.url}/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>`,
     ...projects.map(
       (p) =>
         `  <url><loc>${siteConfig.url}/projects/${p.id}</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>`
+    ),
+    `  <url><loc>${siteConfig.url}/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
+    ...blogPosts.map(
+      (p) =>
+        `  <url><loc>${siteConfig.url}/blog/${p.id}</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`
     ),
   ]
 

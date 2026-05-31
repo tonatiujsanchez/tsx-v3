@@ -32,4 +32,10 @@ export const navItems: NavItem[] = [
         icon: 'bxs-envelope',
         ariaLabel: 'Contacto',
     },
+    {
+        label: 'Blog',
+        href: '/blog',
+        icon: 'bx-book-open',
+        ariaLabel: 'Blog',
+    },
 ];

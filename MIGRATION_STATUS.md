@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-Fase actual: Fase 11.1 completada — Optimización SEO para Lighthouse 100.
+Fase actual: BLOG-3 completada — Páginas `/blog` y `/blog/[slug]` creadas y funcionando.
 
 ## Fases completadas
 
@@ -18,6 +18,11 @@ Fase actual: Fase 11.1 completada — Optimización SEO para Lighthouse 100.
 - [x] Fase 10 — Páginas
 - [x] Fase 10.1 — Reparación de paridad visual del home
 - [x] Fase 11.1 — Optimización SEO para Lighthouse 100
+- [x] Fase BLOG-0 — Arquitectura editorial y estrategia del blog
+- [x] Fase BLOG-1 — Content Collection schema + estructura base
+- [x] Fase BLOG-2 — Componentes base del blog
+- [x] Fase BLOG-3 — Páginas /blog y /blog/[slug]
+- [ ] Fase BLOG-4 — Estilos avanzados de contenido de artículo
 - [ ] Fase 12 — Lighthouse audit completo (performance, accesibilidad)
 
 ## Archivos creados o modificados
@@ -321,6 +326,48 @@ Fase actual: Fase 11.1 completada — Optimización SEO para Lighthouse 100.
 - `siteConfig.contactApi` vacío — form no puede enviar.
 - `animations.ts` no conectado.
 
+### Fase BLOG-1
+
+**Creados:**
+- `src/content/blog/` — carpeta de la colección blog
+- `src/content/blog/primer-borrador-blog.md` — artículo draft de prueba (draft: true, no publicar)
+- `public/img/blog/.gitkeep` — placeholder para estructura de imágenes
+
+**Modificados:**
+- `src/content.config.ts` — colección `blog` registrada con schema Zod completo. `BLOG_CATEGORIES` como const array para enum controlado.
+- `src/types/index.ts` — añadidos `BlogCategory` (union type) e interfaz `BlogCover`
+
+**Schema `blog`:**
+- Required: `title`, `description`, `excerpt`, `publishedAt`, `category` (enum), `cover` (src/alt/caption?), `draft` (default: true), `tags` (default: [])
+- Optional: `updatedAt`, `author`, `featured` (default: false), `series`, `canonical`, `ogImage`
+
+**Decisiones:**
+- `BLOG_CATEGORIES` const en `content.config.ts` — source of truth para el enum Zod. `BlogCategory` en `types/index.ts` es el tipo TS paralelo para componentes.
+- `draft` default `true` — seguro por defecto, publicar requiere `draft: false` explícito.
+- `tags` default `[]` — no obligatorio pero no undefined, simplifica filtros.
+- `pnpm astro check`: 0 errores, 0 warnings, 45 hints preexistentes.
+- `pnpm build`: 6 páginas (sin páginas de blog — correcto). 875ms.
+
+### Fase BLOG-0
+
+**Creados:**
+- `BLOG_STRATEGY.md` — estrategia editorial y técnica completa del blog.
+
+**Decisiones tomadas:**
+- Formato: Markdown `.md` como principal. MDX reservado para fase futura si hay componentes interactivos.
+- Colección: `src/content/blog/` con schema completo (required: title, description, excerpt, publishedAt, category, cover, draft).
+- Categorías: enum de 5 (`ia`, `tutoriales`, `desarrollo`, `herramientas`, `novedades`).
+- Tags: libre, `string[]`, no enum.
+- Rutas MVP: `/blog` + `/blog/[slug]`. Filtros por categoría/tag y RSS en BLOG-5.
+- RSS: `/rss.xml` a nivel raíz (no `/blog/rss.xml`).
+- Callouts en Markdown puro: blockquote con `**Nota:**`/`**Advertencia:**`/`**Tip:**` — CSS global los estiliza.
+- Ancho de lectura: `max-width: 70rem` (más estrecho que container para lectura cómoda).
+- Sin `BlogCallout.astro` — los callouts son CSS `:global()` en `PostContent`.
+- JSON-LD `BlogPosting` por artículo. `Blog` en el índice.
+- Sitemap existente se extiende en BLOG-5 para incluir artículos.
+- Layout nuevo: `BlogLayout.astro` wrapping `BaseLayout`.
+- No se modificó código de producción.
+
 ### Fase UI-0
 
 **Creados:**
@@ -575,3 +622,49 @@ Portafolio completamente modernizado. Todas las fases UI-0 → UI-8 completadas.
 - Lighthouse manual requiere `pnpm preview` + Chrome
 
 **Para deploy:** `pnpm build` → subir `dist/`. Ver `FINAL_RELEASE_CHECKLIST.md`.
+
+### Fase BLOG-3
+
+**Creados:**
+- `src/pages/blog/index.astro` — índice del blog. Filtra drafts en producción, ordena por `publishedAt` desc, separa `featured`, renderiza `FeaturedPostCard` + grid de `BlogCard`. Empty state si no hay posts publicados. `ogType="website"`. JSON-LD `Blog`.
+- `src/pages/blog/[slug].astro` — detalle de artículo. `getStaticPaths` con filtro de drafts. `render()` para Markdown. `PostHeader`. `.post-content` con estilos mínimos de legibilidad. `ogType="article"`. JSON-LD `BlogPosting`.
+
+**Modificados:**
+- `src/layouts/BlogLayout.astro` — añadido prop `ogType?: 'website' | 'article'` (default `'article'`). Elimina el `ogType="article"` hardcodeado anterior.
+- `src/data/navigation.ts` — añadido item Blog (`href: '/blog'`, icon `bx-book-open`) al final de `navItems`.
+- `src/pages/sitemap.xml.ts` — añadido `/blog` + posts publicados (filtro `!data.draft`). Drafts excluidos del sitemap.
+
+**Rutas generadas en build de producción:**
+- `/blog` (índice con empty state — solo post existente es draft)
+- No genera `/blog/primer-borrador-blog` en build (correcto — es draft)
+
+**Comportamiento de drafts:**
+- `import.meta.env.DEV` controla visibilidad de drafts.
+- En dev (`pnpm dev`): drafts visibles, `/blog/primer-borrador-blog` accesible.
+- En build (`pnpm build`): drafts filtrados. Empty state en `/blog`. No genera páginas de draft.
+- Sitemap excluye siempre drafts (filter `!data.draft` sin condición DEV).
+
+**Validaciones:**
+- `pnpm astro check`: 0 errores, 0 warnings, 45 hints preexistentes.
+- `pnpm build`: 7 páginas + robots.txt + sitemap.xml. 883ms.
+
+### Fase BLOG-2
+
+**Creados:**
+- `src/components/blog/TagPill.astro` — pill para tag. Renderiza `<a>` o `<span>` según `href`. Tokens: `--surface-2`, `--border-subtle`, `--radius-pill`.
+- `src/components/blog/CategoryPill.astro` — pill para categoría. `Record<BlogCategory, string>` para labels legibles. Accent `--primary-color`. Renderiza `<a>` o `<span>`.
+- `src/components/blog/PostMeta.astro` — fecha formateada en `es-MX`, categoría via `CategoryPill`, readingTime, updatedAt condicionales.
+- `src/components/blog/BlogCard.astro` — card de artículo: `--surface-1` + `--card-border` + `--radius-lg`. Hover `translateY(-2px)` + `--shadow-soft`. Cover `16/9` con scale `1.02`. Fallback visual si no hay cover. `data-reveal`. Sin shine border.
+- `src/components/blog/FeaturedPostCard.astro` — card destacada: grid 1col mobile / 2col desktop. Cover prominente. Título `2.4rem` → `3rem`. Badge "Destacado". `data-reveal`.
+- `src/components/blog/PostHeader.astro` — encabezado de artículo: título `3.2rem` → `4.2rem`, description muted, cover con frame premium. `data-reveal` + `data-reveal-delay` 1–3. `max-width: 70rem`.
+- `src/components/blog/BlogImage.astro` — figura con caption para imágenes en artículos. `loading="lazy"`, frame coherente con `ProjectFigure`. Renderiza nada si `src` está vacío.
+- `src/layouts/BlogLayout.astro` — wrapper de `BaseLayout`. Integra `Navbar(variant="home")`, `ScrollTop`, `Footer`. Props SEO: `title`, `description`, `canonical`, `ogImage`, `jsonLd`. `ogType="article"` fijo.
+
+**Decisiones técnicas:**
+- Imports de tipos usan rutas relativas `../../types/index` — alias `@types/*` no disponible (renombrado a `@ptypes/*`).
+- Ningún componente importa Content Collections.
+- `BlogCard` usa `--surface-1` (no `--card-surface`) — alineado con `BLOG_STRATEGY.md`.
+- `FeaturedPostCard` muestra `description` con fallback a `excerpt`.
+- `data-reveal` sin dependencia de JS para visibilidad — motion system es aditivo.
+- `pnpm astro check`: 0 errores, 0 warnings, 45 hints preexistentes.
+- `pnpm build`: 6 páginas + robots.txt + sitemap.xml. 846ms.

@@ -7,8 +7,6 @@ import BlogPagination from '../../../components/blog/BlogPagination.astro'
 import { siteConfig } from '../../../data/site'
 import { sortPostsByDate, getTotalPages, paginatePosts } from '../../../utils/blog'
 
-const POSTS_PER_PAGE = 10
-
 export async function getStaticPaths() {
   const perPage = 10
   const allPosts = await getCollection('blog', ({ data }) => !data.draft)

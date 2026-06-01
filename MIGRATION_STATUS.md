@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-Fase actual: BLOG-3 completada — Páginas `/blog` y `/blog/[slug]` creadas y funcionando.
+Fase actual: BLOG-7 completada — QA final, SEO, Lighthouse y readiness del blog. Blog listo para producción.
 
 ## Fases completadas
 
@@ -24,8 +24,9 @@ Fase actual: BLOG-3 completada — Páginas `/blog` y `/blog/[slug]` creadas y f
 - [x] Fase BLOG-3 — Páginas /blog y /blog/[slug]
 - [x] Fase BLOG-4 — Estilos avanzados de contenido de artículo
 - [x] Fase BLOG-5 — Categorías, tags, RSS y related posts
-- [ ] Fase BLOG-6 — Primer artículo real de producción
-- [ ] Fase 12 — Lighthouse audit completo (performance, accesibilidad)
+- [x] Fase BLOG-6 — Primer artículo real de producción
+- [x] Fase BLOG-7 — QA final, SEO, Lighthouse y readiness del blog
+- [ ] Fase 12 — Performance optimization (Boxicons CDN → self-hosted o preconnect)
 
 ## Archivos creados o modificados
 
@@ -842,3 +843,26 @@ Portafolio completamente modernizado. Todas las fases UI-0 → UI-8 completadas.
 **Validaciones:**
 - `pnpm astro check`: 0 errores, 0 warnings, 45 hints preexistentes.
 - `pnpm build`: 14 páginas. 1.02s. Todas las rutas de blog generadas.
+
+### Fase BLOG-7
+
+**Creados:**
+- `BLOG_RELEASE_CHECKLIST.md` — checklist completo de QA, SEO, accesibilidad, Lighthouse y readiness.
+
+**Modificados (correcciones puntuales):**
+- `src/pages/blog/page/[page].astro` — eliminada variable `POSTS_PER_PAGE` declarada sin usar (lint warning).
+- `src/pages/blog/categoria/[category].astro` — `aria-hidden="true"` en ícono del back link.
+- `src/pages/blog/tag/[tag].astro` — `aria-hidden="true"` en ícono del back link.
+
+**Lighthouse (localhost preview):**
+- `/blog`: Performance 58 / Accessibility 96 / Best Practices 96 / SEO 100
+- `/blog/claude-code-sin-gastar-tantos-tokens`: Performance 66 / Accessibility 96 / Best Practices 100 / SEO 100
+- Performance baja por Boxicons CDN render-blocking. Afecta todo el sitio. No bloqueante para deploy del blog.
+
+**Veredicto:** `BLOG_READY_WITH_NON_BLOCKING_PENDING`
+
+**Pendientes no bloqueantes:**
+- Performance optimization (Boxicons CDN).
+- Light theme y mobile sin verificar en browser real.
+- `siteConfig.contactApi` vacío.
+- `year` faltante en 5 frontmatters de proyectos.

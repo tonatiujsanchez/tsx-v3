@@ -27,6 +27,7 @@ Fase actual: BLOG-7 completada — QA final, SEO, Lighthouse y readiness del blo
 - [x] Fase BLOG-6 — Primer artículo real de producción
 - [x] Fase BLOG-7 — QA final, SEO, Lighthouse y readiness del blog
 - [x] Fase 12 — Performance: eliminación de Boxicons CDN, SVG inline con Icon.astro
+- [x] Fase 13 — Performance: font-display swap, eliminación Paralucent sin uso, preload Poppins
 
 ## Archivos creados o modificados
 
@@ -882,6 +883,28 @@ Portafolio completamente modernizado. Todas las fases UI-0 → UI-8 completadas.
 **Pendientes no bloqueantes:**
 - Fuentes locales aún render-blocking — mejoraría con `font-display: swap` + preload.
 - Performance <90 — esperado en localhost; producción CDN mejorará score.
+
+### Fase 13
+
+**Modificados:**
+- `public/fonts/poppins/poppins.css` — `font-display: swap` en los 6 `@font-face`, `font-style` corregido
+- `src/layouts/BaseLayout.astro` — eliminado `<link>` Paralucent (sin uso), preload de Poppins Regular + Bold
+
+**Hallazgo:** Paralucent cargado pero nunca usado en CSS del sitio. Eliminado.
+
+**Lighthouse (localhost):**
+- `/blog`: 74 → 81 (+7)
+- `/blog/[slug]`: 71 → 78 (+7)
+
+**Progresión total (baseline → Fase 13):**
+- `/blog`: 58 → 81 (+23)
+- `/blog/[slug]`: 66 → 78 (+12)
+
+**Veredicto:** `PERFORMANCE_READY_WITH_PENDING`
+
+**Pendientes no bloqueantes:**
+- `.ttf` → WOFF2 (requiere herramienta externa, ~+5 puntos adicionales).
+- 19 `.otf` de Paralucent sin uso en `public/fonts/paralucent/` (cleanup cosmético, no impacta performance).
 
 **Pendientes no bloqueantes:**
 - Performance optimization (Boxicons CDN).

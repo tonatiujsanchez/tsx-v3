@@ -2,7 +2,12 @@
 
 ## Tarea actual
 
-Fase 13 — Performance: optimizar carga de fuentes locales.
+Fase 13 — COMPLETADA. font-display swap + Paralucent eliminado. Performance /blog: 74→81, /blog/slug: 71→78.
+
+## Siguiente tarea sugerida (opcional)
+
+Fase 14 — Conversión TTF → WOFF2 (requiere herramienta externa como `woff2` CLI o `fonttools`).
+Estimación: +3-5 puntos Performance adicionales. Baja prioridad si el sitio ya está en producción.
 
 ## Contexto
 

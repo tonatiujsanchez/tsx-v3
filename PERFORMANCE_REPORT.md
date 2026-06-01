@@ -1,6 +1,6 @@
 # PERFORMANCE_REPORT.md
 
-## Veredicto: `PERFORMANCE_READY_WITH_PENDING`
+## Veredicto: `PERFORMANCE_READY_WITH_PENDING` (Fase 13 aplicada)
 
 ---
 
@@ -106,11 +106,44 @@ Nota: scores de localhost. En producción con CDN+cache y compresión HTTP/2, Pe
 
 ---
 
-## Siguiente recomendación
+---
 
-Fase 13 (opcional): Optimizar fuentes locales.
+## Fase 13 — Optimización de fuentes locales
 
-1. Agregar `font-display: swap` en `/fonts/poppins/poppins.css` y `/fonts/paralucent/paralucent.css`.
-2. Agregar `<link rel="preload" as="font">` para los `.woff2` críticos en BaseLayout.
+### Auditoría
 
-Estimación de mejora adicional: +5-10 puntos Performance.
+- `poppins.css`: 6 `@font-face` (300, 400, 500, 600, 700, 900). Sin `font-display`. `.ttf` format.
+- `paralucent.css`: 1 `@font-face` (`ParalucentStencilHeavy`). Sin `font-display`. `.otf` format.
+- **Hallazgo crítico**: `ParalucentStencil` no está referenciado en ningún CSS de `src/`. Fuente cargada como render-blocking sin uso real.
+
+### Optimizaciones aplicadas
+
+1. `font-display: swap` añadido a los 6 `@font-face` de `poppins.css`.
+2. `<link rel="stylesheet">` de `paralucent.css` **eliminado** de BaseLayout — fuente sin uso.
+3. `<link rel="preload">` para `Poppins-Regular.ttf` y `Poppins-Bold.ttf` en BaseLayout.
+4. `font-style: light/bolder` → `font-style: normal` en `poppins.css` (valores CSS válidos son `normal`, `italic`, `oblique`).
+
+### Archivos modificados
+
+- `public/fonts/poppins/poppins.css` — `font-display: swap`, `font-style` corregido
+- `src/layouts/BaseLayout.astro` — eliminado `<link>` Paralucent, añadidos `<link rel="preload">`
+
+### Resultado Lighthouse (localhost)
+
+| Página | Fase 12 | Fase 13 | Δ |
+|---|---|---|---|
+| `/blog` | 74 | **81** | +7 |
+| `/blog/[slug]` | 71 | **78** | +7 |
+
+### Progresión total desde baseline
+
+| Página | Baseline | Fase 12 | Fase 13 | Δ total |
+|---|---|---|---|---|
+| `/blog` | 58 | 74 | **81** | +23 |
+| `/blog/[slug]` | 66 | 71 | **78** | +12 |
+
+### Pendientes no bloqueantes
+
+- `.ttf` → `.woff2`: convertiría a formato moderno, reduciría tamaño ~30%. Requiere herramienta externa (no instalable en esta fase).
+- 19 archivos `.otf` de Paralucent en `public/fonts/paralucent/` no usados. Cleanup cosmético, no impacta performance (no se sirven).
+- Performance <90 en localhost es esperable; producción CDN+HTTP/2+compresión mejora ~10-15 puntos adicionales.

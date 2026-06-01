@@ -68,9 +68,10 @@ const ogImageURL = ogImage?.startsWith('http')
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
     <link rel="manifest" href="/favicon/site.webmanifest" />
 
-    <!-- Fonts -->
+    <!-- Fonts: preload critical weights, then load full stylesheet -->
+    <link rel="preload" href="/fonts/poppins/Poppins-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
+    <link rel="preload" href="/fonts/poppins/Poppins-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous" />
     <link rel="stylesheet" href="/fonts/poppins/poppins.css" />
-    <link rel="stylesheet" href="/fonts/paralucent/paralucent.css" />
 
     {jsonLd && (
       <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

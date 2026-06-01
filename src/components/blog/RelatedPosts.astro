@@ -1,6 +1,7 @@
 ---
 import type { BlogCategory } from '../../types/index'
 import CategoryPill from './CategoryPill.astro'
+import Icon from '../ui/Icon.astro'
 
 interface RelatedPost {
   title: string
@@ -40,7 +41,7 @@ const { posts } = Astro.props
           <h3 class="related-post__heading">{post.title}</h3>
           <p class="related-post__description">{post.description}</p>
           <span class="related-post__read" aria-hidden="true">
-            Leer <i class="bx bx-right-arrow-alt related-post__arrow"></i>
+            Leer <Icon name="bx-right-arrow-alt" class="related-post__arrow" />
           </span>
         </a>
       ))}

@@ -1,5 +1,6 @@
 ---
 import { siteConfig, socialLinks } from '@data/site'
+import Icon from '../ui/Icon.astro'
 ---
 
 <section class="hero" id="hola">
@@ -36,7 +37,7 @@ import { siteConfig, socialLinks } from '@data/site'
             rel="noopener noreferrer"
             aria-label="Descargar CV de Tonatiuj Sánchez"
           >
-            <i class="bx bx-download" aria-hidden="true"></i>
+            <Icon name="bx-download" class="hero__cta-download" />
             Descargar CV
           </a>
           <a
@@ -45,7 +46,7 @@ import { siteConfig, socialLinks } from '@data/site'
             aria-label="Ir a la sección de contacto"
           >
             Contacto
-            <i class="bx bx-right-arrow-alt hero__cta-arrow" aria-hidden="true"></i>
+            <Icon name="bx-right-arrow-alt" class="hero__cta-arrow" />
           </a>
         </div>
 
@@ -59,7 +60,7 @@ import { siteConfig, socialLinks } from '@data/site'
                 rel="noopener noreferrer"
                 aria-label={link.label}
               >
-                <i class={`bx ${link.icon}`} aria-hidden="true"></i>
+                <Icon name={link.icon} />
               </a>
             </li>
           ))}
@@ -218,7 +219,7 @@ import { siteConfig, socialLinks } from '@data/site'
     transform: translateY(-1px);
   }
 
-  .hero__cta--primary .bx-download {
+  .hero__cta--primary .hero__cta-download {
     font-size: 1.7rem;
   }
 

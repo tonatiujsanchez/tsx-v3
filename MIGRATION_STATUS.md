@@ -26,7 +26,7 @@ Fase actual: BLOG-7 completada — QA final, SEO, Lighthouse y readiness del blo
 - [x] Fase BLOG-5 — Categorías, tags, RSS y related posts
 - [x] Fase BLOG-6 — Primer artículo real de producción
 - [x] Fase BLOG-7 — QA final, SEO, Lighthouse y readiness del blog
-- [ ] Fase 12 — Performance optimization (Boxicons CDN → self-hosted o preconnect)
+- [x] Fase 12 — Performance: eliminación de Boxicons CDN, SVG inline con Icon.astro
 
 ## Archivos creados o modificados
 
@@ -860,6 +860,28 @@ Portafolio completamente modernizado. Todas las fases UI-0 → UI-8 completadas.
 - Performance baja por Boxicons CDN render-blocking. Afecta todo el sitio. No bloqueante para deploy del blog.
 
 **Veredicto:** `BLOG_READY_WITH_NON_BLOCKING_PENDING`
+
+### Fase 12
+
+**Creados:**
+- `src/components/ui/Icon.astro` — 20 SVG icons inline (bx-*, bxl-*, bxs-*)
+- `PERFORMANCE_REPORT.md`
+
+**Modificados:**
+- `src/layouts/BaseLayout.astro` — eliminado `<link>` Boxicons CDN
+- 17 componentes/páginas — `<i class="bx ...">` reemplazado por `<Icon name="..." />`
+- `src/components/home/ContactForm.astro` — toast usa `innerHTML` SVG en JS
+
+**Resultado Lighthouse (localhost):**
+- `/blog`: Performance 58 → 74 (+16). Best Practices 96 → 100.
+- `/blog/[slug]`: Performance 66 → 71 (+5).
+- Accessibility 96, SEO 100 (sin cambios).
+
+**Veredicto:** `PERFORMANCE_READY_WITH_PENDING`
+
+**Pendientes no bloqueantes:**
+- Fuentes locales aún render-blocking — mejoraría con `font-display: swap` + preload.
+- Performance <90 — esperado en localhost; producción CDN mejorará score.
 
 **Pendientes no bloqueantes:**
 - Performance optimization (Boxicons CDN).

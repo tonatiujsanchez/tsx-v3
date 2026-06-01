@@ -1,4 +1,6 @@
 ---
+import Icon from '../ui/Icon.astro'
+
 interface Props {
   github?: string
   live?: string
@@ -20,7 +22,7 @@ const hasLinks = github || live || githubFrontend || githubBackend
         rel="noopener noreferrer"
         aria-label="Ver repositorio frontend en GitHub"
       >
-        <i class="bx bxl-github project-links__icon" aria-hidden="true"></i>
+        <Icon name="bxl-github" class="project-links__icon" />
         <span>Frontend</span>
       </a>
     )}
@@ -32,7 +34,7 @@ const hasLinks = github || live || githubFrontend || githubBackend
         rel="noopener noreferrer"
         aria-label="Ver repositorio backend en GitHub"
       >
-        <i class="bx bxl-github project-links__icon" aria-hidden="true"></i>
+        <Icon name="bxl-github" class="project-links__icon" />
         <span>Backend</span>
       </a>
     )}
@@ -44,7 +46,7 @@ const hasLinks = github || live || githubFrontend || githubBackend
         rel="noopener noreferrer"
         aria-label="Ver código fuente en GitHub"
       >
-        <i class="bx bxl-github project-links__icon" aria-hidden="true"></i>
+        <Icon name="bxl-github" class="project-links__icon" />
         <span>Repositorio</span>
       </a>
     )}
@@ -56,7 +58,7 @@ const hasLinks = github || live || githubFrontend || githubBackend
         rel="noopener noreferrer"
         aria-label="Ver demo en vivo"
       >
-        <i class="bx bx-link-external project-links__icon" aria-hidden="true"></i>
+        <Icon name="bx-link-external" class="project-links__icon" />
         <span>Ver demo</span>
       </a>
     )}

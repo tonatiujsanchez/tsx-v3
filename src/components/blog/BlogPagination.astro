@@ -1,4 +1,6 @@
 ---
+import Icon from '../ui/Icon.astro'
+
 interface Props {
   currentPage: number
   totalPages: number
@@ -15,12 +17,12 @@ const getPageHref = (page: number) =>
   <nav class="blog-pagination" aria-label="Paginación del blog">
     {currentPage > 1 ? (
       <a href={getPageHref(currentPage - 1)} class="blog-pagination__btn">
-        <i class="bx bx-left-arrow-alt" aria-hidden="true"></i>
+        <Icon name="bx-left-arrow-alt" />
         <span>Anterior</span>
       </a>
     ) : (
       <span class="blog-pagination__btn blog-pagination__btn--disabled" aria-disabled="true">
-        <i class="bx bx-left-arrow-alt" aria-hidden="true"></i>
+        <Icon name="bx-left-arrow-alt" />
         <span>Anterior</span>
       </span>
     )}
@@ -32,12 +34,12 @@ const getPageHref = (page: number) =>
     {currentPage < totalPages ? (
       <a href={getPageHref(currentPage + 1)} class="blog-pagination__btn">
         <span>Siguiente</span>
-        <i class="bx bx-right-arrow-alt" aria-hidden="true"></i>
+        <Icon name="bx-right-arrow-alt" />
       </a>
     ) : (
       <span class="blog-pagination__btn blog-pagination__btn--disabled" aria-disabled="true">
         <span>Siguiente</span>
-        <i class="bx bx-right-arrow-alt" aria-hidden="true"></i>
+        <Icon name="bx-right-arrow-alt" />
       </span>
     )}
   </nav>

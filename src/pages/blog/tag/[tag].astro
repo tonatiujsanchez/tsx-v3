@@ -6,6 +6,7 @@ import BlogCard from '../../../components/blog/BlogCard.astro'
 import TagPill from '../../../components/blog/TagPill.astro'
 import { siteConfig } from '../../../data/site'
 import { getVisiblePosts, sortPostsByDate, getAllTags } from '../../../utils/blog'
+import Icon from '../../../components/ui/Icon.astro'
 
 export async function getStaticPaths() {
   const isDev = import.meta.env.DEV
@@ -43,7 +44,7 @@ const description = `Artículos etiquetados con "${tag}" — ${siteConfig.author
     <div class="container">
       <header class="tag-page__header" data-reveal>
         <a href="/blog" class="tag-page__back">
-          <i class="bx bx-left-arrow-alt" aria-hidden="true"></i> Blog
+          <Icon name="bx-left-arrow-alt" /> Blog
         </a>
         <div class="tag-page__pill">
           <TagPill tag={tag} />

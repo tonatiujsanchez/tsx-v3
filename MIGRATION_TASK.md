@@ -2,83 +2,46 @@
 
 ## Tarea actual
 
-Fase BLOG-7 — COMPLETADA. Blog listo para producción (`BLOG_READY_WITH_NON_BLOCKING_PENDING`).
-
-## Siguiente tarea sugerida
-
-Fase 12 — Performance optimization del sitio completo.
-
-Objetivo: subir Performance de Lighthouse de ~58-66 a ≥90. Principal causa: Boxicons CDN render-blocking.
-
-Opciones:
-1. Self-host Boxicons en `public/fonts/` + `@font-face`.
-2. Añadir `rel="preconnect"` + `font-display: swap` en BaseLayout.
-3. Reemplazar Boxicons por SVG inline en componentes críticos (Navbar, Footer, Hero).
-
-## Estado del blog
+Fase 13 — Performance: optimizar carga de fuentes locales.
 
 ## Contexto
 
-El blog ya tiene:
+La Fase 12 eliminó Boxicons CDN y reemplazó iconos por SVG inline locales.
 
-- Content Collection `blog`.
-- Primer artículo real publicado o manejable con `draft`.
-- Componentes base del blog.
-- Páginas `/blog` y `/blog/[slug]`.
-- Categorías y tags.
-- RSS.
-- Sitemap.
-- Related posts.
-- Estilos editoriales para Markdown largo.
-- `/blog` refinado con diseño minimalista y paginación de máximo 10 artículos por página.
+Resultado:
+- Boxicons CDN eliminado.
+- `pnpm astro check`: 0 errores.
+- `pnpm build`: limpio.
+- Lighthouse mejoró:
+  - `/blog`: Performance 58 → 74.
+  - `/blog/[slug]`: Performance 66 → 71.
 
-Ahora se debe ejecutar QA final del blog antes de considerar el módulo listo para producción.
+Pendiente detectado:
+- Fuentes locales `poppins.css` y `paralucent.css` siguen siendo render-blocking.
+- Posible mejora con `font-display: swap`, preload selectivo y reducción de pesos cargados.
 
 ## Objetivo
 
-Validar que el blog esté listo para producción en:
+Optimizar la carga de fuentes locales para mejorar Lighthouse Performance sin romper la identidad visual del sitio.
 
-- funcionalidad.
-- rutas.
-- drafts.
-- SEO.
-- RSS.
-- sitemap.
-- accesibilidad.
-- rendimiento.
-- diseño visual.
-- Lighthouse.
-
-También se debe crear un reporte final:
-
-- `BLOG_RELEASE_CHECKLIST.md`
+La solución debe:
+- mantener Poppins y Paralucent si son parte del diseño actual.
+- reducir bloqueo de renderizado.
+- evitar cargar pesos innecesarios.
+- preservar diseño visual.
+- no instalar dependencias.
 
 ## Archivos permitidos para lectura
 
 - `CLAUDE.md`
 - `MIGRATION_STATUS.md`
 - `MIGRATION_TASK.md`
-- `BLOG_STRATEGY.md`
-- `UI_DIRECTION.md`
+- `PERFORMANCE_REPORT.md`
 - `FINAL_RELEASE_CHECKLIST.md`
-- `src/content.config.ts`
-- `src/content/blog/*.md`
-- `src/pages/blog/index.astro`
-- `src/pages/blog/[slug].astro`
-- `src/pages/blog/page/[page].astro`
-- `src/pages/blog/categoria/[category].astro`
-- `src/pages/blog/tag/[tag].astro`
-- `src/pages/rss.xml.ts`
-- `src/pages/sitemap.xml.ts`
-- `src/pages/robots.txt.ts`
-- `src/layouts/BlogLayout.astro`
+- `BLOG_RELEASE_CHECKLIST.md`
 - `src/layouts/BaseLayout.astro`
-- `src/components/blog/**`
-- `src/utils/blog.ts`
-- `src/data/site.ts`
-- `src/data/navigation.ts`
 - `src/styles/globals.css`
-- `src/styles/animations.css`
+- `public/fonts/**`
 - `package.json`
 - `astro.config.mjs`
 
@@ -88,27 +51,15 @@ Usar primero:
 
     git status --short
     git diff --stat
-    find src/pages/blog -maxdepth 4 -type f | sort
-    find src/components/blog -maxdepth 2 -type f | sort
-    find src/content/blog -maxdepth 2 -type f | sort
-    rg "draft|canonical|og:|twitter:|jsonLd|rss|sitemap|BlogPosting|alt=|aria-label|href=|target=|rel=|pagination|page" src -n
+    find public/fonts -maxdepth 4 -type f | sort
+    rg "poppins|paralucent|font-face|font-display|preload|fonts|stylesheet" src public -n
 
 ## Archivos permitidos para edición
 
-Correcciones pequeñas y puntuales en:
-
-- `src/pages/blog/index.astro`
-- `src/pages/blog/[slug].astro`
-- `src/pages/blog/page/[page].astro`
-- `src/pages/blog/categoria/[category].astro`
-- `src/pages/blog/tag/[tag].astro`
-- `src/pages/rss.xml.ts`
-- `src/pages/sitemap.xml.ts`
-- `src/pages/robots.txt.ts`
-- `src/components/blog/**`
-- `src/utils/blog.ts`
-- `src/content/blog/*.md`, solo para corregir frontmatter inválido.
-- `BLOG_RELEASE_CHECKLIST.md`
+- `src/layouts/BaseLayout.astro`
+- `src/styles/globals.css`
+- archivos CSS dentro de `public/fonts/**`, solo si contienen `@font-face`.
+- `PERFORMANCE_REPORT.md`
 - `MIGRATION_STATUS.md`
 - `MIGRATION_TASK.md`
 
@@ -116,185 +67,123 @@ Correcciones pequeñas y puntuales en:
 
 No modificar:
 
-- `src/components/sections/**`
-- `src/components/home/**`
-- `src/components/project/**`
-- `src/components/shared/**`
-- `src/layouts/BaseLayout.astro`, salvo error SEO bloqueante.
-- `src/styles/**`, salvo bug visual bloqueante del blog.
+- `src/components/**`
+- `src/pages/**`
 - `src/scripts/**`
-- `src/data/**`, salvo error bloqueante en `siteConfig`.
+- `src/content/**`
+- `src/data/**`
 - `src/icons/**`
-- `public/**`
+- archivos binarios de fuentes `.ttf`, `.otf`, `.woff`, `.woff2`
 - `package.json`
 - `pnpm-lock.yaml`
+- `astro.config.mjs`
 - `tsconfig.json`
-- `astro.config.mjs`, salvo error bloqueante de site/build.
 
 Si necesitas modificar un archivo prohibido, primero explica por qué y espera confirmación.
 
 ## Alcance exacto
 
-### 1. Validar rutas del blog
+### 1. Auditar carga actual de fuentes
 
-Verificar que funcionen:
+Identificar:
 
-- `/blog`
-- `/blog/[slug]`
-- `/blog/page/[page]` si hay más de 10 posts.
-- `/blog/categoria/[category]`
-- `/blog/tag/[tag]`
-- `/rss.xml`
-- `/sitemap.xml`
-- `/robots.txt`
+- cómo se cargan `poppins.css` y `paralucent.css`.
+- cuántos pesos se cargan.
+- si usan `@font-face`.
+- si tienen `font-display`.
+- si se cargan por `<link rel="stylesheet">`.
+- qué fuentes/pesos realmente usa el sitio.
+
+No hacer cambios antes de entender el alcance.
+
+### 2. Agregar `font-display: swap`
+
+En los archivos CSS de fuentes, agregar:
+
+    font-display: swap;
+
+a cada `@font-face`.
 
 Reglas:
+- No modificar archivos binarios.
+- No cambiar nombres de fuentes.
+- No cambiar rutas de fuentes.
+- No eliminar pesos sin revisar uso primero.
 
-- No generar páginas vacías.
-- No incluir drafts en producción.
-- No romper rutas del portfolio.
+### 3. Optimizar carga en `BaseLayout.astro`
 
-### 2. Validar comportamiento de drafts
+Revisar si actualmente se cargan CSS de fuentes como render-blocking.
 
-Confirmar:
+Opciones permitidas:
 
-- `draft: true` no aparece en build de producción.
-- `draft: true` no entra a `/blog`.
-- `draft: true` no entra al RSS.
-- `draft: true` no entra al sitemap.
-- En desarrollo puede verse si el sistema así fue definido.
+- preload selectivo de los pesos principales.
+- mantener stylesheet si es necesario.
+- evitar preload masivo de todos los pesos.
+- evitar cargar 40 fuentes si no se usan.
 
-Documentar el comportamiento en `BLOG_RELEASE_CHECKLIST.md`.
+Reglas:
+- No hacer preload de todos los archivos.
+- No agregar hacks frágiles.
+- No romper visual.
+- No duplicar cargas.
 
-### 3. Validar SEO del blog
+### 4. Reducir pesos si es seguro
 
-Revisar:
+Si se detecta que se cargan muchos pesos no usados, proponer reducción mínima.
 
-- title único en `/blog`.
-- title único por artículo.
-- meta description.
-- canonical.
-- Open Graph.
-- Twitter Card.
-- JSON-LD `BlogPosting` en artículos.
-- RSS válido.
-- sitemap válido.
-- robots correcto.
+Pesos probables necesarios:
+- Poppins regular.
+- Poppins medium/semi-bold.
+- Poppins bold.
+- Paralucent si se usa en títulos/logo.
 
-Corregir solo errores reales.
+Reglas:
+- Si no hay certeza, no borrar.
+- Preferir documentar como pendiente antes que romper tipografía.
+- No eliminar archivos de fuentes.
+- No modificar assets binarios.
 
-### 4. Validar accesibilidad básica
-
-Revisar:
-
-- imágenes con `alt`.
-- links externos con `rel="noopener noreferrer"`.
-- links con texto o `aria-label`.
-- navegación por teclado.
-- focus visible.
-- paginación con `aria-current`.
-- headings en orden lógico.
-- contraste razonable.
-
-Corregir solo issues puntuales.
-
-### 5. Validar diseño visual
-
-Revisar:
-
-- `/blog` minimalista y coherente con Engineered Darkness.
-- cards legibles.
-- paginación discreta.
-- artículo legible.
-- callouts.
-- código.
-- tablas.
-- imágenes.
-- mobile.
-- desktop.
-- dark theme.
-- light theme si existe.
-
-No rediseñar.
-
-### 6. Validar build y Lighthouse
+### 5. Validar
 
 Ejecutar:
 
     pnpm astro check
     pnpm build
+    git diff --stat
 
-Luego, si el entorno lo permite:
+Si el entorno permite:
 
     pnpm preview
 
-Revisar manualmente:
-
-    /blog
-    /blog/claude-code-sin-gastar-tantos-tokens
-    /rss.xml
-    /sitemap.xml
-
-Si Lighthouse está disponible sin instalar dependencias permanentes, ejecutar:
+Ejecutar Lighthouse si es posible:
 
     pnpm dlx lighthouse http://localhost:4321/blog --only-categories=performance,accessibility,best-practices,seo --chrome-flags="--headless"
 
     pnpm dlx lighthouse http://localhost:4321/blog/claude-code-sin-gastar-tantos-tokens --only-categories=performance,accessibility,best-practices,seo --chrome-flags="--headless"
 
-No commitear reportes HTML/JSON de Lighthouse salvo que ya exista convención.
-
-### 7. Crear `BLOG_RELEASE_CHECKLIST.md`
-
-Debe incluir:
-
-- estado general del blog.
-- comandos ejecutados.
-- rutas verificadas.
-- estado de drafts.
-- estado de RSS.
-- estado de sitemap.
-- estado de SEO.
-- estado de accesibilidad.
-- estado visual.
-- resultado Lighthouse si se pudo ejecutar.
-- pendientes bloqueantes.
-- pendientes no bloqueantes.
-- veredicto final.
-
-Veredictos posibles:
-
-- `BLOG_READY_FOR_DEPLOY`
-- `BLOG_READY_WITH_NON_BLOCKING_PENDING`
-- `BLOG_BLOCKED`
-
 ## Fuera de alcance
 
-- No rediseñar el blog.
-- No crear artículos nuevos.
-- No publicar/despublicar artículos salvo que sea parte de validar drafts y se justifique.
+- No rediseñar UI.
+- No cambiar fuente principal por otra.
 - No instalar dependencias.
-- No agregar búsqueda.
-- No agregar CMS.
-- No agregar MDX.
-- No modificar el home.
-- No modificar páginas de proyectos.
+- No convertir fuentes manualmente.
+- No borrar archivos binarios.
+- No modificar componentes.
+- No modificar contenido.
 - No cambiar arquitectura.
+- No optimizar imágenes en esta fase.
 
 ## Criterios de aceptación
 
+- Las fuentes locales tienen `font-display: swap`.
+- Se redujo o documentó el impacto render-blocking.
+- No se rompió tipografía visual.
 - `pnpm astro check` pasa.
 - `pnpm build` pasa.
-- `/blog` funciona.
-- artículo publicado funciona.
-- RSS funciona.
-- sitemap funciona.
-- drafts no se publican en producción.
-- SEO técnico del blog está validado.
-- accesibilidad básica validada.
-- diseño visual validado.
-- `BLOG_RELEASE_CHECKLIST.md` existe.
+- Lighthouse mejora o se documenta claramente por qué no.
+- `PERFORMANCE_REPORT.md` queda actualizado.
 - `MIGRATION_STATUS.md` queda actualizado.
-- no quedan bloqueantes sin documentar.
+- No hay cambios fuera del alcance.
 
 ## Validaciones
 
@@ -310,25 +199,20 @@ Si es posible:
 
 Revisar:
 
+    /
     /blog
     /blog/claude-code-sin-gastar-tantos-tokens
-    /rss.xml
-    /sitemap.xml
-    /robots.txt
-
-Lighthouse si el entorno lo permite.
+    /projects/admin-sites
 
 ## Respuesta esperada
 
 Responder solo con:
 
-1. Veredicto del blog.
-2. Archivo creado.
-3. Rutas verificadas.
+1. Fuentes auditadas.
+2. Optimización aplicada.
+3. Archivos modificados.
 4. Resultado de `pnpm astro check`.
 5. Resultado de `pnpm build`.
 6. Resultado Lighthouse si se pudo ejecutar.
-7. Correcciones aplicadas.
-8. Pendientes bloqueantes.
-9. Pendientes no bloqueantes.
-10. Confirmación de readiness.
+7. Pendientes.
+8. Veredicto performance.

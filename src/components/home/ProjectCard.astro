@@ -11,6 +11,8 @@ interface Props {
   }
 }
 
+import Icon from '../ui/Icon.astro'
+
 const { title, slug, year, summary, thumbnail } = Astro.props
 ---
 
@@ -29,7 +31,7 @@ const { title, slug, year, summary, thumbnail } = Astro.props
       <h3 class="project__title">
         <a class="project__link" href={`/projects/${slug}`} aria-label={`Ver proyecto ${title}`}>
           {title}
-          <i class="bx bx-right-arrow-alt project__arrow" aria-hidden="true"></i>
+          <Icon name="bx-right-arrow-alt" class="project__arrow" />
         </a>
       </h3>
       <span class="project__year">{year}</span>

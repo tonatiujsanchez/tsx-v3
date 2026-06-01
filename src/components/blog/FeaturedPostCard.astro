@@ -2,6 +2,7 @@
 import type { BlogCategory, BlogCover } from '../../types/index'
 import PostMeta from './PostMeta.astro'
 import TagPill from './TagPill.astro'
+import Icon from '../ui/Icon.astro'
 
 interface Props {
   title: string
@@ -32,7 +33,7 @@ const { title, description, excerpt, href, publishedAt, updatedAt, category, tag
     )}
     <div class="featured-post__body">
       <div class="featured-post__badge">
-        <i class="bx bxs-star" aria-hidden="true"></i> Destacado
+        <Icon name="bxs-star" /> Destacado
       </div>
       <PostMeta publishedAt={publishedAt} updatedAt={updatedAt} category={category} />
       <h2 class="featured-post__title">{title}</h2>
@@ -43,7 +44,7 @@ const { title, description, excerpt, href, publishedAt, updatedAt, category, tag
         </div>
       )}
       <span class="featured-post__read">
-        Leer artículo <i class="bx bx-right-arrow-alt featured-post__arrow" aria-hidden="true"></i>
+        Leer artículo <Icon name="bx-right-arrow-alt" class="featured-post__arrow" />
       </span>
     </div>
   </a>

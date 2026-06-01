@@ -1,4 +1,6 @@
 ---
+import Icon from '../ui/Icon.astro'
+
 interface Props {
   text?: string
   href?: string
@@ -12,11 +14,11 @@ const {
 
 <section class="project-contact" aria-label="Contacto">
   <div class="project-contact__card">
-    <i class="bx bx-mail-send project-contact__icon" aria-hidden="true"></i>
+    <Icon name="bx-mail-send" class="project-contact__icon" />
     <p class="project-contact__text">{text}</p>
     <a href={href} class="project-contact__cta" aria-label="Ir a la sección de contacto">
       Contáctame
-      <i class="bx bx-right-arrow-alt project-contact__arrow" aria-hidden="true"></i>
+      <Icon name="bx-right-arrow-alt" class="project-contact__arrow" />
     </a>
   </div>
 </section>

@@ -16,6 +16,8 @@ interface Props {
   featured?: boolean
 }
 
+import Icon from '../ui/Icon.astro'
+
 const { title, excerpt, href, publishedAt, updatedAt, category, tags, cover, featured } = Astro.props
 ---
 
@@ -35,7 +37,7 @@ const { title, excerpt, href, publishedAt, updatedAt, category, tags, cover, fea
           </div>
         )}
         <span class="blog-card__read">
-          Leer <i class="bx bx-right-arrow-alt blog-card__arrow" aria-hidden="true"></i>
+          Leer <Icon name="bx-right-arrow-alt" class="blog-card__arrow" />
         </span>
       </div>
     </div>

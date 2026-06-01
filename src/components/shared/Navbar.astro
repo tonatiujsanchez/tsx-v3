@@ -1,6 +1,7 @@
 ---
 import { navItems } from '@data/navigation'
 import ThemeToggle from './ThemeToggle.astro'
+import Icon from '../ui/Icon.astro'
 
 interface Props {
   variant?: 'home' | 'project'
@@ -31,7 +32,7 @@ const resolveHref = (href: string) =>
             {navItems.map((item) => (
               <li class:list={['nav__item', { 'nav__item--mobile-only': item.mobileOnly }]}>
                 <a href={resolveHref(item.href)} aria-label={item.ariaLabel} class="nav__link">
-                  <i class={`bx ${item.icon} nav__link-icon`} aria-hidden="true"></i>
+                  <Icon name={item.icon} class="nav__link-icon" />
                   <span class="nav__link-text">{item.label}</span>
                 </a>
               </li>
@@ -41,7 +42,7 @@ const resolveHref = (href: string) =>
       </>
     ) : (
       <a href={backHref} class="nav__back">
-        <i class="bx bx-arrow-back" aria-hidden="true"></i>
+        <Icon name="bx-arrow-back" />
         <span>Regresar</span>
       </a>
     )}

@@ -51,7 +51,7 @@ import { siteConfig } from '@data/site'
 </div>
 
 <div class="toast" id="contact-toast" role="status" aria-live="polite" aria-atomic="true">
-  <i class="toast__icon bx" id="contact-toast-icon" aria-hidden="true"></i>
+  <span class="toast__icon" id="contact-toast-icon" aria-hidden="true"></span>
   <span class="toast__msg" id="contact-toast-msg"></span>
 </div>
 
@@ -66,10 +66,14 @@ import { siteConfig } from '@data/site'
 
   if (!form || !submitBtn || !loader || !toast || !toastIcon || !toastMsg) return
 
+  const checkPath = 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4.5-4.5 1.41-1.41L10 13.67l7.09-7.08 1.41 1.41L10 16.5z'
+  const xPath = 'M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z'
+
   function showToast(success) {
+    toastIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="${success ? checkPath : xPath}"/></svg>`
     toastIcon.className = success
-      ? 'toast__icon bx bxs-check-circle toast__icon--success'
-      : 'toast__icon bx bxs-x-circle toast__icon--error'
+      ? 'toast__icon toast__icon--success'
+      : 'toast__icon toast__icon--error'
     toastMsg.textContent = success
       ? 'Mensaje enviado correctamente.'
       : 'Error al enviar el mensaje. Inténtalo de nuevo.'

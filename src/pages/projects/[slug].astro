@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content'
 import { getCollection, render } from 'astro:content'
 import ProjectLayout from '@layouts/ProjectLayout.astro'
 import TechIcon from '@components/ui/TechIcon.astro'
+import Icon from '@components/ui/Icon.astro'
 import ProjectFigure from '@components/ui/ProjectFigure.astro'
 import ProjectContact from '@components/project/ProjectContact.astro'
 import { siteConfig } from '@data/site'
@@ -74,7 +75,7 @@ const hasLinks = github || githubFrontend || githubBackend || demo
               rel="noopener noreferrer"
               aria-label="Ver repositorio frontend en GitHub"
             >
-              <i class="bx bxl-github" aria-hidden="true"></i>
+              <Icon name="bxl-github" />
               <span>Frontend</span>
             </a>
           )}
@@ -86,7 +87,7 @@ const hasLinks = github || githubFrontend || githubBackend || demo
               rel="noopener noreferrer"
               aria-label="Ver repositorio backend en GitHub"
             >
-              <i class="bx bxl-github" aria-hidden="true"></i>
+              <Icon name="bxl-github" />
               <span>Backend</span>
             </a>
           )}
@@ -98,7 +99,7 @@ const hasLinks = github || githubFrontend || githubBackend || demo
               rel="noopener noreferrer"
               aria-label="Ver código fuente en GitHub"
             >
-              <i class="bx bxl-github" aria-hidden="true"></i>
+              <Icon name="bxl-github" />
               <span>Repositorio</span>
             </a>
           )}
@@ -110,7 +111,7 @@ const hasLinks = github || githubFrontend || githubBackend || demo
               rel="noopener noreferrer"
               aria-label="Ver demo en vivo"
             >
-              <i class="bx bx-link-external" aria-hidden="true"></i>
+              <Icon name="bx-link-external" />
               <span>Ver demo</span>
             </a>
           )}

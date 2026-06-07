@@ -28,8 +28,9 @@ export const socialLinks: SocialLink[] = [
         icon: 'bxl-github',
     },
     {
-        label: 'Twitter',
-        href: 'https://twitter.com/tonatiujsanchez',
-        icon: 'bxl-twitter',
+        label: 'Instagram',
+        href: 'https://www.instagram.com/tonatiujsanchez/',
+        icon: 'bxl-instagram',
     },
+
 ];

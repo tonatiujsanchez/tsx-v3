@@ -8,7 +8,7 @@ export const siteConfig: SiteConfig = {
     email: 'tonatiujsanchez@gmail.com',
     cvPath: '/docs/Tonatiuj_Sánchez_Jiménez_CV.pdf',
     contactApi: '', // TODO: Add contact API endpoint
-    url: 'https://tonatiujsanchez.dev',
+    url: 'https://tonatiujsanchez.com',
     siteName: 'Tonatiuj Sánchez Portfolio',
     locale: 'es_MX',
     defaultOgImage: '/img/profile/tsj.webp',

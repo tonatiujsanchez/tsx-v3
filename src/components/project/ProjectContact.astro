@@ -1,22 +1,23 @@
 ---
 import Icon from '../ui/Icon.astro'
+import { siteConfig } from '@data/site'
 
 interface Props {
   text?: string
-  href?: string
 }
 
 const {
   text = '¿Estás interesado en colaborar juntos? No dudes en ponerte en contacto conmigo.',
-  href = '/#contacto',
 } = Astro.props
+
+const mailtoHref = `mailto:${siteConfig.email}?subject=Hablemos%20de%20un%20proyecto`
 ---
 
 <section class="project-contact" aria-label="Contacto">
   <div class="project-contact__card">
     <Icon name="bx-mail-send" class="project-contact__icon" />
     <p class="project-contact__text">{text}</p>
-    <a href={href} class="project-contact__cta" aria-label="Ir a la sección de contacto">
+    <a href={mailtoHref} class="project-contact__cta" aria-label="Escríbeme por correo">
       Contáctame
       <Icon name="bx-right-arrow-alt" class="project-contact__arrow" />
     </a>

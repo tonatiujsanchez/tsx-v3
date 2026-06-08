@@ -1,7 +1,7 @@
 ---
 import { socialLinks } from '@data/site'
-import ContactForm from '@components/home/ContactForm.astro'
 import SocialLink from '@components/ui/SocialLink.astro'
+import ProjectContact from '../project/ProjectContact.astro'
 ---
 
 <section class="contact-section section" id="contacto">
@@ -20,7 +20,8 @@ import SocialLink from '@components/ui/SocialLink.astro'
         ))}
       </div>
 
-      <ContactForm />
+      <ProjectContact />
+
     </div>
   </div>
 </section>
@@ -31,12 +32,11 @@ import SocialLink from '@components/ui/SocialLink.astro'
     flex-direction: column;
     gap: 3.5rem;
     padding-block-start: 3rem;
-    max-width: 60rem;
   }
 
   .contact__social {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 0.8rem;
   }
 
